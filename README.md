@@ -20,10 +20,8 @@
 
 
 ### VM Management
-#### Returns a list of VM IDs and paths for all VMs
- Not implemented yet
-#### Returns the VM setting information of a VM
-Not implemented yet
+#### Returns a list of VM IDs and paths for all VMs & Returns the VM setting information of a VM
+These 2 are implemented as vmware_workstation_power
 #### Updates the VM settings
 Not implemented yet
 #### Creates a copy of the VM
