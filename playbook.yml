@@ -1,0 +1,10 @@
+---
+- hosts: vmware-workstation-host
+  tasks:
+    - name: "Clone KMS server"
+      vmware_workstation_clone:
+        targetVM: "5K6IPG796UQAGCTOTIH7QQR9HIHM2LOS"
+        newname: "Hello_World"
+        user: "workstation-api-user"
+        pass: "workstation-api-password"
+        apiurl: "http://127.0.0.1:8697/api/vms"
