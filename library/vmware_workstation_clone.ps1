@@ -16,7 +16,10 @@ $user =  Get-AnsibleParam -obj $params -name "user" -type "str" -failifempty $tr
 $pass = Get-AnsibleParam -obj $params -name "pass" -type "str" -failifempty $true
 $targetVM = Get-AnsibleParam -obj $params -name "targetVM" -type "str" -failifempty $true
 $newname = Get-AnsibleParam -obj $params -name "newname" -type "str" -failifempty $true
-$apiurl = Get-AnsibleParam -obj $params -name "apiurl" -type "str" -failifempty $true
+$apiurl = Get-AnsibleParam -obj $params -name "apiurl" -type "str" -default "http://127.0.0.1" -failifempty $false 
+$apiport = Get-AnsibleParam -obj $params -name "apiport" -type "int" -default "8697" -failifempty $false
+
+$requesturl = "${apiurl}:${apiport}/api/vms"
 
 $pair = "${user}:${pass}"
 $bytes = [System.Text.Encoding]::ASCII.GetBytes($pair)
@@ -37,7 +40,7 @@ $body = @{
 $requestbody = ($body | ConvertTo-Json)
 
 try {
-    $clonerequest = Invoke-RestMethod -Uri $apiurl -Headers $headers -method 'Post' -Body $requestbody
+    $clonerequest = Invoke-RestMethod -Uri $requesturl -Headers $headers -method 'Post' -Body $requestbody
     $result.changed = $true;
 }
 catch {
