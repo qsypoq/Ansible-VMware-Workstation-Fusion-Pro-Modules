@@ -15,7 +15,7 @@ $params = Parse-Args -arguments $args -supports_check_mode $true
 $user =  Get-AnsibleParam -obj $params -name "user" -type "str" -failifempty $true
 $pass = Get-AnsibleParam -obj $params -name "pass" -type "str" -failifempty $true
 $targetVM = Get-AnsibleParam -obj $params -name "targetVM" -type "str" -failifempty $true
-$targetState = Get-AnsibleParam -obj $params -name "targetState" -type "str" -failifempty $true
+$targetState = Get-AnsibleParam -obj $params -name "targetState" -type "str" -failifempty $false
 $apiurl = Get-AnsibleParam -obj $params -name "apiurl" -type "str" -default "http://127.0.0.1" -failifempty $false 
 $apiport = Get-AnsibleParam -obj $params -name "apiport" -type "int" -default "8697" -failifempty $false
 
@@ -38,12 +38,26 @@ $body = @{
 
 $requestbody = ($body | ConvertTo-Json)
 
-try {
-    $clonerequest = Invoke-RestMethod -Uri $requesturl -Headers $headers -method 'Put' -Body $targetState
-    $result.changed = $true;
-}
-catch {
-        Fail-Json $result "Request failed, please check your configuration"
+if (!$targetState) { 
+    try {
+        $powerrequest = Invoke-RestMethod -Uri $requesturl -Headers $headers -method 'Get'
+        $result.power_state = $powerrequest.power_state
+        $result.changed = $false;
+    }
+    catch {
+            Fail-Json $result "Request failed, please check your configuration"
+    }
+} else {
+
+    try {
+        $powerrequest = Invoke-RestMethod -Uri $requesturl -Headers $headers -method 'Put' -Body $targetState
+        $result.power_state = $powerrequest.power_state
+        $result.changed = $true;
+    }
+    catch {
+            Fail-Json $result "Request failed, please check your configuration"
+    }
+     
 }
 
 Exit-Json $result;

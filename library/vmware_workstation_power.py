@@ -24,8 +24,8 @@ options:
 
     targetState: "on"
         description:
-            - This is the power state we want
-        required: true      
+            - This is the power state we want, if not set, module will return actual VM power state
+        required: false      
         values: on, off, shutdown, suspend, pause, unpause
 
     user: "workstation-api-user"
@@ -55,15 +55,24 @@ author:
 '''
 
 EXAMPLES = '''
-# Clone VM with ID 42 as KMS-Server-Clone using API @ http://127.0.0.1:8697
+# Start VM with ID 42 using API @ http://127.0.0.1:8697
 - name: "Start VM ID 42"
   vmware_workstation_clone:
     targetVM: "42"
-    newname: "KMS-Server-Clone"
+    stargetState: "on"
     user: "workstation-api-user"
     pass: "workstation-api-password"
     apiurl: "http://127.0.0.1"
     apiport: "8697"
+
+# Get power state of VM with ID 42 using API @ http://127.0.0.1:8697
+- name: "Get power state VM ID 42"
+  vmware_workstation_clone:
+    targetVM: "42"
+    user: "workstation-api-user"
+    pass: "workstation-api-password"
+    apiurl: "http://127.0.0.1"
+    apiport: "8697"    
 '''
 
 RETURN = '''

@@ -44,10 +44,8 @@ Not implemented yet
 Not implemented yet
 
 ### VM Power Management
-#### Returns the power state of the VM
-Not Implemented yet
-#### Changes the VM power state
-Implemented as vmware_workstation_power
+#### Returns the power state of the VM & Changes the VM power state
+These 2 are implemented as vmware_workstation_power
 
 ### VM Shared Folders Management
 #### Returns all shared folders mounted in the VM
