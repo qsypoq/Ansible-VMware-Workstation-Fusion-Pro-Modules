@@ -4,7 +4,8 @@
     - name: "Clone KMS server"
       vmware_workstation_clone:
         targetVM: "42"
-        newname: "Hello_World"
+        newname: "KMS-Server-Clone"
         user: "workstation-api-user"
         pass: "workstation-api-password"
-        apiurl: "http://127.0.0.1:8697/api/vms"
+        apiurl: "http://127.0.0.1"
+        apiport: "8697"
