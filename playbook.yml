@@ -1,22 +1,30 @@
 ---
 - hosts: vmware-workstation-host
   tasks:
-    - name: "Clone KMS server"
+    - name: "Clone VM with ID 42 as KMS server"
       vmware_workstation_clone:
         targetVM: "42"
+        action: clone
         newname: "KMS-Server-Clone"
         user: "workstation-api-user"
         pass: "workstation-api-password"
         apiurl: "http://127.0.0.1"
         apiport: "8697"
 
-    - name: "get KMS server power state"
+    - name: "Delete VM with ID 42"
+      vmware_workstation_clone:
+        targetVM: "42"
+        action: delete
+        user: "workstation-api-user"
+        pass: "workstation-api-password"
+
+    - name: "get VM with ID 42 power state"
       vmware_workstation_power:
         targetVM: "42"
         user: "workstation-api-user"
         pass: "workstation-api-password"        
 
-    - name: "Start KMS server"
+    - name: "Start VM with ID 42"
       vmware_workstation_power:
         targetVM: "42"
         targetState: "On"

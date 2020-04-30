@@ -31,7 +31,6 @@ if ($action -eq 'delete' ) {
     $requesturl = "${apiurl}:${apiport}/api/vms/${targetVM}"
 }
 
-
 $pair = "${user}:${pass}"
 $bytes = [System.Text.Encoding]::ASCII.GetBytes($pair)
 $base64 = [System.Convert]::ToBase64String($bytes)
@@ -42,7 +41,6 @@ $headers = @{
     'Content-Type' =  'application/vnd.vmware.vmw.rest-v1+json';
     'Accept' = 'application/vnd.vmware.vmw.rest-v1+json';
 }
-
 
 if ($action -eq 'clone' ) { 
     $body = @{
@@ -56,8 +54,6 @@ if ($action -eq 'delete' ) {
         }
 }
 
-
-
 $requestbody = ($body | ConvertTo-Json)
 
 if ($action -eq 'clone' ) { 
@@ -69,7 +65,7 @@ if ($action -eq 'clone' ) {
     catch {
             Fail-Json $result "Request failed, please check your configuration"
     }
-    }
+}
 if ($action -eq 'delete' ) { 
     try {
         $deleterequest = Invoke-RestMethod -Uri $requesturl -Headers $headers -method 'DELETE' -Body $requestbody
@@ -79,8 +75,6 @@ if ($action -eq 'delete' ) {
     catch {
             Fail-Json $result "Request failed, please check your configuration"
     }
-    }
-
-
+}
 
 Exit-Json $result;

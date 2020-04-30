@@ -20,14 +20,12 @@
 
 
 ### VM Management
-#### Returns a list of VM IDs and paths for all VMs & Returns the VM setting information of a VM
-These 2 are implemented as vmware_workstation_power
+#### Returns a list of VM IDs and paths for all VMs | Returns the VM setting information of a VM
+These 2 are implemented as vmware_workstation_vminfos
 #### Updates the VM settings
 Not implemented yet
-#### Creates a copy of the VM
-Implemented as vmware_workstation_clone
-#### Deletes a VM
-Not implemented yet
+#### Creates a copy of the VM | Deletes a VM
+These 2 are implemented as vmware_workstation_vmmgt
 
 ### VM Network Adapters Management
 #### Returns the IP address of a VM
@@ -42,8 +40,10 @@ Not implemented yet
 Not implemented yet
 
 ### VM Power Management
-#### Returns the power state of the VM & Changes the VM power state
-These 2 are implemented as vmware_workstation_power
+- Returns the power state of the VM
+- Changes the VM power state
+
+Complete! This section is implemented as vmware_workstation_power.
 
 ### VM Shared Folders Management
 #### Returns all shared folders mounted in the VM

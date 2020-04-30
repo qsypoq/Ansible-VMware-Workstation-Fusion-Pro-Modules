@@ -7,9 +7,9 @@ ANSIBLE_METADATA = {
 }
 
 DOCUMENTATION = '''
-module: vmware_workstation_clone
+module: vmware_workstation_vmmgt
 
-short_description: Clone VMware Workstation VM
+short_description: Implement the VM Management part of the API
 
 version_added: "2.4"
 
@@ -22,10 +22,15 @@ options:
             - This is the target VM to interact with
         required: true
 
+    action: clone || delete
+        description:
+            - This is the action we want to do. clone or delete the VM
+        required: true  
+
     newname: "KMS-Server-Clone"
         description:
             - This is the name of the cloned VM
-        required: true      
+        required: only when action = clone      
 
     user: "workstation-api-user"
         description:
@@ -58,11 +63,20 @@ EXAMPLES = '''
 - name: "Start VM ID 42"
   vmware_workstation_clone:
     targetVM: "42"
+    action: clone
     newname: "KMS-Server-Clone"
     user: "workstation-api-user"
     pass: "workstation-api-password"
     apiurl: "http://127.0.0.1"
     apiport: "8697"
+
+# Delete VM with ID 42
+- name: "Start VM ID 42"
+  vmware_workstation_clone:
+    targetVM: "42"
+    action: delete
+    user: "workstation-api-user"
+    pass: "workstation-api-password"
 '''
 
 RETURN = '''
