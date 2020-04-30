@@ -5,7 +5,6 @@
 
 $ErrorActionPreference = "Stop"
 
-
 $result = New-Object psobject @{
     vmware_workstation_clone = New-Object psobject
     changed = $false
@@ -39,11 +38,10 @@ $requestbody = ($body | ConvertTo-Json)
 
 try {
     $clonerequest = Invoke-RestMethod -Uri $apiurl -Headers $headers -method 'Post' -Body $requestbody
-    $result.changed = $true
-    Set-Attr $result.vmware_workstation_clone $params.name "succefully created"
+    $result.changed = $true;
 }
 catch {
-    Fail-Json $result "Request failed, please check your configuration"
+        Fail-Json $result "Request failed, please check your configuration"
 }
 
 Exit-Json $result;

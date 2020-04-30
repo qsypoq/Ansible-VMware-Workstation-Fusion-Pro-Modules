@@ -3,7 +3,7 @@
   tasks:
     - name: "Clone KMS server"
       vmware_workstation_clone:
-        targetVM: "5K6IPG796UQAGCTOTIH7QQR9HIHM2LOS"
+        targetVM: "42"
         newname: "Hello_World"
         user: "workstation-api-user"
         pass: "workstation-api-password"
