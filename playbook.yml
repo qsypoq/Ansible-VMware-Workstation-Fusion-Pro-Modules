@@ -9,3 +9,10 @@
         pass: "workstation-api-password"
         apiurl: "http://127.0.0.1"
         apiport: "8697"
+      
+    - name: "Start KMS server"
+      vmware_workstation_power:
+        targetVM: "42"
+        targetState: "On"
+        user: "workstation-api-user"
+        pass: "workstation-api-password"
