@@ -6,7 +6,7 @@ ANSIBLE_METADATA = {
     'supported_by': 'community'
 }
 
-DOCUMENTATION = '''
+DOCUMENTATION = r'''
 module: vmware_workstation_vminfos
 
 short_description: Get VMware Workstation VM infos
@@ -50,7 +50,7 @@ author:
     - Adam Magnier (@qsypoq)
 '''
 
-EXAMPLES = '''
+EXAMPLES = r'''
 # Get infos about all the VMs
 - name: "Get infos"
   vmware_workstation_vminfos:
@@ -65,5 +65,5 @@ EXAMPLES = '''
     pass: "workstation-api-password"
 '''
 
-RETURN = '''
+RETURN = r'''
 '''

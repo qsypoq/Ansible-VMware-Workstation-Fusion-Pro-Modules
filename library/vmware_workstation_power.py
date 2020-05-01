@@ -6,7 +6,7 @@ ANSIBLE_METADATA = {
     'supported_by': 'community'
 }
 
-DOCUMENTATION = '''
+DOCUMENTATION = r'''
 module: vmware_workstation_power
 
 short_description: Change VMware Workstation VM PowerState
@@ -53,7 +53,7 @@ author:
     - Adam Magnier (@qsypoq)
 '''
 
-EXAMPLES = '''
+EXAMPLES = r'''
 # Start VM with ID 42 using API @ http://127.0.0.1:8697
 - name: "Start VM ID 42"
   vmware_workstation_clone:
@@ -74,5 +74,5 @@ EXAMPLES = '''
     apiport: "8697"    
 '''
 
-RETURN = '''
+RETURN = r'''
 '''

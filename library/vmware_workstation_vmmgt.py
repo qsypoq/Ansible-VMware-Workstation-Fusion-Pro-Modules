@@ -6,7 +6,7 @@ ANSIBLE_METADATA = {
     'supported_by': 'community'
 }
 
-DOCUMENTATION = '''
+DOCUMENTATION = r'''
 module: vmware_workstation_vmmgt
 
 short_description: Implement the VM Management part of the API
@@ -68,7 +68,7 @@ author:
     - Adam Magnier (@qsypoq)
 '''
 
-EXAMPLES = '''
+EXAMPLES = r'''
 # Clone VM with ID 42 as KMS-Server-Clone using API @ http://127.0.0.1:8697
 - name: "Start VM ID 42"
   vmware_workstation_clone:
@@ -98,5 +98,5 @@ EXAMPLES = '''
     pass: "workstation-api-password"
 '''
 
-RETURN = '''
+RETURN = r'''
 '''

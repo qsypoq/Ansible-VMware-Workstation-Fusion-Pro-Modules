@@ -6,7 +6,7 @@ ANSIBLE_METADATA = {
     'supported_by': 'community'
 }
 
-DOCUMENTATION = '''
+DOCUMENTATION = r'''
 module: vmware_workstation_netmgt
 
 short_description: Implement the VMNet Management part of the API
@@ -53,9 +53,9 @@ author:
     - Adam Magnier (@qsypoq)
 '''
 
-EXAMPLES = '''
+EXAMPLES = r'''
 
 '''
 
-RETURN = '''
+RETURN = r'''
 '''
