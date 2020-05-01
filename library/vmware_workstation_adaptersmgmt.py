@@ -7,14 +7,14 @@ ANSIBLE_METADATA = {
 }
 
 DOCUMENTATION = r'''
-module: vmware_workstation_foldersmgmt
+module: vmware_workstation_adaptersmgmt
 
-short_description: Implement the Shared Folders Management part of the API
+short_description: Implement the Network Adapters Management part of the API
 
 version_added: "2.4"
 
 description:
-    - "Manage VMware Workstation Shared Folders"
+    - "Manage VMware Workstation Network Adapters "
 
 options:
     targetVM:
@@ -22,7 +22,7 @@ options:
             - This is the target VM to interact with
         required: true
 
-    action: infos || create || delete || update
+    action: list || getip || update || create || delete
         description:
             - This is the action we want to do.
         required: true   
@@ -36,6 +36,21 @@ options:
         description:
             - Path of shared folder
         required: Only for create & update
+
+    targetIndex: 1
+        description:
+            - Index's number refering to your network adapter
+        required: Only for delete & update
+
+    targetType: custom || bridged || nat || hostonly
+        description:
+                - This is the target VMNET to interact with
+        required: only for update & create
+
+    targetVMnet:
+        description:
+                - This is the target VMNET to interact with
+        required: only when targetType = custom
     
     user: "workstation-api-user"
         description:

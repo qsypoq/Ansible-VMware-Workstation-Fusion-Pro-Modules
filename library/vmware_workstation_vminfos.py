@@ -66,4 +66,19 @@ EXAMPLES = r'''
 '''
 
 RETURN = r'''
+# Get infos about all the VMs
+[{
+  "id": "0J319913PHLM1304J1P6EPLADAM",
+  "path": "G:\\VMs\\ESXi\\ESXi.vmx"},
+{
+  "id": "19915KM24UQ0J0OADAMH69H16T125LOL",
+  "path": "G:\\VMs\\pfsense\\pfsense.vmx"
+}]
+
+# Retrieve CPU & RAM from VM with ID 42
+{
+  "cpu": {"processors": 1},
+  "id": "42",
+  "memory": 2048
+}
 '''

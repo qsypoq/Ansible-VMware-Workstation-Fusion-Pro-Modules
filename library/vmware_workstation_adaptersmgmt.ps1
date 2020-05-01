@@ -15,7 +15,6 @@ $user =  Get-AnsibleParam -obj $params -name "user" -type "str" -failifempty $tr
 $pass = Get-AnsibleParam -obj $params -name "pass" -type "str" -failifempty $true
 $targetVM = Get-AnsibleParam -obj $params -name "targetVM" -type "str" -failifempty $true
 $action = Get-AnsibleParam -obj $params -name "action" -type "str" -failifempty $true 
-
 $apiurl = Get-AnsibleParam -obj $params -name "apiurl" -type "str" -default "http://127.0.0.1" -failifempty $false 
 $apiport = Get-AnsibleParam -obj $params -name "apiport" -type "int" -default "8697" -failifempty $false
 
@@ -29,9 +28,8 @@ if (($action -eq 'update' ) -Or ($action -eq 'create')) {
     $targetType = Get-AnsibleParam -obj $params -name "targetType" -type "str" -failifempty $true 
 }
 if ($targetType -eq 'custom' ) {
-    $targetVMNET = Get-AnsibleParam -obj $params -name "targetVMNET" -type "str" -failifempty $true
+    $targetVMnet = Get-AnsibleParam -obj $params -name "targetVMnet" -type "str" -failifempty $true
 }
-
 if (($action -eq 'update' ) -Or ($action -eq 'delete')) { 
     $targetIndex = Get-AnsibleParam -obj $params -name "targetIndex" -type "int" -failifempty $true 
     $requesturl = "${apiurl}:${apiport}/api/vms/${targetVM}/nic/${targetIndex}"
@@ -51,7 +49,7 @@ $headers = @{
 if (($action -eq 'update' ) -Or ($action -eq 'create')) { 
     $body = @{
         "type" = $targetType;
-        "vmnet" = $targetVMNET
+        "vmnet" = $targetVMnet
     }      
 }
 
@@ -81,8 +79,8 @@ if ($action -eq 'create' ) {
 
 if ($action -eq 'update' ) { 
     try {
-        $createrequest = Invoke-RestMethod -Uri $requesturl -Headers $headers -method 'Put' -Body $requestbody
-        $result.infos = $createrequest
+        $updaterequest = Invoke-RestMethod -Uri $requesturl -Headers $headers -method 'Put' -Body $requestbody
+        $result.infos = $updaterequest
         $result.changed = $true;
     }
     catch {
@@ -92,8 +90,8 @@ if ($action -eq 'update' ) {
 
 if ($action -eq 'delete' ) { 
     try {
-        $createrequest = Invoke-RestMethod -Uri $requesturl -Headers $headers -method 'DELETE'
-        $result.infos = $createrequest
+        $deleterequest = Invoke-RestMethod -Uri $requesturl -Headers $headers -method 'DELETE'
+        $result.infos = $deleterequest
         $result.changed = $true;
     }
     catch {

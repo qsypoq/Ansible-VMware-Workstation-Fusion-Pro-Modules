@@ -6,7 +6,6 @@
 $ErrorActionPreference = "Stop"
 
 $result = New-Object psobject @{
-    vmware_workstation_vmmgt = New-Object psobject
     changed = $false
 }
 
@@ -23,7 +22,7 @@ if ($action -eq 'update' ) {
 }
 
 if ($action -eq 'clone' ) { 
-$newname = Get-AnsibleParam -obj $params -name "newname" -type "str" -failifempty $true
+    $newname = Get-AnsibleParam -obj $params -name "newname" -type "str" -failifempty $true
 }
 
 $apiurl = Get-AnsibleParam -obj $params -name "apiurl" -type "str" -default "http://127.0.0.1" -failifempty $false 
@@ -77,7 +76,7 @@ $requestbody = ($body | ConvertTo-Json)
 if ($action -eq 'clone' ) { 
     try {
         $clonerequest = Invoke-RestMethod -Uri $requesturl -Headers $headers -method 'Post' -Body $requestbody
-        $result.state = $clonerequest
+        $result.infos = $clonerequest
         $result.changed = $true;
     }
     catch {
@@ -87,7 +86,7 @@ if ($action -eq 'clone' ) {
 if ($action -eq 'delete' ) { 
     try {
         $deleterequest = Invoke-RestMethod -Uri $requesturl -Headers $headers -method 'DELETE' -Body $requestbody
-        $result.state = $deleterequest
+        $result.infos = $deleterequest
         $result.changed = $true;
     }
     catch {
@@ -98,7 +97,7 @@ if ($action -eq 'delete' ) {
 if ($action -eq 'update' ) { 
     try {
         $updaterequest = Invoke-RestMethod -Uri $requesturl -Headers $headers -method 'Put' -Body $requestbody
-        $result.state = $updaterequest
+        $result.infos = $updaterequest
         $result.changed = $true;
     }
     catch {

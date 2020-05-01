@@ -18,25 +18,25 @@ $apiport = Get-AnsibleParam -obj $params -name "apiport" -type "int" -default "8
 
 
 $action = Get-AnsibleParam -obj $params -name "action" -type "str" -failifempty $true
-$targetVMNET = Get-AnsibleParam -obj $params -name "targetVMNET" -type "str" -failifempty $false
+$targetVMnet = Get-AnsibleParam -obj $params -name "targetVMnet" -type "str" -failifempty $false
 
 if ($action -eq 'create') {
-    $targettype = Get-AnsibleParam -obj $params -name "targettype" -type "str" -failifempty $true
-    $targetdhcp = Get-AnsibleParam -obj $params -name "targetdhcp" -type "bool" -failifempty $true
-    $targetsubnet = Get-AnsibleParam -obj $params -name "targetsubnet" -type "str" -failifempty $true
-    $targetmask = Get-AnsibleParam -obj $params -name "targetmask" -type "str" -failifempty $true
+    $targetType = Get-AnsibleParam -obj $params -name "targetType" -type "str" -failifempty $true
+    $targetDHCP = Get-AnsibleParam -obj $params -name "targetDHCP" -type "bool" -failifempty $true
+    $targetSubnet = Get-AnsibleParam -obj $params -name "targetSubnet" -type "str" -failifempty $true
+    $targetMask = Get-AnsibleParam -obj $params -name "targetMask" -type "str" -failifempty $true
 }
 
 if ($action -eq 'delete') {
-    $targetprotocol = Get-AnsibleParam -obj $params -name "targetprotocol" -type "str" -failifempty $true
-    $targetport = Get-AnsibleParam -obj $params -name "targetport" -type "int" -failifempty $true
+    $targetProtocol = Get-AnsibleParam -obj $params -name "targetProtocol" -type "str" -failifempty $true
+    $targetPort = Get-AnsibleParam -obj $params -name "targetPort" -type "int" -failifempty $true
 }
 
 $targetSetting = Get-AnsibleParam -obj $params -name "targetSetting" -type "str" -failifempty $false
 
 if ($action -eq 'infos') { 
     if (-not ([string]::IsNullOrEmpty($targetSetting))) { 
-        $requesturl = "${apiurl}:${apiport}/api/vmnet/${targetVMNET}/${targetSetting}"
+        $requesturl = "${apiurl}:${apiport}/api/vmnet/${targetVMnet}/${targetSetting}"
     }else {
         $requesturl = "${apiurl}:${apiport}/api/vmnet"
     }
@@ -47,7 +47,7 @@ if ($action -eq 'create') {
 }
 
 if ($action -eq 'delete') {
-    $requesturl = "${apiurl}:${apiport}/api/vmnet/${targetVMNET}/portforward/${targetprotocol}/${targetport}"
+    $requesturl = "${apiurl}:${apiport}/api/vmnet/${targetVMnet}/portforward/${targetProtocol}/${targetPort}"
 }
 
 $pair = "${user}:${pass}"
@@ -63,11 +63,11 @@ $headers = @{
 
 if ($action -eq 'create' ) { 
     $body = @{
-        "name" = $targetVMNET;
-        "type" = $targettype;
-        "dhcp" = $targetdhcp;
-        "subnet" = $targetsubnet;
-        "mask" = $targetmask
+        "name" = $targetVMnet;
+        "type" = $targetType;
+        "dhcp" = $targetDHCP;
+        "subnet" = $targetSubnet;
+        "mask" = $targetMask
     }      
 }
 

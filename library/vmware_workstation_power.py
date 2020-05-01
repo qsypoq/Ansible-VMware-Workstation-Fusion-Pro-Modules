@@ -56,7 +56,7 @@ author:
 EXAMPLES = r'''
 # Start VM with ID 42 using API @ http://127.0.0.1:8697
 - name: "Start VM ID 42"
-  vmware_workstation_clone:
+  vmware_workstation_power:
     targetVM: "42"
     stargetState: "on"
     user: "workstation-api-user"
@@ -66,7 +66,7 @@ EXAMPLES = r'''
 
 # Get power state of VM with ID 42 using API @ http://127.0.0.1:8697
 - name: "Get power state VM ID 42"
-  vmware_workstation_clone:
+  vmware_workstation_power:
     targetVM: "42"
     user: "workstation-api-user"
     pass: "workstation-api-password"

@@ -22,16 +22,13 @@ $apiport = Get-AnsibleParam -obj $params -name "apiport" -type "int" -default "8
 if (($action -eq 'infos' ) -Or ($action -eq 'create')) { 
     $requesturl = "${apiurl}:${apiport}/api/vms/${targetVM}/sharedfolders"
 }
-
 if ($action -eq 'create' ) { 
     $targetFolder = Get-AnsibleParam -obj $params -name "targetFolder" -type "str" -failifempty $true
     $targetPath = Get-AnsibleParam -obj $params -name "targetPath" -type "str" -failifempty $true
 }
-
 if ($action -eq 'update' ) { 
     $targetPath = Get-AnsibleParam -obj $params -name "targetPath" -type "str" -failifempty $true
 }
-
 if (($action -eq 'delete') -Or ($action -eq 'update')) { 
     $targetFolder = Get-AnsibleParam -obj $params -name "targetFolder" -type "str" -failifempty $true
     $requesturl = "${apiurl}:${apiport}/api/vms/${targetVM}/sharedfolders/${targetFolder}"
@@ -54,7 +51,6 @@ if ($action -eq 'update' ) {
         "flags" = $flags
     }      
 }
-
 if ($action -eq 'create' ) { 
     $body = @{
         "folder_id" = $targetFolder;
@@ -75,7 +71,6 @@ if ($action -eq 'infos' ) {
             Fail-Json $result "Request failed, please check your configuration"
     }
 }
-
 if ($action -eq 'update' ) { 
     try {
         $updaterequest = Invoke-RestMethod -Uri $requesturl -Headers $headers -method 'Put' -Body $requestbody
@@ -86,7 +81,6 @@ if ($action -eq 'update' ) {
             Fail-Json $result "Request failed, please check your configuration"
     }
 }
-
 if ($action -eq 'create' ) { 
     try {
         $createrequest = Invoke-RestMethod -Uri $requesturl -Headers $headers -method 'Post' -Body $requestbody
@@ -97,7 +91,6 @@ if ($action -eq 'create' ) {
             Fail-Json $result "Request failed, please check your configuration"
     }
 }
-
 if ($action -eq 'delete' ) { 
     try {
         $deleterequest = Invoke-RestMethod -Uri $requesturl -Headers $headers -method 'DELETE'

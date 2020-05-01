@@ -37,7 +37,7 @@ $headers = @{
 
 try {
     $vminfosrequest = Invoke-RestMethod -Uri $requesturl -Headers $headers -method 'Get'
-    $result.vminfos = $vminfosrequest
+    $result.infos = $vminfosrequest
     $result.changed = $false;
 }
 catch {
