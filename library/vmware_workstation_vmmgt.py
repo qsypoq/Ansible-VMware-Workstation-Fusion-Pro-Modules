@@ -14,7 +14,7 @@ short_description: Implement the VM Management part of the API
 version_added: "2.4"
 
 description:
-    - "Clone VMware Workstation VM"
+    - "Manage VMware Workstation VM"
 
 options:
     targetVM:

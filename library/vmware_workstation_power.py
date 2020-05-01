@@ -22,11 +22,10 @@ options:
             - This is the target VM to interact with
         required: true
 
-    targetState: "on"
+    targetState: on || off || shutdown || suspend || pause || unpause
         description:
             - This is the power state we want, if not set, module will return actual VM power state
         required: false      
-        values: on, off, shutdown, suspend, pause, unpause
 
     user: "workstation-api-user"
         description:

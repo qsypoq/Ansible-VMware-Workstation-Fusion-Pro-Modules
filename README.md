@@ -5,7 +5,7 @@ VMware Workstation's REST API is designed as follow:
 - 23 possibles requests
 - Divided into 5 categories
 
-![API's logic](vmware_workstation_api_logic.PNG)
+<p align="center"><img src="vmware_workstation_api_logic.PNG"></p>
 
 First goal of the project is to implement all the requests. For the time being, following VMware's logic. Next goal may be to concatenate some of the requests to create better categories
 

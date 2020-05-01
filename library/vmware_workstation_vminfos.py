@@ -19,7 +19,9 @@ description:
 options:
     targetVM:
         description:
-            - This is the target VM to interact with, if not set, will get infos about all VMs
+            - This is the target VM to interact with:
+                When not set: return all VMs id & path
+                When set: return CPU & RAM of the target VM
         required: false
 
     user: "workstation-api-user"
@@ -50,12 +52,12 @@ author:
 
 EXAMPLES = '''
 # Get infos about all the VMs
-- name: "Start VM ID 42"
-  vmware_workstation_clone:
+- name: "Get infos"
+  vmware_workstation_vminfos:
     user: "workstation-api-user"
     pass: "workstation-api-password"
 
-# Get infos about VM with ID 42
+# Retrieve CPU & RAM from VM with ID 42
 - name: "Get infos about VM ID 42"
   vmware_workstation_vminfos:
     targetVM: "42"
