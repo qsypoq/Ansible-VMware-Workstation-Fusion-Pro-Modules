@@ -6,7 +6,6 @@
 $ErrorActionPreference = "Stop"
 
 $result = New-Object psobject @{
-    vmware_workstation_power = New-Object psobject
     changed = $false
 }
 
@@ -38,17 +37,7 @@ $body = @{
 
 $requestbody = ($body | ConvertTo-Json)
 
-if (!$targetState) { 
-    try {
-        $powerrequest = Invoke-RestMethod -Uri $requesturl -Headers $headers -method 'Get'
-        $result.power_state = $powerrequest.power_state
-        $result.changed = $false;
-    }
-    catch {
-            Fail-Json $result "Request failed, please check your configuration"
-    }
-} else {
-
+if (-not ([string]::IsNullOrEmpty($targetState))) { 
     try {
         $powerrequest = Invoke-RestMethod -Uri $requesturl -Headers $headers -method 'Put' -Body $targetState
         $result.power_state = $powerrequest.power_state
@@ -57,7 +46,15 @@ if (!$targetState) {
     catch {
             Fail-Json $result "Request failed, please check your configuration"
     }
-     
+} else {
+    try {
+        $powerrequest = Invoke-RestMethod -Uri $requesturl -Headers $headers -method 'Get'
+        $result.power_state = $powerrequest.power_state
+        $result.changed = $false;
+    }
+    catch {
+            Fail-Json $result "Request failed, please check your configuration"
+    }
 }
 
 Exit-Json $result;

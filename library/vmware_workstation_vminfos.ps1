@@ -6,7 +6,6 @@
 $ErrorActionPreference = "Stop"
 
 $result = New-Object psobject @{
-    vmware_workstation_power = New-Object psobject
     changed = $false
 }
 
@@ -18,11 +17,11 @@ $targetVM = Get-AnsibleParam -obj $params -name "targetVM" -type "str" -failifem
 $apiurl = Get-AnsibleParam -obj $params -name "apiurl" -type "str" -default "http://127.0.0.1" -failifempty $false 
 $apiport = Get-AnsibleParam -obj $params -name "apiport" -type "int" -default "8697" -failifempty $false
 
-if (!$targetVM) { 
-    $requesturl = "${apiurl}:${apiport}/api/vms"
+if (-not ([string]::IsNullOrEmpty($targetVM))) { 
+    $requesturl = "${apiurl}:${apiport}/api/vms/${targetVM}"
 }
 else {
-    $requesturl = "${apiurl}:${apiport}/api/vms/${targetVM}"
+    $requesturl = "${apiurl}:${apiport}/api/vms"
 }
 
 $pair = "${user}:${pass}"
@@ -36,23 +35,13 @@ $headers = @{
     'Accept' = 'application/vnd.vmware.vmw.rest-v1+json';
 }
 
-if (!$targetVM) { 
-    try {
-        $vminfosrequest = Invoke-RestMethod -Uri $requesturl -Headers $headers -method 'Get'
-        $result.vminfos = $vminfosrequest
-        $result.changed = $false;
-    }
-    catch {
-            Fail-Json $result "Request failed, please check your configuration"
-    }
-}   else {
-        try {
-            $vminfosrequest = Invoke-RestMethod -Uri $requesturl -Headers $headers -method 'Get'
-            $result.vminfos = $vminfosrequest
-            $result.changed = $false;
-        }
-        catch {
-                Fail-Json $result "Request failed, please check your configuration"
-        }
-    }
+try {
+    $vminfosrequest = Invoke-RestMethod -Uri $requesturl -Headers $headers -method 'Get'
+    $result.vminfos = $vminfosrequest
+    $result.changed = $false;
+}
+catch {
+        Fail-Json $result "Request failed, please check your configuration"
+}
+
 Exit-Json $result;
