@@ -36,8 +36,6 @@ $headers = @{
     'Accept' = 'application/vnd.vmware.vmw.rest-v1+json';
 }
 
-$requestbody = ($body | ConvertTo-Json)
-
 if (!$targetVM) { 
     try {
         $vminfosrequest = Invoke-RestMethod -Uri $requesturl -Headers $headers -method 'Get'
@@ -47,17 +45,14 @@ if (!$targetVM) {
     catch {
             Fail-Json $result "Request failed, please check your configuration"
     }
-} else {
-
-    try {
-        $vminfosrequest = Invoke-RestMethod -Uri $requesturl -Headers $headers -method 'Get'
-        $result.vminfos = $vminfosrequest
-        $result.changed = $false;
+}   else {
+        try {
+            $vminfosrequest = Invoke-RestMethod -Uri $requesturl -Headers $headers -method 'Get'
+            $result.vminfos = $vminfosrequest
+            $result.changed = $false;
+        }
+        catch {
+                Fail-Json $result "Request failed, please check your configuration"
+        }
     }
-    catch {
-            Fail-Json $result "Request failed, please check your configuration"
-    }
-     
-}
-
 Exit-Json $result;

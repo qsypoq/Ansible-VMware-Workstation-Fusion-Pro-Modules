@@ -9,24 +9,18 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = '''
 module: vmware_workstation_vminfos
 
-short_description: Change VMware Workstation VM PowerState
+short_description: Get VMware Workstation VM infos
 
 version_added: "2.4"
 
 description:
-    - "Change VMware Workstation VM PowerState"
+    - "Get VMware Workstation VM infos"
 
 options:
     targetVM:
         description:
-            - This is the target VM to interact with
-        required: true
-
-    targetState: "on"
-        description:
-            - This is the power state we want, if not set, module will return actual VM power state
-        required: false      
-        values: on, off, shutdown, suspend, pause, unpause
+            - This is the target VM to interact with, if not set, will get infos about all VMs
+        required: false
 
     user: "workstation-api-user"
         description:
@@ -55,24 +49,18 @@ author:
 '''
 
 EXAMPLES = '''
-# Start VM with ID 42 using API @ http://127.0.0.1:8697
+# Get infos about all the VMs
 - name: "Start VM ID 42"
   vmware_workstation_clone:
-    targetVM: "42"
-    stargetState: "on"
     user: "workstation-api-user"
     pass: "workstation-api-password"
-    apiurl: "http://127.0.0.1"
-    apiport: "8697"
 
-# Get power state of VM with ID 42 using API @ http://127.0.0.1:8697
-- name: "Get power state VM ID 42"
-  vmware_workstation_clone:
+# Get infos about VM with ID 42
+- name: "Get infos about VM ID 42"
+  vmware_workstation_vminfos:
     targetVM: "42"
     user: "workstation-api-user"
     pass: "workstation-api-password"
-    apiurl: "http://127.0.0.1"
-    apiport: "8697"    
 '''
 
 RETURN = '''

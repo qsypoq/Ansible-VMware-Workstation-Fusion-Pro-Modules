@@ -6,7 +6,7 @@
 $ErrorActionPreference = "Stop"
 
 $result = New-Object psobject @{
-    vmware_workstation_clone = New-Object psobject
+    vmware_workstation_vmmgt = New-Object psobject
     changed = $false
 }
 
@@ -17,6 +17,11 @@ $pass = Get-AnsibleParam -obj $params -name "pass" -type "str" -failifempty $tru
 $targetVM = Get-AnsibleParam -obj $params -name "targetVM" -type "str" -failifempty $true
 $action = Get-AnsibleParam -obj $params -name "action" -type "str" -failifempty $true
 
+if ($action -eq 'update' ) { 
+    $targetCPU = Get-AnsibleParam -obj $params -name "targetCPU" -type "int" -failifempty $false
+    $targetRAM = Get-AnsibleParam -obj $params -name "targetRAM" -type "int" -failifempty $false
+}
+
 if ($action -eq 'clone' ) { 
 $newname = Get-AnsibleParam -obj $params -name "newname" -type "str" -failifempty $true
 }
@@ -25,9 +30,14 @@ $apiurl = Get-AnsibleParam -obj $params -name "apiurl" -type "str" -default "htt
 $apiport = Get-AnsibleParam -obj $params -name "apiport" -type "int" -default "8697" -failifempty $false
 
 if ($action -eq 'clone' ) { 
-$requesturl = "${apiurl}:${apiport}/api/vms"
+    $requesturl = "${apiurl}:${apiport}/api/vms"
 }
-if ($action -eq 'delete' ) { 
+
+if ($action -eq 'delete') { 
+    $requesturl = "${apiurl}:${apiport}/api/vms/${targetVM}"
+}
+
+if ($action -eq 'update') { 
     $requesturl = "${apiurl}:${apiport}/api/vms/${targetVM}"
 }
 
@@ -48,10 +58,18 @@ if ($action -eq 'clone' ) {
         "parentId" = $targetVM
     }
 }
+
 if ($action -eq 'delete' ) { 
-        $body = @{
-            "id" = $targetVM
-        }
+    $body = @{
+        "id" = $targetVM
+    }
+}
+
+if ($action -eq 'update' ) { 
+    $body = @{
+        "processors" = $targetCPU;
+        "memory" = $targetRAM
+    }      
 }
 
 $requestbody = ($body | ConvertTo-Json)
@@ -70,6 +88,17 @@ if ($action -eq 'delete' ) {
     try {
         $deleterequest = Invoke-RestMethod -Uri $requesturl -Headers $headers -method 'DELETE' -Body $requestbody
         $result.state = $deleterequest
+        $result.changed = $true;
+    }
+    catch {
+            Fail-Json $result "Request failed, please check your configuration"
+    }
+}
+
+if ($action -eq 'update' ) { 
+    try {
+        $updaterequest = Invoke-RestMethod -Uri $requesturl -Headers $headers -method 'Put' -Body $requestbody
+        $result.state = $updaterequest
         $result.changed = $true;
     }
     catch {

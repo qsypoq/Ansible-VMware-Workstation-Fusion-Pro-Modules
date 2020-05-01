@@ -22,15 +22,25 @@ options:
             - This is the target VM to interact with
         required: true
 
-    action: clone || delete
+    action: clone || delete || update
         description:
-            - This is the action we want to do. clone or delete the VM
+            - This is the action we want to do. update CPU/RAM, clone or delete the VM
         required: true  
 
     newname: "KMS-Server-Clone"
         description:
             - This is the name of the cloned VM
         required: only when action = clone      
+
+    targetCPU: 2
+        description:
+            - This is the new values of CPU allocated to the VM
+        required: false, only usefull when action = update
+
+    targetRAM: 2048
+        description:
+            - This is the new values of RAM allocated to the VM
+        required: false, only usefull when action = update
 
     user: "workstation-api-user"
         description:
@@ -75,6 +85,15 @@ EXAMPLES = '''
   vmware_workstation_clone:
     targetVM: "42"
     action: delete
+    user: "workstation-api-user"
+    pass: "workstation-api-password"
+
+# Change VM with ID 42's RAM allocation to 2048
+- name: "Start VM ID 42"
+  vmware_workstation_clone:
+    targetVM: "42"
+    action: update
+    targetRAM: 2048
     user: "workstation-api-user"
     pass: "workstation-api-password"
 '''
