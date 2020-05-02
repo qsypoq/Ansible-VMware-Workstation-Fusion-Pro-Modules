@@ -30,7 +30,6 @@ if (($action -eq 'update' ) -Or ($action -eq 'create')) {
 }
 if ($access -eq 'rw' ) { $flags = 4 }
 
-
 if (($action -eq 'delete') -Or ($action -eq 'update')) { 
     $targetFolder = Get-AnsibleParam -obj $params -name "targetFolder" -type "str" -failifempty $true
     $requesturl = "${apiurl}:${apiport}/api/vms/${targetVM}/sharedfolders/${targetFolder}"
