@@ -83,7 +83,7 @@ This section is implemented as follow:
 
 ## :construction: Host Networks Management: 6/7
 
-** For this part to work you need to run your vmrest.exe in an elevated prompt ! **
+**For this part to work you need to run your vmrest.exe in an elevated prompt !**
 
 ### vmware_workstation_netmgmt
 
@@ -102,11 +102,6 @@ Not implemented:
 Need to figure out how it works
 
 ## :construction: Todo-List / Roadmap
-
-### Fix vmrest permission problem
-- When the vmrest is run as standard user, modifications using netmgt are not authaurized.
-
-- When vmrest is run as administrator, no API can be utilized. This problem needs more tests.
 
 ### Information gathering / Returned infos to user while running playbooks
 - Make information returned by requests (like VM Id or state) easily exploitable via playbook.
