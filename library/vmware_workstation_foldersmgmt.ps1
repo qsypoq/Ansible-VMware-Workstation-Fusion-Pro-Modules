@@ -15,7 +15,6 @@ $user =  Get-AnsibleParam -obj $params -name "user" -type "str" -failifempty $tr
 $pass = Get-AnsibleParam -obj $params -name "pass" -type "str" -failifempty $true
 $targetVM = Get-AnsibleParam -obj $params -name "targetVM" -type "str" -failifempty $true
 $action = Get-AnsibleParam -obj $params -name "action" -type "str" -failifempty $true
-$flags = Get-AnsibleParam -obj $params -name "flags" -type "int" -default "4" -failifempty $false 
 $apiurl = Get-AnsibleParam -obj $params -name "apiurl" -type "str" -default "http://127.0.0.1" -failifempty $false 
 $apiport = Get-AnsibleParam -obj $params -name "apiport" -type "int" -default "8697" -failifempty $false
 
@@ -26,8 +25,12 @@ if ($action -eq 'create' ) {
     $targetFolder = Get-AnsibleParam -obj $params -name "targetFolder" -type "str" -failifempty $true
 }
 if (($action -eq 'update' ) -Or ($action -eq 'create')) { 
+    $access = Get-AnsibleParam -obj $params -name "access" -type "str" -failifempty $true
     $targetPath = Get-AnsibleParam -obj $params -name "targetPath" -type "str" -failifempty $true
 }
+if ($access -eq 'rw' ) { $flags = 4 }
+
+
 if (($action -eq 'delete') -Or ($action -eq 'update')) { 
     $targetFolder = Get-AnsibleParam -obj $params -name "targetFolder" -type "str" -failifempty $true
     $requesturl = "${apiurl}:${apiport}/api/vms/${targetVM}/sharedfolders/${targetFolder}"

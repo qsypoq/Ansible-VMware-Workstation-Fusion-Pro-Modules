@@ -22,10 +22,15 @@ options:
             - This is the target NETVM to interact with
         required: false
 
-    action: infos || delete || create
+    action: infos || delete || create || updatePF || update MTI
         description:
-            - This is the action we want to do. Actual issue: only infos works.
+            - This is the action we want to do.
         required: true  
+
+    targetSetting: portforward || mactoip
+        description:
+                - Choose what infos you want to list, portforwarding or mac-to-ip, empty = listing all vmnets
+        required: no, only usefull with action = infos
 
     targetType: custom || bridged || nat || hostonly
         description:
@@ -37,9 +42,9 @@ options:
                 - Choose your VMnet
         required: only when targetType = custom
 
-    targetDHCP: custom || bridged || nat || hostonly
+    targetDHCP: true || false
         description:
-                - This is the target VMNET to interact with
+                - Do you want to enable dhcp on it ?
         required: only for create
 
     targetSubnet: 172.10.10.0
@@ -52,16 +57,40 @@ options:
                 - This is the subnet mask for your subnet
         required: only for create
 
-    targetProtocol: 
+    targetProtocol: TCP || UDP
         description:
-                -
-        required: only for update & delete
+                - Your targeted protocol
+        required: only for updatePF & delete
 
-    targetPort: 255.255.0.0
+    targetPort: 1337
         description:
-                - 
-        required: only for update & delete
-        
+                - Your targeted port
+        required: only for updatePF & delete
+
+    guestIP: "172.13.13.13"
+        description:
+            - Your targeted IP
+        required: only for updatePF
+
+    guestPort: "1111"
+        description:
+            - Your targeted port
+        required: only for updatePF
+
+    desc: "itworks!"
+        description:
+            - PF description
+        required: false, only usefull for updatePF
+
+    targetMAC: "00:0C:29:87:4B:89"
+        description:
+            - Your targeted mac address
+        required: only for updateMTI
+
+    targetIP: "192.168.188.13"
+        description:
+            - Your targeted mac address
+        required: false, only use is for updateMTI, if you do it without specifying a IP it will delete the MTI
 
     user: "workstation-api-user"
         description:
@@ -91,44 +120,89 @@ author:
 
 EXAMPLES = r'''
 - name: "Get all vmnet infos"
-    vmware_workstation_netmgmt:
+  vmware_workstation_netmgmt:
     action: infos
     user: "workstation-api-user"
     pass: "workstation-api-password"
 
+- name: "Return all MTI settings of vmnet8"
+  vmware_workstation_netmgmt:
+    action: infos
+    targetVMnet: "vmnet8"
+    targetSetting: "mactoip"
+    user: "workstation-api-user"
+    pass: "workstation-api-password"
+
+- name: "Return all port forwardings of vmnet13"
+  vmware_workstation_netmgmt:
+    action: infos
+    targetVMnet: "vmnet13"
+    targetSetting "portforward"
+    user: "workstation-api-user"
+    pass: "workstation-api-password"
+
 - name: "Create vmnet13"   
-      vmware_workstation_netmgmt:
-        targetVMnet: "vmnet13"
-        targetType: "hostonly"
-        targetDHCP: "true"
-        targetSubnet: "172.60.60.0"
-        targetMask: "255.255.0.0"
-        action: create
-        user: "workstation-api-user"
-        pass: "workstation-api-password"
+  vmware_workstation_netmgmt:
+    targetVMnet: "vmnet13"
+    targetType: "hostonly"
+    targetDHCP: "true"
+    targetSubnet: "172.60.60.0"
+    targetMask: "255.255.0.0"
+    action: create
+    user: "workstation-api-user"
+    pass: "workstation-api-password"
 
 - name: "Delete portforwarding"   
-      vmware_workstation_netmgmt:
-        targetVMnet: "vmnet8"
-        targetProtocol: "TCP"
-        targetPort: "1337"
-        action: delete
-        user: "workstation-api-user"
-        pass: "workstation-api-password"
+  vmware_workstation_netmgmt:
+    targetVMnet: "vmnet8"
+    targetProtocol: "TCP"
+    targetPort: "1337"
+    action: delete
+    user: "workstation-api-user"
+    pass: "workstation-api-password"
 
 - name: "update forwarded port"
-      vmware_workstation_netmgmt:
-        targetVMnet: "vmnet8"
-        targetProtocol: "TCP"
-        targetPort: "1337"
-        guestIP: "172.13.13.13"
-        guestPort: "1111"
-        desc: "itworks!"
-        action: updatePF
-        user: "workstation-api-user"
-        pass: "workstation-api-password"
+  vmware_workstation_netmgmt:
+    targetVMnet: "vmnet8"
+    targetProtocol: "TCP"
+    targetPort: "1337"
+    guestIP: "172.13.13.13"
+    guestPort: "1111"
+    desc: "itworks!"
+    action: updatePF
+    user: "workstation-api-user"
+    pass: "workstation-api-password"
 
+- name: "Update Mac to IP"
+  vmware_workstation_netmgmt:
+    targetVMnet: "vmnet8"
+    targetMAC: "00:12:29:34:4B:56"
+    targetIP: "192.168.188.13"
+    action: updateMTI
+    user: "workstation-api-user"
+    pass: "workstation-api-password"
 '''
 
 RETURN = r'''
+- name: "Return all MTI settings of vmnet8"
+{
+    "mactoips": [
+        {
+            "ip": "172.60.60.60",
+            "mac": "00:0c:34:3e:54:52",
+            "vmnet": "vmnet8"
+        },
+        {
+            "ip": "192.168.43.43",
+            "mac": "00:0c:40:87:36:17",
+            "vmnet": "vmnet8"
+        }
+    ]
+}
+
+- name: "Update Mac to IP"
+{
+    "Code": 0,
+    "Message": "The operation was successful"
+}
 '''

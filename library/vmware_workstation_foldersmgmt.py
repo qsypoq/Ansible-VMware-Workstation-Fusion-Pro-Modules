@@ -36,6 +36,11 @@ options:
         description:
             - Path of shared folder
         required: Only for create & update
+
+    access: r || rw
+    description:
+        - Choose which kind of access the VM have to the folder
+    required: false, default is read-only, you only need to use this when access needed is rw
     
     user: "workstation-api-user"
         description:
@@ -69,6 +74,7 @@ EXAMPLES = r'''
     targetVM: "42"
     targetFolder: "ODBG110"
     targetPath: C:\Users\qsypoq\Desktop\odbg110
+    access: "rw"
     action: "create"
     user: "workstation-api-user"
     pass: "workstation-api-password"
@@ -83,4 +89,14 @@ EXAMPLES = r'''
 '''
 
 RETURN = r'''
+- name: "Create shared folder named ODBG110 on VM ID 42"
+{
+    "Count": 1, "value": [
+        {
+            "flags": 4,
+            "folder_id": "ODBG110",
+            "host_path": "C:\\Users\\qsypoq\\Desktop\\odbg110"
+        }
+    ]
+}
 '''
