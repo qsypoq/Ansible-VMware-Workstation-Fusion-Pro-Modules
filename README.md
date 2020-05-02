@@ -4,14 +4,14 @@
 
 <h2 align="center">Ansible modules interacting with VMware Workstation Pro's REST API <br/><br/>
 <img src="https://img.shields.io/badge/size-30KiB-brightgreen"> <img src="https://img.shields.io/badge/license-MIT-green"> <br/>
+</h2>
 
 <p align="center"><b>Introduction: <a href="https://magnier.io/developing-vmware-workstation-pro-ansible-module">How I ended up developing a VMware Workstation Pro Ansible module</a></b></p>
 
 <p align="center">First goal of the project is to implement all the REST API requests, for the time being, following VMware's logic. <br/> Next goal will be to concatenate some of the requests to create better categories and easier usage.<br/><br/>
 <b>This project is still in early stage developpement.</b></p>
-</h2>
 </div>
-
+<hr/>
 ## :rocket: Informations about the REST API
 
 VMware Workstation Pro's REST API is designed as follow:
