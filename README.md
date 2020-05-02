@@ -3,12 +3,12 @@
 <img src="https://magnier.io/content/images/vrac/workstation-ansible-api-github.jpg">
 
 <h2 align="center">Ansible modules interacting with VMware Workstation Pro's REST API <br/><br/>
-<img src="https://img.shields.io/badge/size-30KiB-brightgreen"> <img src="https://img.shields.io/badge/license-MIT-green"> <br/>
+<img src="https://img.shields.io/badge/size-32KiB-brightgreen"> <img src="https://img.shields.io/badge/license-MIT-green"> <br/>
 </h2>
 
 <p align="center"><b>Introduction: <a href="https://magnier.io/developing-vmware-workstation-pro-ansible-module">How I ended up developing a VMware Workstation Pro Ansible module</a></b></p>
 
-<p align="center">First goal of the project is to implement all the REST API requests, for the time being, following VMware's logic. <br/> Next goal will be to concatenate some of the requests to create better categories and easier usage.<br/><br/>
+<p align="center"><strike>First goal of the project is to implement all the REST API requests, for the time being, following VMware's logic. </strike><br/> Next goal is to rework some natives API functions interactions to make it's use simpler.<br/><br/>
 <b>This project is still in early stage developpement.</b></p>
 </div>
 <hr/>
@@ -81,25 +81,23 @@ This section is implemented as follow:
 
 - Deletes a shared folder
 
-## :construction: Host Networks Management: 6/7
+## :white_check_mark: Host Networks Management: 7/7
 
 **For this part to work you need to run your vmrest.exe in an elevated prompt !**
 
+Complete! :tada:
+
+This section is implemented as follow:
+
 ### vmware_workstation_netmgmt
 
-Implemented:
 - Returns all virtual networks
 - Creates a virtual network
 - Returns all MAC-to-IP settings for DHCP service
 - Returns all port forwardings
 - Deletes port forwarding
 - Updates port forwarding
-
-Not implemented:
-
 - Updates the MAC-to-IP binding
-
-Need to figure out how it works
 
 ## :construction: Todo-List / Roadmap
 

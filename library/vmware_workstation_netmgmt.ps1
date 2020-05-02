@@ -50,9 +50,10 @@ if ($action -eq 'create') {
     $requesturl = "${apiurl}:${apiport}/api/vmnets"
 }
 if ($action -eq 'updateMTI') {
-    $targetMTI = Get-AnsibleParam -obj $params -name "targetMTI" -type "str" -failifempty $false
+    $targetIP = Get-AnsibleParam -obj $params -name "targetIP" -type "str" -failifempty $false
     $targetMAC = Get-AnsibleParam -obj $params -name "targetMAC" -type "str" -failifempty $true
-    $requesturl = "${apiurl}:${apiport}/api/vmnets/${targetVMnet}/mactoip/${targetMAC}"
+    $encodedMAC = [System.Web.HttpUtility]::UrlEncode($targetMAC) 
+    $requesturl = "${apiurl}:${apiport}/api/vmnet/${targetVMnet}/mactoip/${encodedMAC}"
 }
 if (($action -eq 'delete') -Or ($action -eq 'updatePF')) {
     $requesturl = "${apiurl}:${apiport}/api/vmnet/${targetVMnet}/portforward/${targetProtocol}/${targetPort}"
@@ -85,7 +86,11 @@ if ($action -eq 'updatePF' ) {
         "desc" = $desc;
     }      
 }
-
+if ($action -eq 'updateMTI' ) { 
+    $body = @{
+        "IP" = $targetIP;
+    }      
+}
 $requestbody = ($body | ConvertTo-Json)
 
 if ($action -eq 'infos' ) { 
