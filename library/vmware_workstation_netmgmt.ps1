@@ -22,12 +22,18 @@ $targetVMnet = Get-AnsibleParam -obj $params -name "targetVMnet" -type "str" -fa
 
 if ($action -eq 'create') {
     $targetType = Get-AnsibleParam -obj $params -name "targetType" -type "str" -failifempty $true
-    $targetDHCP = Get-AnsibleParam -obj $params -name "targetDHCP" -type "bool" -failifempty $true
+    $targetDHCP = Get-AnsibleParam -obj $params -name "targetDHCP" -type "str" -failifempty $true
     $targetSubnet = Get-AnsibleParam -obj $params -name "targetSubnet" -type "str" -failifempty $true
     $targetMask = Get-AnsibleParam -obj $params -name "targetMask" -type "str" -failifempty $true
 }
 
-if ($action -eq 'delete') {
+if ($action -eq 'updatePF') {
+    $guestIP = Get-AnsibleParam -obj $params -name "guestIP" -type "str" -failifempty $true
+    $guestPort = Get-AnsibleParam -obj $params -name "guestPort" -type "int" -failifempty $true
+    $desc = Get-AnsibleParam -obj $params -name "desc" -type "str" -failifempty $false
+}
+
+if (($action -eq 'delete') -Or ($action -eq 'updatePF')) {
     $targetProtocol = Get-AnsibleParam -obj $params -name "targetProtocol" -type "str" -failifempty $true
     $targetPort = Get-AnsibleParam -obj $params -name "targetPort" -type "int" -failifempty $true
 }
@@ -46,7 +52,13 @@ if ($action -eq 'create') {
     $requesturl = "${apiurl}:${apiport}/api/vmnets"
 }
 
-if ($action -eq 'delete') {
+if ($action -eq 'updateMTI') {
+    $targetMTI = Get-AnsibleParam -obj $params -name "targetMTI" -type "str" -failifempty $false
+    $targetMAC = Get-AnsibleParam -obj $params -name "targetMAC" -type "str" -failifempty $true
+    $requesturl = "${apiurl}:${apiport}/api/vmnets/${targetVMnet}/mactoip/${targetMAC}"
+}
+
+if (($action -eq 'delete') -Or ($action -eq 'updatePF')) {
     $requesturl = "${apiurl}:${apiport}/api/vmnet/${targetVMnet}/portforward/${targetProtocol}/${targetPort}"
 }
 
@@ -71,6 +83,14 @@ if ($action -eq 'create' ) {
     }      
 }
 
+if ($action -eq 'updatePF' ) { 
+    $body = @{
+        "guestIp" = $guestIP;
+        "guestPort" = $guestPort;
+        "desc" = $desc;
+    }      
+}
+
 $requestbody = ($body | ConvertTo-Json)
 
 if ($action -eq 'infos' ) { 
@@ -86,7 +106,18 @@ if ($action -eq 'infos' ) {
 
 if ($action -eq 'create' ) { 
     try {
-        $neticreaterequest = Invoke-RestMethod -Uri $requesturl -Headers $headers -method 'Post' -Body $requestbody
+        $netcreaterequest = Invoke-RestMethod -Uri $requesturl -Headers $headers -method 'Post' -Body $requestbody
+        $result.infos = $netcreaterequest
+        $result.changed = $true;
+    }
+    catch {
+            Fail-Json $result "Request failed, please check your configuration"
+    }
+}
+
+if (($action -eq 'updateMTI') -Or ($action -eq 'updatePF')) { 
+    try {
+        $netcreaterequest = Invoke-RestMethod -Uri $requesturl -Headers $headers -method 'Put' -Body $requestbody
         $result.infos = $netcreaterequest
         $result.changed = $true;
     }
@@ -97,6 +128,7 @@ if ($action -eq 'create' ) {
 
 if ($action -eq 'delete' ) { 
     try {
+        $result.test = $requesturl
         $netdeleterequest = Invoke-RestMethod -Uri $requesturl -Headers $headers -method 'DELETE'
         $result.infos = $netdeleterequest
         $result.changed = $true;

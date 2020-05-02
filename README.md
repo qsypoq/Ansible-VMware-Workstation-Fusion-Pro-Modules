@@ -81,29 +81,27 @@ This section is implemented as follow:
 
 - Deletes a shared folder
 
-## :construction: Host Networks Management: 5/7
+## :construction: Host Networks Management: 6/7
+
+** For this part to work you need to run your vmrest.exe in an elevated prompt ! **
 
 ### vmware_workstation_netmgmt
 
 Implemented:
 - Returns all virtual networks
-
+- Creates a virtual network
 - Returns all MAC-to-IP settings for DHCP service
 - Returns all port forwardings
-
-Implemented but not working yet because of admin permissions problems while interacting with vmrest.exe:
-- Creates a virtual network
-
 - Deletes port forwarding
-
-Not implementing until admin permissions problems fixed:
-- Updates the MAC-to-IP binding
-
 - Updates port forwarding
 
+Not implemented:
+
+- Updates the MAC-to-IP binding
+
+Need to figure out how it works
+
 ## :construction: Todo-List / Roadmap
-### Auto start vmrest.exe
-- Find a way to start/stop vmrest.exe from Ansible on demand.
 
 ### Fix vmrest permission problem
 - When the vmrest is run as standard user, modifications using netmgt are not authaurized.

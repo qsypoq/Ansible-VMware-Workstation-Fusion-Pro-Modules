@@ -96,6 +96,38 @@ EXAMPLES = r'''
     user: "workstation-api-user"
     pass: "workstation-api-password"
 
+- name: "Create vmnet13"   
+      vmware_workstation_netmgmt:
+        targetVMnet: "vmnet13"
+        targetType: "hostonly"
+        targetDHCP: "true"
+        targetSubnet: "172.60.60.0"
+        targetMask: "255.255.0.0"
+        action: create
+        user: "workstation-api-user"
+        pass: "workstation-api-password"
+
+- name: "Delete portforwarding"   
+      vmware_workstation_netmgmt:
+        targetVMnet: "vmnet8"
+        targetProtocol: "TCP"
+        targetPort: "1337"
+        action: delete
+        user: "workstation-api-user"
+        pass: "workstation-api-password"
+
+- name: "update forwarded port"
+      vmware_workstation_netmgmt:
+        targetVMnet: "vmnet8"
+        targetProtocol: "TCP"
+        targetPort: "1337"
+        guestIP: "172.13.13.13"
+        guestPort: "1111"
+        desc: "itworks!"
+        action: updatePF
+        user: "workstation-api-user"
+        pass: "workstation-api-password"
+
 '''
 
 RETURN = r'''

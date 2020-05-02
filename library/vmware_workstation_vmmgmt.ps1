@@ -20,7 +20,6 @@ if ($action -eq 'update' ) {
     $targetCPU = Get-AnsibleParam -obj $params -name "targetCPU" -type "int" -failifempty $false
     $targetRAM = Get-AnsibleParam -obj $params -name "targetRAM" -type "int" -failifempty $false
 }
-
 if ($action -eq 'clone' ) { 
     $newname = Get-AnsibleParam -obj $params -name "newname" -type "str" -failifempty $true
 }
@@ -31,12 +30,7 @@ $apiport = Get-AnsibleParam -obj $params -name "apiport" -type "int" -default "8
 if ($action -eq 'clone' ) { 
     $requesturl = "${apiurl}:${apiport}/api/vms"
 }
-
-if ($action -eq 'delete') { 
-    $requesturl = "${apiurl}:${apiport}/api/vms/${targetVM}"
-}
-
-if ($action -eq 'update') { 
+if (($action -eq 'delete' ) -Or ($action -eq 'update')) { 
     $requesturl = "${apiurl}:${apiport}/api/vms/${targetVM}"
 }
 
@@ -93,7 +87,6 @@ if ($action -eq 'delete' ) {
             Fail-Json $result "Request failed, please check your configuration"
     }
 }
-
 if ($action -eq 'update' ) { 
     try {
         $updaterequest = Invoke-RestMethod -Uri $requesturl -Headers $headers -method 'Put' -Body $requestbody
