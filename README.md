@@ -12,6 +12,7 @@
 <b>This project is still in early stage developpement.</b></p>
 </div>
 <hr/>
+
 ## :rocket: Informations about the REST API
 
 VMware Workstation Pro's REST API is designed as follow:
