@@ -1,17 +1,17 @@
-<div align="center"><img src="https://magnier.io/content/images/2020/05/repository-open-graph-template.jpg">
+<div align="center">
+<h1 align="center">
+<img src="https://magnier.io/content/images/vrac/workstation-ansible-api-github.jpg">
 
-**Ansible modules interacting with VMware Workstation Pro's REST API** 
+<p style="fonsize: 1.5em;"> Ansible modules interacting with VMware Workstation Pro's REST API </p>
 
 <img src="https://img.shields.io/badge/size-30KiB-brightgreen"> <img src="https://img.shields.io/badge/license-MIT-green">
 
-</div>
-<div align="justify">
 
-<hr/>
+</h1>
 
 **Introduction: [How I ended up developing a VMware Workstation Pro Ansible module](https://magnier.io/developing-vmware-workstation-pro-ansible-module)**
 
-First goal of the project is to implement all the REST API requests. For the time being, following VMware's logic. Next goal may be to concatenate some of the requests to create better categories.
+First goal of the project is to implement all the REST API requests, for the time being, following VMware's logic. <br/> Next goal will be to concatenate some of the requests to create better categories and easier usage.
 
 **This project is still in early stage developpement.**
 </div>
@@ -29,7 +29,7 @@ VMware Workstation Pro's REST API is designed as follow:
 
 If you want to know more about it you can access this page when the REST API is running, please refer to VMware's guide about it: <a href="https://docs.vmware.com/en/VMware-Workstation-Pro/15.0/com.vmware.ws.using.doc/GUID-C3361DF5-A4C1-432E-850C-8F60D83E5E2B.html">How to setup vmrest.exe to enable REST API</a>
 
-## VM Management 5/5
+## :white_check_mark: VM Management 5/5
 Complete! :tada:
 
 This section is implemented as follow:
@@ -46,7 +46,7 @@ This section is implemented as follow:
 
 - Deletes a VM
 
-## VM Network Adapters Management 5/5
+## :white_check_mark: VM Network Adapters Management 5/5
 Complete! :tada:
 
 This section is implemented as follow:
@@ -60,7 +60,7 @@ This section is implemented as follow:
 
 Note: The last one doesn't work with all my VMs so it would need debugging.
 
-## VM Power Management 2/2
+## :white_check_mark: VM Power Management 2/2
 Complete! :tada:
 
 This section is implemented as follow:
@@ -70,7 +70,7 @@ This section is implemented as follow:
 
 - Changes the VM power state
 
-## VM Shared Folders Management: 4/4
+## :white_check_mark: VM Shared Folders Management: 4/4
 
 Complete! :tada:
 
@@ -86,7 +86,7 @@ This section is implemented as follow:
 
 - Deletes a shared folder
 
-## Host Networks Management: 5/7
+## :construction: Host Networks Management: 5/7
 
 ### vmware_workstation_netmgmt
 
@@ -106,7 +106,7 @@ Not implementing until admin permissions problems fixed:
 
 - Updates port forwarding
 
-## Todo-List / Roadmap
+## :construction: Todo-List / Roadmap
 ### Auto start vmrest.exe
 - Find a way to start/stop vmrest.exe from Ansible on demand.
 
