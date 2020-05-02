@@ -14,7 +14,7 @@ short_description: Implement the Shared Folders Management part of the API
 version_added: "2.4"
 
 description:
-    - "Manage VMware Workstation Shared Folders"
+    - "Manage VMware Workstation Pro Shared Folders"
 
 options:
     targetVM:

@@ -9,12 +9,12 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = r'''
 module: vmware_workstation_power
 
-short_description: Change VMware Workstation VM PowerState
+short_description: Change VMware Workstation Pro VM PowerState
 
 version_added: "2.4"
 
 description:
-    - "Change VMware Workstation VM PowerState"
+    - "Change VMware Workstation Pro VM PowerState"
 
 options:
     targetVM:

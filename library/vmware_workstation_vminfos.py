@@ -9,12 +9,12 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = r'''
 module: vmware_workstation_vminfos
 
-short_description: Get VMware Workstation VM infos
+short_description: Get VMware Workstation Pro VM infos
 
 version_added: "2.4"
 
 description:
-    - "Get VMware Workstation VM infos"
+    - "Get VMware Workstation Pro VM infos"
 
 options:
     targetVM:

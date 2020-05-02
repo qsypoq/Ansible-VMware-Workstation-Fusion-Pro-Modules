@@ -1,6 +1,6 @@
-# Ansible-VMware-Workstation-Modules
+# Ansible-VMware-Workstation-Pro-Modules
 
-Introduction on the reasons of this project: [How I ended up developing a VMware Workstation Ansible module](https://magnier.io/developing-vmware-workstation-ansible-module)
+Introduction on the reasons of this project: [How I ended up developing a VMware Workstation Pro Ansible module](https://magnier.io/developing-vmware-workstation-pro-ansible-module)
 
 Nota bene: This is early stage developpement, while 
 VMware Workstation's REST API is designed as follow:

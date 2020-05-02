@@ -14,7 +14,7 @@ short_description: Implement the Network Adapters Management part of the API
 version_added: "2.4"
 
 description:
-    - "Manage VMware Workstation Network Adapters "
+    - "Manage VMware Workstation Pro Network Adapters "
 
 options:
     targetVM:

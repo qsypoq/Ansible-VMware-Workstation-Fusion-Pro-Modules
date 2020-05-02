@@ -14,7 +14,7 @@ short_description: Implement the VMNet Management part of the API
 version_added: "2.4"
 
 description:
-    - "Manage VMware Workstation VMNets"
+    - "Manage VMware Workstation Pro VMNets"
 
 options:
     targetVMnet:
