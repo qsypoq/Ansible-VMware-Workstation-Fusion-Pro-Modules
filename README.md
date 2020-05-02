@@ -1,17 +1,33 @@
-# Ansible-VMware-Workstation-Pro-Modules
+<div align="center"><img src="https://magnier.io/content/images/2020/05/repository-open-graph-template.jpg">
 
-Introduction on the reasons of this project: [How I ended up developing a VMware Workstation Pro Ansible module](https://magnier.io/developing-vmware-workstation-pro-ansible-module)
+**Ansible modules interacting with VMware Workstation Pro's REST API** 
 
-Nota bene: This is early stage developpement, while 
-VMware Workstation's REST API is designed as follow:
+<img src="https://img.shields.io/badge/size-30KiB-brightgreen"> <img src="https://img.shields.io/badge/license-MIT-green">
+
+</div>
+<div align="justify">
+
+<hr/>
+
+**Introduction: [How I ended up developing a VMware Workstation Pro Ansible module](https://magnier.io/developing-vmware-workstation-pro-ansible-module)**
+
+First goal of the project is to implement all the REST API requests. For the time being, following VMware's logic. Next goal may be to concatenate some of the requests to create better categories.
+
+**This project is still in early stage developpement.**
+</div>
+
+<hr/>
+
+## :rocket: Informations about the REST API
+
+VMware Workstation Pro's REST API is designed as follow:
+
+<p align="center"><img src="https://magnier.io/content/images/2020/05/vmware_workstation_api_logic.PNG"></p>
+
 - 23 possibles requests
 - Divided into 5 categories
 
-<p align="center"><img src="vmware_workstation_api_logic.PNG"></p>
-
-<p align="center"><a href="https://docs.vmware.com/en/VMware-Workstation-Pro/15.0/com.vmware.ws.using.doc/GUID-C3361DF5-A4C1-432E-850C-8F60D83E5E2B.html">[How to setup vmrest.exe to enable REST API</a></p>
-
-First goal of the project is to implement all the requests. For the time being, following VMware's logic. Next goal may be to concatenate some of the requests to create better categories.
+If you want to know more about it you can access this page when the REST API is running, please refer to VMware's guide about it: <a href="https://docs.vmware.com/en/VMware-Workstation-Pro/15.0/com.vmware.ws.using.doc/GUID-C3361DF5-A4C1-432E-850C-8F60D83E5E2B.html">How to setup vmrest.exe to enable REST API</a>
 
 ## VM Management 5/5
 Complete! :tada:
