@@ -51,13 +51,11 @@ if ($action -eq 'clone' ) {
         "parentId" = $targetVM
     }
 }
-
 if ($action -eq 'delete' ) { 
     $body = @{
         "id" = $targetVM
     }
 }
-
 if ($action -eq 'update' ) { 
     $body = @{
         "processors" = $targetCPU;

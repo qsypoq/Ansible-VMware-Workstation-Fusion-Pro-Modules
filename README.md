@@ -34,7 +34,7 @@ This section is implemented as follow:
 
 - Returns the VM setting information of a VM
 
-### vmware_workstation_vmmgt
+### vmware_workstation_vmmgmt
 - Updates a VM CPU/RAM allocation
 
 - Clone a VM

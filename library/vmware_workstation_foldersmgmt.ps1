@@ -24,9 +24,8 @@ if (($action -eq 'infos' ) -Or ($action -eq 'create')) {
 }
 if ($action -eq 'create' ) { 
     $targetFolder = Get-AnsibleParam -obj $params -name "targetFolder" -type "str" -failifempty $true
-    $targetPath = Get-AnsibleParam -obj $params -name "targetPath" -type "str" -failifempty $true
 }
-if ($action -eq 'update' ) { 
+if (($action -eq 'update' ) -Or ($action -eq 'create')) { 
     $targetPath = Get-AnsibleParam -obj $params -name "targetPath" -type "str" -failifempty $true
 }
 if (($action -eq 'delete') -Or ($action -eq 'update')) { 
