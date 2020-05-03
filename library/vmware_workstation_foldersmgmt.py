@@ -35,7 +35,7 @@ options:
     targetPath: C:\Users\qsypoq\Desktop\odbg110
         description:
             - Path of shared folder
-        required: Only for create & update
+        required: Only for create & update, the folder need to be reachable
 
     access: r || rw
     description:
@@ -69,6 +69,13 @@ author:
 '''
 
 EXAMPLES = r'''
+- name: "List all shared folders mounted on VM ID 42"
+  vmware_workstation_foldersmgmt:
+    targetVM: "42"
+    action: "infos"
+    user: "workstation-api-user"
+    pass: "workstation-api-password"
+
 - name: "Create shared folder named ODBG110 on VM ID 42"
   vmware_workstation_foldersmgmt:
     targetVM: "42"
@@ -78,6 +85,14 @@ EXAMPLES = r'''
     action: "create"
     user: "workstation-api-user"
     pass: "workstation-api-password"
+
+- name: "Update shared folder named ODBG110 with new path and access rights"
+  vmware_workstation_foldersmgmt:
+    targetVM: "42"
+    targetFolder: "ODBG110"
+    targetPath: C:\Users\qsypoq\Desktop
+    access: "r"
+    action: "update"
     
 - name: "Delete shared folder named ODBG110 on VM ID 42"
   vmware_workstation_foldersmgmt:
@@ -89,6 +104,17 @@ EXAMPLES = r'''
 '''
 
 RETURN = r'''
+- name: "List all shared folders mounted on VM ID 42"
+{
+    "Count": 1, "value": [
+        {
+            "flags": 0,
+            "folder_id": "ODBG110",
+            "host_path": "C:\\Users\\qsypoq\\Desktop"
+        }
+    ]
+}
+
 - name: "Create shared folder named ODBG110 on VM ID 42"
 {
     "Count": 1, "value": [
@@ -99,4 +125,18 @@ RETURN = r'''
         }
     ]
 }
+
+- name: "Update shared folder named ODBG110 with new path and access rights"
+{
+    "Count": 1, "value": [
+        {
+            "flags": 0,
+            "folder_id": "ODBG110",
+            "host_path": "C:\\Users\\qsypoq\\Desktop"
+        }
+    ]
+}
+
+- name: "Delete shared folder named ODBG110 on VM ID 42"
+empty
 '''

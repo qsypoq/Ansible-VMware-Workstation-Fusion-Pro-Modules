@@ -27,16 +27,6 @@ options:
             - This is the action we want to do.
         required: true   
 
-    targetFolder: "myFolderName"
-        description:
-            - Name of the shared folder
-        required: Only for create & update & delete
-
-    targetPath: C:\Users\qsypoq\Desktop\odbg110
-        description:
-            - Path of shared folder
-        required: Only for create & update
-
     targetIndex: 1
         description:
             - Index's number refering to your network adapter
@@ -79,8 +69,8 @@ author:
 '''
 
 EXAMPLES = r'''
-- name: "Create shared folder named ODBG110 on VM ID 42"
-  vmware_workstation_foldersmgmt:
+- name: "Return the IP adress of VM 42"
+  vmware_workstation_adaptersmgmt:
     targetVM: "42"
     targetFolder: "ODBG110"
     targetPath: C:\Users\qsypoq\Desktop\odbg110
@@ -88,14 +78,36 @@ EXAMPLES = r'''
     user: "workstation-api-user"
     pass: "workstation-api-password"
     
-- name: "Delete shared folder named ODBG110 on VM ID 42"
-  vmware_workstation_foldersmgmt:
+- name: "Return all network adapters in VM 42"
+  vmware_workstation_adaptersmgmt:
     targetVM: "42"
-    targetFolder: "ODBG110"
-    action: "delete"
+    action: "list"
     user: "workstation-api-user"
     pass: "workstation-api-password"
 '''
 
 RETURN = r'''
+- name: "Return the IP adress of VM 42"
+{
+    "ip": "172.20.20.10"
+}
+
+- name: "Return all network adapters in VM 42"
+{
+    "nics": [
+        {
+            "index": 1,
+            "macAddress": "00:46:80:23:23:59",
+            "type": "custom",
+            "vmnet": "vmnet0"
+        },
+        {
+            "index": 2,
+            "macAddress": "00:0c:25:50:23:67",
+            "type": "custom",
+            "vmnet": "vmnet10"
+        }
+    ],
+    "num": 2
+}
 '''

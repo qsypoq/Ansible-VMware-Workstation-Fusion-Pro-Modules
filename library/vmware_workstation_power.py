@@ -54,7 +54,6 @@ author:
 '''
 
 EXAMPLES = r'''
-# Start VM with ID 42 using API @ http://127.0.0.1:8697
 - name: "Start VM ID 42"
   vmware_workstation_power:
     targetVM: "42"
@@ -64,7 +63,6 @@ EXAMPLES = r'''
     apiurl: "http://127.0.0.1"
     apiport: "8697"
 
-# Get power state of VM with ID 42 using API @ http://127.0.0.1:8697
 - name: "Get power state VM ID 42"
   vmware_workstation_power:
     targetVM: "42"
