@@ -115,11 +115,7 @@ This section is implemented as follow:
 ### Code refractor
 - Many if statements can be replaced/optimised with switch when possible, or concatened togethers.
 
-### More documentation
-- One detailed example by request would be great.
-
 ### Porting to Linux / Mac (Fusion)
-
-- As the API is the same it should be trivial to port it (powershell <=> python convertion).
+- As the API is the same it should be trivial to port it (powershell <=> python conversion).
 
 - I thought that tweaking with unix's powershell package would work but I didn't successed yet.
