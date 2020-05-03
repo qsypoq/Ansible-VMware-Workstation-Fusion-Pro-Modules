@@ -69,21 +69,47 @@ author:
 '''
 
 EXAMPLES = r'''
-- name: "Return the IP adress of VM 42"
+### Return IP address of VM 42
+### Doesn't work with VMs having multiple NICs
+- name: "Return IP address"
   vmware_workstation_adaptersmgmt:
     targetVM: "42"
-    targetFolder: "ODBG110"
-    targetPath: C:\Users\qsypoq\Desktop\odbg110
-    action: "create"
+    action: "getip"
     user: "workstation-api-user"
     pass: "workstation-api-password"
-    
-- name: "Return all network adapters in VM 42"
+
+### Return all network adapters in VM 42
+- name: "Return network adapters"
   vmware_workstation_adaptersmgmt:
     targetVM: "42"
     action: "list"
     user: "workstation-api-user"
     pass: "workstation-api-password"
+
+### Edit NIC N°1 of VM 42 to assign it a custom type targetting vmnet10
+- name: "update NIC N°1 of VM42"
+    vmware_workstation_adaptersmgmt:
+    targetVM: "42"
+    action: "update"
+    targetIndex: 1
+    targetType: custom
+    targetVMnet: vmnet10
+
+### Create NIC N°1 of VM 42 and assign it a custom type targetting vmnet10
+- name: "Create NIC N°1 of VM 42"
+    vmware_workstation_adaptersmgmt:
+    targetVM: "42"
+    action: "create"
+    targetIndex: 1
+    targetType: custom
+    targetVMnet: vmnet10
+
+### Delete NIC N°1 of VM 42 
+- name: "Delete NIC"
+    vmware_workstation_adaptersmgmt:
+    targetVM: "42"
+    action: "delete"
+    targetIndex: 1
 '''
 
 RETURN = r'''
@@ -110,4 +136,26 @@ RETURN = r'''
     ],
     "num": 2
 }
+
+- name: "Edit NIC N°1 of VM 42 to assign it a custom type targetting vmnet10"
+{
+    "index": 1,
+    "macAddress": "00:12:24:e7:98:4a",
+    "type": "custom",
+    "vmnet": "vmnet10"
+}
+
+### Returned macAddress is empty: 
+### - If your VM is off then it will be generated at the next boot
+### - If it's on then you can get it now by runing a "action: list"
+- name: "Create NIC N°1 of VM 42 to assign it a custom type targetting vmnet10"
+{
+  "index": 2,
+  "type": "custom",
+  "vmnet": "vmnet10",
+  "macAddress": ""
+}
+
+- name: "Delete NIC N°1 of VM 42"
+return nothing
 '''

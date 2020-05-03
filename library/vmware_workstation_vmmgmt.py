@@ -69,7 +69,16 @@ author:
 '''
 
 EXAMPLES = r'''
-# Clone VM with ID 42 as KMS-Server-Clone using API @ http://127.0.0.1:8697
+# Change VM with ID 42's RAM allocation to 2048
+- name: "Edit VM ID 42"
+  vmware_workstation_vmmgmt:
+    targetVM: "42"
+    action: update
+    targetRAM: 2048
+    user: "workstation-api-user"
+    pass: "workstation-api-password"
+
+# Clone VM with ID 42 as KMS-Server-Clone 
 - name: "Clone VM ID 42"
   vmware_workstation_vmmgmt:
     targetVM: "42"
@@ -77,23 +86,12 @@ EXAMPLES = r'''
     newname: "KMS-Server-Clone"
     user: "workstation-api-user"
     pass: "workstation-api-password"
-    apiurl: "http://127.0.0.1"
-    apiport: "8697"
 
 # Delete VM with ID 42
 - name: "Start VM ID 42"
   vmware_workstation_vmmgmt:
     targetVM: "42"
     action: delete
-    user: "workstation-api-user"
-    pass: "workstation-api-password"
-
-# Change VM with ID 42's RAM allocation to 2048
-- name: "Edit VM ID 42"
-  vmware_workstation_vmmgmt:
-    targetVM: "42"
-    action: update
-    targetRAM: 2048
     user: "workstation-api-user"
     pass: "workstation-api-password"
 '''

@@ -119,13 +119,16 @@ author:
 '''
 
 EXAMPLES = r'''
+
+### Get infos of all the configured vmnets
 - name: "Get all vmnet infos"
   vmware_workstation_netmgmt:
     action: infos
     user: "workstation-api-user"
     pass: "workstation-api-password"
 
-- name: "Return all MTI settings of vmnet8"
+### Return all the Mac-to-IP settings from vmnet8
+- name: "Return MTI of vmnet8"
   vmware_workstation_netmgmt:
     action: infos
     targetVMnet: "vmnet8"
@@ -133,7 +136,8 @@ EXAMPLES = r'''
     user: "workstation-api-user"
     pass: "workstation-api-password"
 
-- name: "Return all port forwardings of vmnet13"
+### Return all the forwarded ports settings from vmnet8
+- name: "Return vmnet13 portforward"
   vmware_workstation_netmgmt:
     action: infos
     targetVMnet: "vmnet13"
@@ -141,6 +145,7 @@ EXAMPLES = r'''
     user: "workstation-api-user"
     pass: "workstation-api-password"
 
+### Create a new vmnet as vmnet13, as host only, with dhcp, on 172.60.60.0/16
 - name: "Create vmnet13"   
   vmware_workstation_netmgmt:
     targetVMnet: "vmnet13"
@@ -152,6 +157,7 @@ EXAMPLES = r'''
     user: "workstation-api-user"
     pass: "workstation-api-password"
 
+### Delete the forwarded 1337 tcp port from vmnet8
 - name: "Delete portforwarding"   
   vmware_workstation_netmgmt:
     targetVMnet: "vmnet8"
@@ -161,6 +167,7 @@ EXAMPLES = r'''
     user: "workstation-api-user"
     pass: "workstation-api-password"
 
+### Update the forwarded 1337 tcp port from vmnet8 to 172.13.13.13:1111 with "itworks!" as description
 - name: "update forwarded port"
   vmware_workstation_netmgmt:
     targetVMnet: "vmnet8"
@@ -173,6 +180,7 @@ EXAMPLES = r'''
     user: "workstation-api-user"
     pass: "workstation-api-password"
 
+### Update the MAC 00:12:29:34:4B:56 to be assigned as 192.168.188.13 on vmnet
 - name: "Update Mac to IP"
   vmware_workstation_netmgmt:
     targetVMnet: "vmnet8"

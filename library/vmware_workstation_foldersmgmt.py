@@ -69,14 +69,16 @@ author:
 '''
 
 EXAMPLES = r'''
-- name: "List all shared folders mounted on VM ID 42"
+### List all shared folders mounted on VM ID 42
+- name: "List shared folders"
   vmware_workstation_foldersmgmt:
     targetVM: "42"
     action: "infos"
     user: "workstation-api-user"
     pass: "workstation-api-password"
 
-- name: "Create shared folder named ODBG110 on VM ID 42"
+### Create shared folder named ODBG110 on VM ID 42
+- name: "Create shared folder"
   vmware_workstation_foldersmgmt:
     targetVM: "42"
     targetFolder: "ODBG110"
@@ -86,14 +88,16 @@ EXAMPLES = r'''
     user: "workstation-api-user"
     pass: "workstation-api-password"
 
-- name: "Update shared folder named ODBG110 with new path and access rights"
+### Update shared folder named ODBG110 with new path and access rights
+- name: "Update ODBG110"
   vmware_workstation_foldersmgmt:
     targetVM: "42"
     targetFolder: "ODBG110"
     targetPath: C:\Users\qsypoq\Desktop
     access: "r"
     action: "update"
-    
+
+### Delete shared folder named ODBG110 on VM ID 42
 - name: "Delete shared folder named ODBG110 on VM ID 42"
   vmware_workstation_foldersmgmt:
     targetVM: "42"

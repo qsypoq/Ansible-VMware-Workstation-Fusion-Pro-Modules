@@ -54,7 +54,8 @@ author:
 '''
 
 EXAMPLES = r'''
-- name: "Start VM ID 42"
+### Boot the VM with ID 42 
+- name: "Start VM"
   vmware_workstation_power:
     targetVM: "42"
     stargetState: "on"
@@ -63,7 +64,8 @@ EXAMPLES = r'''
     apiurl: "http://127.0.0.1"
     apiport: "8697"
 
-- name: "Get power state VM ID 42"
+### Get power state of the VM with ID 42 
+- name: "Get power state"
   vmware_workstation_power:
     targetVM: "42"
     user: "workstation-api-user"
