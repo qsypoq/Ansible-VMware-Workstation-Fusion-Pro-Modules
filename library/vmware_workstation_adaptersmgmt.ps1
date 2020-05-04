@@ -11,31 +11,31 @@ $result = New-Object psobject @{
 
 $params = Parse-Args -arguments $args -supports_check_mode $true
 
-$user =  Get-AnsibleParam -obj $params -name "user" -type "str" -failifempty $true
-$pass = Get-AnsibleParam -obj $params -name "pass" -type "str" -failifempty $true
-$targetVM = Get-AnsibleParam -obj $params -name "targetVM" -type "str" -failifempty $true
+$username =  Get-AnsibleParam -obj $params -name "username" -type "str" -failifempty $true
+$password = Get-AnsibleParam -obj $params -name "password" -type "str" -failifempty $true
+$target_vm = Get-AnsibleParam -obj $params -name "target_vm" -type "str" -failifempty $true
 $action = Get-AnsibleParam -obj $params -name "action" -type "str" -failifempty $true 
-$apiurl = Get-AnsibleParam -obj $params -name "apiurl" -type "str" -default "http://127.0.0.1" -failifempty $false 
-$apiport = Get-AnsibleParam -obj $params -name "apiport" -type "int" -default "8697" -failifempty $false
+$api_url = Get-AnsibleParam -obj $params -name "api_url" -type "str" -default "http://127.0.0.1" -failifempty $false 
+$api_port = Get-AnsibleParam -obj $params -name "api_port" -type "int" -default "8697" -failifempty $false
 
 if (($action -eq 'list' ) -Or ($action -eq 'create')) { 
-    $requesturl = "${apiurl}:${apiport}/api/vms/${targetVM}/nic"
+    $requesturl = "${api_url}:${api_port}/api/vms/${target_vm}/nic"
 }
 if ($action -eq 'getip' ) { 
-    $requesturl = "${apiurl}:${apiport}/api/vms/${targetVM}/ip"
+    $requesturl = "${api_url}:${api_port}/api/vms/${target_vm}/ip"
 }
 if (($action -eq 'update' ) -Or ($action -eq 'create')) {
-    $targetType = Get-AnsibleParam -obj $params -name "targetType" -type "str" -failifempty $true 
+    $type = Get-AnsibleParam -obj $params -name "type" -type "str" -failifempty $true 
 }
-if ($targetType -eq 'custom' ) {
-    $targetVMnet = Get-AnsibleParam -obj $params -name "targetVMnet" -type "str" -failifempty $true
+if ($type -eq 'custom' ) {
+    $vmnet = Get-AnsibleParam -obj $params -name "vmnet" -type "str" -failifempty $true
 }
 if (($action -eq 'update' ) -Or ($action -eq 'delete')) { 
     $targetIndex = Get-AnsibleParam -obj $params -name "targetIndex" -type "int" -failifempty $true 
-    $requesturl = "${apiurl}:${apiport}/api/vms/${targetVM}/nic/${targetIndex}"
+    $requesturl = "${api_url}:${api_port}/api/vms/${target_vm}/nic/${targetIndex}"
 }
 
-$pair = "${user}:${pass}"
+$pair = "${username}:${password}"
 $bytes = [System.Text.Encoding]::ASCII.GetBytes($pair)
 $base64 = [System.Convert]::ToBase64String($bytes)
 $basicAuthValue = "Basic $base64"
@@ -48,8 +48,8 @@ $headers = @{
 
 if (($action -eq 'update' ) -Or ($action -eq 'create')) { 
     $body = @{
-        "type" = $targetType;
-        "vmnet" = $targetVMnet
+        "type" = $type;
+        "vmnet" = $vmnet
     }      
 }
 

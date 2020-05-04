@@ -11,55 +11,50 @@ $result = New-Object psobject @{
 
 $params = Parse-Args -arguments $args -supports_check_mode $true
 
-$user =  Get-AnsibleParam -obj $params -name "user" -type "str" -failifempty $true
-$pass = Get-AnsibleParam -obj $params -name "pass" -type "str" -failifempty $true
-$apiurl = Get-AnsibleParam -obj $params -name "apiurl" -type "str" -default "http://127.0.0.1" -failifempty $false 
-$apiport = Get-AnsibleParam -obj $params -name "apiport" -type "int" -default "8697" -failifempty $false
+$username =  Get-AnsibleParam -obj $params -name "username" -type "str" -failifempty $true
+$password = Get-AnsibleParam -obj $params -name "password" -type "str" -failifempty $true
+$api_url = Get-AnsibleParam -obj $params -name "api_url" -type "str" -default "http://127.0.0.1" -failifempty $false 
+$api_port = Get-AnsibleParam -obj $params -name "api_port" -type "int" -default "8697" -failifempty $false
 
 $action = Get-AnsibleParam -obj $params -name "action" -type "str" -failifempty $true
-$targetVMnet = Get-AnsibleParam -obj $params -name "targetVMnet" -type "str" -failifempty $false
+$vmnet = Get-AnsibleParam -obj $params -name "vmnet" -type "str" -failifempty $false
 
 if ($action -eq 'create') {
-    $targetType = Get-AnsibleParam -obj $params -name "targetType" -type "str" -failifempty $true
-    $targetDHCP = Get-AnsibleParam -obj $params -name "targetDHCP" -type "str" -failifempty $true
-    $targetSubnet = Get-AnsibleParam -obj $params -name "targetSubnet" -type "str" -failifempty $true
-    $targetMask = Get-AnsibleParam -obj $params -name "targetMask" -type "str" -failifempty $true
+    $type = Get-AnsibleParam -obj $params -name "type" -type "str" -failifempty $true
+    $requesturl = "${api_url}:${api_port}/api/vmnets"
 }
 
-if ($action -eq 'updatePF') {
-    $guestIP = Get-AnsibleParam -obj $params -name "guestIP" -type "str" -failifempty $true
-    $guestPort = Get-AnsibleParam -obj $params -name "guestPort" -type "int" -failifempty $true
-    $desc = Get-AnsibleParam -obj $params -name "desc" -type "str" -failifempty $false
+if ($action -eq 'update_pf') {
+    $guest_ip_address = Get-AnsibleParam -obj $params -name "guest_ip_address" -type "str" -failifempty $true
+    $guest_port = Get-AnsibleParam -obj $params -name "guest_port" -type "int" -failifempty $true
+    $guest_description = Get-AnsibleParam -obj $params -name "guest_description" -type "str" -failifempty $false
 }
 
-if (($action -eq 'delete') -Or ($action -eq 'updatePF')) {
-    $targetProtocol = Get-AnsibleParam -obj $params -name "targetProtocol" -type "str" -failifempty $true
-    $targetPort = Get-AnsibleParam -obj $params -name "targetPort" -type "int" -failifempty $true
+if (($action -eq 'delete') -Or ($action -eq 'update_pf')) {
+    $protocol = Get-AnsibleParam -obj $params -name "protocol" -type "str" -failifempty $true
+    $port = Get-AnsibleParam -obj $params -name "port" -type "int" -failifempty $true
 }
 
-$targetSetting = Get-AnsibleParam -obj $params -name "targetSetting" -type "str" -failifempty $false
+$setting = Get-AnsibleParam -obj $params -name "setting" -type "str" -failifempty $false
 
 if ($action -eq 'infos') { 
-    if (-not ([string]::IsNullOrEmpty($targetSetting))) { 
-        $requesturl = "${apiurl}:${apiport}/api/vmnet/${targetVMnet}/${targetSetting}"
+    if (-not ([string]::IsNullOrEmpty($setting))) { 
+        $requesturl = "${api_url}:${api_port}/api/vmnet/${vmnet}/${setting}"
     }else {
-        $requesturl = "${apiurl}:${apiport}/api/vmnet"
+        $requesturl = "${api_url}:${api_port}/api/vmnet"
     }
 } 
-if ($action -eq 'create') {
-    $requesturl = "${apiurl}:${apiport}/api/vmnets"
+if ($action -eq 'update_mti') {
+    $ip_address = Get-AnsibleParam -obj $params -name "ip_address" -type "str" -failifempty $false
+    $mac_address = Get-AnsibleParam -obj $params -name "mac_address" -type "str" -failifempty $true
+    $encodedMAC = [System.Web.HttpUtility]::UrlEncode($mac_address) 
+    $requesturl = "${api_url}:${api_port}/api/vmnet/${vmnet}/mactoip/${encodedMAC}"
 }
-if ($action -eq 'updateMTI') {
-    $targetIP = Get-AnsibleParam -obj $params -name "targetIP" -type "str" -failifempty $false
-    $targetMAC = Get-AnsibleParam -obj $params -name "targetMAC" -type "str" -failifempty $true
-    $encodedMAC = [System.Web.HttpUtility]::UrlEncode($targetMAC) 
-    $requesturl = "${apiurl}:${apiport}/api/vmnet/${targetVMnet}/mactoip/${encodedMAC}"
-}
-if (($action -eq 'delete') -Or ($action -eq 'updatePF')) {
-    $requesturl = "${apiurl}:${apiport}/api/vmnet/${targetVMnet}/portforward/${targetProtocol}/${targetPort}"
+if (($action -eq 'delete') -Or ($action -eq 'update_pf')) {
+    $requesturl = "${api_url}:${api_port}/api/vmnet/${vmnet}/portforward/${protocol}/${port}"
 }
 
-$pair = "${user}:${pass}"
+$pair = "${username}:${password}"
 $bytes = [System.Text.Encoding]::ASCII.GetBytes($pair)
 $base64 = [System.Convert]::ToBase64String($bytes)
 $basicAuthValue = "Basic $base64"
@@ -72,23 +67,21 @@ $headers = @{
 
 if ($action -eq 'create' ) { 
     $body = @{
-        "name" = $targetVMnet;
-        "type" = $targetType;
-        "dhcp" = $targetDHCP;
-        "subnet" = $targetSubnet;
-        "mask" = $targetMask
+        "name" = $vmnet;
+        "type" = $type;
+        "subnet" = $ip_address;
     }      
 }
-if ($action -eq 'updatePF' ) { 
+if ($action -eq 'update_pf' ) { 
     $body = @{
-        "guestIp" = $guestIP;
-        "guestPort" = $guestPort;
-        "desc" = $desc;
+        "guestIp" = $guest_ip_address;
+        "guestPort" = $guest_port;
+        "desc" = $guest_description;
     }      
 }
-if ($action -eq 'updateMTI' ) { 
+if ($action -eq 'update_mti' ) { 
     $body = @{
-        "IP" = $targetIP;
+        "IP" = $ip_address;
     }      
 }
 $requestbody = ($body | ConvertTo-Json)
@@ -113,7 +106,7 @@ if ($action -eq 'create' ) {
             Fail-Json $result "Request failed, please check your configuration"
     }
 }
-if (($action -eq 'updateMTI') -Or ($action -eq 'updatePF')) { 
+if (($action -eq 'update_mti') -Or ($action -eq 'update_pf')) { 
     try {
         $netcreaterequest = Invoke-RestMethod -Uri $requesturl -Headers $headers -method 'Put' -Body $requestbody
         $result.infos = $netcreaterequest

@@ -11,20 +11,20 @@ $result = New-Object psobject @{
 
 $params = Parse-Args -arguments $args -supports_check_mode $true
   
-$user =  Get-AnsibleParam -obj $params -name "user" -type "str" -failifempty $true
-$pass = Get-AnsibleParam -obj $params -name "pass" -type "str" -failifempty $true
-$targetVM = Get-AnsibleParam -obj $params -name "targetVM" -type "str" -failifempty $false
-$apiurl = Get-AnsibleParam -obj $params -name "apiurl" -type "str" -default "http://127.0.0.1" -failifempty $false 
-$apiport = Get-AnsibleParam -obj $params -name "apiport" -type "int" -default "8697" -failifempty $false
+$username =  Get-AnsibleParam -obj $params -name "username" -type "str" -failifempty $true
+$password = Get-AnsibleParam -obj $params -name "password" -type "str" -failifempty $true
+$target_vm = Get-AnsibleParam -obj $params -name "target_vm" -type "str" -failifempty $false
+$api_url = Get-AnsibleParam -obj $params -name "api_url" -type "str" -default "http://127.0.0.1" -failifempty $false 
+$api_port = Get-AnsibleParam -obj $params -name "api_port" -type "int" -default "8697" -failifempty $false
 
-if (-not ([string]::IsNullOrEmpty($targetVM))) { 
-    $requesturl = "${apiurl}:${apiport}/api/vms/${targetVM}"
+if (-not ([string]::IsNullOrEmpty($target_vm))) { 
+    $requesturl = "${api_url}:${api_port}/api/vms/${target_vm}"
 }
 else {
-    $requesturl = "${apiurl}:${apiport}/api/vms"
+    $requesturl = "${api_url}:${api_port}/api/vms"
 }
 
-$pair = "${user}:${pass}"
+$pair = "${username}:${password}"
 $bytes = [System.Text.Encoding]::ASCII.GetBytes($pair)
 $base64 = [System.Convert]::ToBase64String($bytes)
 $basicAuthValue = "Basic $base64"

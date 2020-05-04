@@ -11,30 +11,30 @@ $result = New-Object psobject @{
 
 $params = Parse-Args -arguments $args -supports_check_mode $true
   
-$user =  Get-AnsibleParam -obj $params -name "user" -type "str" -failifempty $true
-$pass = Get-AnsibleParam -obj $params -name "pass" -type "str" -failifempty $true
-$targetVM = Get-AnsibleParam -obj $params -name "targetVM" -type "str" -failifempty $true
+$username =  Get-AnsibleParam -obj $params -name "username" -type "str" -failifempty $true
+$password = Get-AnsibleParam -obj $params -name "password" -type "str" -failifempty $true
+$target_vm = Get-AnsibleParam -obj $params -name "target_vm" -type "str" -failifempty $true
 $action = Get-AnsibleParam -obj $params -name "action" -type "str" -failifempty $true
 
 if ($action -eq 'update' ) { 
-    $targetCPU = Get-AnsibleParam -obj $params -name "targetCPU" -type "int" -failifempty $false
-    $targetRAM = Get-AnsibleParam -obj $params -name "targetRAM" -type "int" -failifempty $false
+    $num_cpus = Get-AnsibleParam -obj $params -name "num_cpus" -type "int" -failifempty $false
+    $memory_mb = Get-AnsibleParam -obj $params -name "memory_mb" -type "int" -failifempty $false
 }
 if ($action -eq 'clone' ) { 
-    $newname = Get-AnsibleParam -obj $params -name "newname" -type "str" -failifempty $true
+    $name = Get-AnsibleParam -obj $params -name "name" -type "str" -failifempty $true
 }
 
-$apiurl = Get-AnsibleParam -obj $params -name "apiurl" -type "str" -default "http://127.0.0.1" -failifempty $false 
-$apiport = Get-AnsibleParam -obj $params -name "apiport" -type "int" -default "8697" -failifempty $false
+$api_url = Get-AnsibleParam -obj $params -name "api_url" -type "str" -default "http://127.0.0.1" -failifempty $false 
+$api_port = Get-AnsibleParam -obj $params -name "api_port" -type "int" -default "8697" -failifempty $false
 
 if ($action -eq 'clone' ) { 
-    $requesturl = "${apiurl}:${apiport}/api/vms"
+    $requesturl = "${api_url}:${api_port}/api/vms"
 }
 if (($action -eq 'delete' ) -Or ($action -eq 'update')) { 
-    $requesturl = "${apiurl}:${apiport}/api/vms/${targetVM}"
+    $requesturl = "${api_url}:${api_port}/api/vms/${target_vm}"
 }
 
-$pair = "${user}:${pass}"
+$pair = "${username}:${password}"
 $bytes = [System.Text.Encoding]::ASCII.GetBytes($pair)
 $base64 = [System.Convert]::ToBase64String($bytes)
 $basicAuthValue = "Basic $base64"
@@ -47,19 +47,19 @@ $headers = @{
 
 if ($action -eq 'clone' ) { 
     $body = @{
-        "name" = $newname;
-        "parentId" = $targetVM
+        "name" = $name;
+        "parentId" = $target_vm
     }
 }
 if ($action -eq 'delete' ) { 
     $body = @{
-        "id" = $targetVM
+        "id" = $target_vm
     }
 }
 if ($action -eq 'update' ) { 
     $body = @{
-        "processors" = $targetCPU;
-        "memory" = $targetRAM
+        "processors" = $num_cpus;
+        "memory" = $memory_mb
     }      
 }
 

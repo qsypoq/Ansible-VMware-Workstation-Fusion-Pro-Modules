@@ -17,33 +17,33 @@ description:
     - "Change VMware Workstation Pro VM PowerState"
 
 options:
-    targetVM:
+    target_vm:
         description:
             - This is the target VM to interact with
         required: true
 
-    targetState: on || off || shutdown || suspend || pause || unpause
+    state: on || off || shutdown || suspend || pause || unpause
         description:
             - This is the power state we want, if not set, module will return actual VM power state
         required: false      
 
-    user: "workstation-api-user"
+    username: "workstation-api-username"
         description:
             - Your workstation API username
         required: true
 
-    pass: "workstation-api-password"
+    password: "workstation-api-password"
         description:
             - Your workstation API password
         required: true
 
-    apiurl: "http://127.0.0.1"
+    api_url: "http://127.0.0.1"
         description:
             - Your workstation API URL
         required: false
         default: "http://127.0.0.1"
 
-    apiport: "8697"
+    api_port: "8697"
         description:
             - Your workstation API PORT
         required: false
@@ -57,22 +57,25 @@ EXAMPLES = r'''
 ### Boot the VM with ID 42 
 - name: "Start VM"
   vmware_workstation_power:
-    targetVM: "42"
-    stargetState: "on"
-    user: "workstation-api-user"
-    pass: "workstation-api-password"
-    apiurl: "http://127.0.0.1"
-    apiport: "8697"
+    target_vm: "42"
+    state: "on"
+    username: "workstation-api-username"
+    password: "workstation-api-password"
+    api_url: "http://127.0.0.1"
+    api_port: "8697"
 
 ### Get power state of the VM with ID 42 
 - name: "Get power state"
   vmware_workstation_power:
-    targetVM: "42"
-    user: "workstation-api-user"
-    pass: "workstation-api-password"
-    apiurl: "http://127.0.0.1"
-    apiport: "8697"    
+    target_vm: "42"
+    username: "workstation-api-username"
+    password: "workstation-api-password"
 '''
 
 RETURN = r'''
+### Get power state of the VM with ID 42 
+"power_state": "poweredOff"
+
+### Boot the VM with ID 42 
+"power_state": "poweredOn"
 '''

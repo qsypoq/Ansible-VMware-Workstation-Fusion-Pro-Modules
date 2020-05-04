@@ -17,98 +17,83 @@ description:
     - "Manage VMware Workstation Pro VMNets"
 
 options:
-    targetVMnet:
+    vmnet:
         description:
             - This is the target NETVM to interact with
         required: false
 
-    action: infos || delete || create || updatePF || update MTI
+    action: infos || delete || create || update_pf || update MTI
         description:
             - This is the action we want to do.
         required: true  
 
-    targetSetting: portforward || mactoip
+    setting: portforward || mactoip
         description:
                 - Choose what infos you want to list, portforwarding or mac-to-ip, empty = listing all vmnets
         required: no, only usefull with action = infos
 
-    targetType: custom || bridged || nat || hostonly
+    type: custom || bridged || nat || hostonly
         description:
                 - This is the type of virtual network you want to create
         required: only for create
 
-    targetVMnet:
+    vmnet:
         description:
                 - Choose your VMnet
-        required: only when targetType = custom
+        required: only when type = custom
 
-    targetDHCP: true || false
-        description:
-                - Do you want to enable dhcp on it ?
-        required: only for create
-
-    targetSubnet: 172.10.10.0
-        description:
-                - This is the target subnet where you want to create
-        required: only for create
-
-    targetMask: 255.255.0.0
-        description:
-                - This is the subnet mask for your subnet
-        required: only for create
-
-    targetProtocol: TCP || UDP
+    protocol: TCP || UDP
         description:
                 - Your targeted protocol
-        required: only for updatePF & delete
+        required: only for update_pf & delete
 
-    targetPort: 1337
+    port: 1337
         description:
                 - Your targeted port
-        required: only for updatePF & delete
+        required: only for update_pf & delete
 
-    guestIP: "172.13.13.13"
+    guest_ip_address: "192.168.188.13"
         description:
             - Your targeted IP
-        required: only for updatePF
+        required: true, only with update_pf
 
-    guestPort: "1111"
+    guest_port: "1111"
         description:
             - Your targeted port
-        required: only for updatePF
+        required: only for update_pf
 
-    desc: "itworks!"
+    guest_description: "itworks!"
         description:
             - PF description
-        required: false, only usefull for updatePF
+        required: false, only usefull for update_pf
 
-    targetMAC: "00:0C:29:87:4B:89"
+    mac_address: "00:0C:29:87:4B:89"
         description:
             - Your targeted mac address
         required: only for updateMTI
 
-    targetIP: "192.168.188.13"
+    ip_address: "192.168.188.13"
         description:
             - Your targeted mac address
-        required: false, only use is for updateMTI, if you do it without specifying a IP it will delete the MTI
+        required: false, if you don't have a target IP it will delete the MTI
 
-    user: "workstation-api-user"
+    username: "workstation-api-username"
         description:
             - Your workstation API username
         required: true
 
-    pass: "workstation-api-password"
+    password: "workstation-api-password"
         description:
             - Your workstation API password
         required: true
 
-    apiurl: "http://127.0.0.1"
+    api_url: "http://127.0.0.1"
         description:
             - Your workstation API URL
         required: false
         default: "http://127.0.0.1"
 
-    apiport: "8697"
+    api_port: "8697"
         description:
             - Your workstation API PORT
         required: false
@@ -124,75 +109,72 @@ EXAMPLES = r'''
 - name: "Get all vmnet infos"
   vmware_workstation_netmgmt:
     action: infos
-    user: "workstation-api-user"
-    pass: "workstation-api-password"
+    username: "workstation-api-username"
+    password: "workstation-api-password"
 
-### Return all the Mac-to-IP settings from vmnet8
+### Return all Mac-to-IP settings from vmnet8
 - name: "Return MTI of vmnet8"
   vmware_workstation_netmgmt:
     action: infos
-    targetVMnet: "vmnet8"
-    targetSetting: "mactoip"
-    user: "workstation-api-user"
-    pass: "workstation-api-password"
+    vmnet: "vmnet8"
+    setting: "mactoip"
+    username: "workstation-api-username"
+    password: "workstation-api-password"
 
 ### Return all the forwarded ports settings from vmnet8
 - name: "Return vmnet13 portforward"
   vmware_workstation_netmgmt:
     action: infos
-    targetVMnet: "vmnet13"
-    targetSetting "portforward"
-    user: "workstation-api-user"
-    pass: "workstation-api-password"
+    vmnet: "vmnet13"
+    setting "portforward"
+    username: "workstation-api-username"
+    password: "workstation-api-password"
 
-### Create a new vmnet as vmnet13, as host only, with dhcp, on 172.60.60.0/16
+### Create a new vmnet as vmnet13, as host only
 - name: "Create vmnet13"   
   vmware_workstation_netmgmt:
-    targetVMnet: "vmnet13"
-    targetType: "hostonly"
-    targetDHCP: "true"
-    targetSubnet: "172.60.60.0"
-    targetMask: "255.255.0.0"
+    vmnet: "vmnet13"
+    type: "hostonly"
     action: create
-    user: "workstation-api-user"
-    pass: "workstation-api-password"
+    username: "workstation-api-username"
+    password: "workstation-api-password"
 
 ### Delete the forwarded 1337 tcp port from vmnet8
 - name: "Delete portforwarding"   
   vmware_workstation_netmgmt:
-    targetVMnet: "vmnet8"
-    targetProtocol: "TCP"
-    targetPort: "1337"
+    vmnet: "vmnet8"
+    protocol: "TCP"
+    port: "1337"
     action: delete
-    user: "workstation-api-user"
-    pass: "workstation-api-password"
+    username: "workstation-api-username"
+    password: "workstation-api-password"
 
 ### Update the forwarded 1337 tcp port from vmnet8 to 172.13.13.13:1111 with "itworks!" as description
 - name: "update forwarded port"
   vmware_workstation_netmgmt:
-    targetVMnet: "vmnet8"
-    targetProtocol: "TCP"
-    targetPort: "1337"
-    guestIP: "172.13.13.13"
-    guestPort: "1111"
-    desc: "itworks!"
-    action: updatePF
-    user: "workstation-api-user"
-    pass: "workstation-api-password"
+    vmnet: "vmnet8"
+    protocol: "TCP"
+    port: "1337"
+    guest_ip_address: "172.13.13.13"
+    guest_port: "1111"
+    guest_description: "itworks!"
+    action: update_pf
+    username: "workstation-api-username"
+    password: "workstation-api-password"
 
 ### Update the MAC 00:12:29:34:4B:56 to be assigned as 192.168.188.13 on vmnet
 - name: "Update Mac to IP"
   vmware_workstation_netmgmt:
-    targetVMnet: "vmnet8"
-    targetMAC: "00:12:29:34:4B:56"
-    targetIP: "192.168.188.13"
+    vmnet: "vmnet8"
+    mac_address: "00:12:29:34:4B:56"
+    ip_address: "192.168.188.13"
     action: updateMTI
-    user: "workstation-api-user"
-    pass: "workstation-api-password"
+    username: "workstation-api-username"
+    password: "workstation-api-password"
 '''
 
 RETURN = r'''
-- name: "Return all MTI settings of vmnet8"
+### Return all Mac-to-IP settings from vmnet8
 {
     "mactoips": [
         {
@@ -208,9 +190,22 @@ RETURN = r'''
     ]
 }
 
-- name: "Update Mac to IP"
+### Update Mac to IP
 {
     "Code": 0,
     "Message": "The operation was successful"
 }
+### Create a new vmnet as vmnet13, as host only
+{
+        "num": 1,
+        "vmnets": [
+            {
+                "dhcp": "true",
+                "mask": "255.255.255.0",
+                "name": "vmnet13",
+                "subnet": "192.168.244.0",
+                "type": "hostOnly"
+            }
+        ]
+    }
 '''

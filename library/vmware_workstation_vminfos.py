@@ -17,30 +17,30 @@ description:
     - "Get VMware Workstation Pro VM infos"
 
 options:
-    targetVM:
+    target_vm:
         description:
             - This is the target VM to interact with:
                 When not set: return all VMs id & path
                 When set: return CPU & RAM of the target VM
         required: false
 
-    user: "workstation-api-user"
+    username: "workstation-api-username"
         description:
             - Your workstation API username
         required: true
 
-    pass: "workstation-api-password"
+    password: "workstation-api-password"
         description:
             - Your workstation API password
         required: true
 
-    apiurl: "http://127.0.0.1"
+    api_url: "http://127.0.0.1"
         description:
             - Your workstation API URL
         required: false
         default: "http://127.0.0.1"
 
-    apiport: "8697"
+    api_port: "8697"
         description:
             - Your workstation API PORT
         required: false
@@ -54,15 +54,15 @@ EXAMPLES = r'''
 # Get infos about all the VMs
 - name: "Get infos"
   vmware_workstation_vminfos:
-    user: "workstation-api-user"
-    pass: "workstation-api-password"
+    username: "workstation-api-username"
+    password: "workstation-api-password"
 
 # Retrieve CPU & RAM from VM with ID 42
 - name: "Get infos about VM ID 42"
   vmware_workstation_vminfos:
-    targetVM: "42"
-    user: "workstation-api-user"
-    pass: "workstation-api-password"
+    target_vm: "42"
+    username: "workstation-api-username"
+    password: "workstation-api-password"
 '''
 
 RETURN = r'''

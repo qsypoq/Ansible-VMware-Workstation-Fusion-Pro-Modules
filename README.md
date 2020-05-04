@@ -3,12 +3,12 @@
 <img src="https://magnier.io/content/images/vrac/workstation-ansible-api-github.jpg">
 
 <h2 align="center">Ansible modules interacting with VMware Workstation Pro's REST API <br/><br/>
-<img src="https://img.shields.io/badge/size-32KiB-brightgreen"> <img src="https://img.shields.io/badge/license-MIT-green"> <br/>
+<img src="https://img.shields.io/badge/size-38KiB-brightgreen"> <img src="https://img.shields.io/badge/license-MIT-green"> <a href="https://twitter.com/qsypoq"><img src="https://img.shields.io/badge/twitter-@qsypoq-blue"></img></a> <br/>
 </h2>
 
 <p align="center"><b>Introduction: <a href="https://magnier.io/developing-vmware-workstation-pro-ansible-module">How I ended up developing a VMware Workstation Pro Ansible module</a></b></p>
 
-<p align="center"><strike>First goal of the project is to implement all the REST API requests, for the time being, following VMware's logic. </strike><br/> Next goal is to rework some natives API functions interactions to make it's use simpler.<br/><br/>
+<p align="center"><strike>First goal of the project is to implement all the REST API requests, for the time being, following VMware's logic. </strike><br/> Next goal is to rework some natives API functions interactions to make it's use simpler.<br/>When the project is considered mature enough, I will look into collection and ansible-galaxy integration.<br/><br/>
 <b>This project is still in early stage developpement.</b></p>
 </div>
 <hr/>
@@ -52,8 +52,6 @@ This section is implemented as follow:
 - Creates a network adapter in the VM
 - Deletes a VM network adapter
 - Returns the IP address of a VM
-
-Note: The last one doesn't work with all my VMs so it would need debugging.
 
 ## :white_check_mark: VM Power Management 2/2
 Complete! :tada:
@@ -112,8 +110,8 @@ This section is implemented as follow:
 ### Check user input/rationnal behaviour
 - Example: Would be great if we could prevent a user to disconnect the network adapter of the VM ansible is run from. 
 
-### Code refractor
-- Many if statements can be replaced/optimised with switch when possible, or concatened togethers.
+### Code refractoring
+- If statements can be replaced/optimised/concatenated.
 
 ### Porting to Linux / Mac (Fusion)
 - As the API is the same it should be trivial to port it (powershell <=> python conversion).

@@ -17,7 +17,7 @@ description:
     - "Manage VMware Workstation Pro VM"
 
 options:
-    targetVM:
+    target_vm:
         description:
             - This is the target VM to interact with
         required: true
@@ -27,38 +27,38 @@ options:
             - This is the action we want to do. update CPU/RAM, clone or delete the VM
         required: true  
 
-    newname: "KMS-Server-Clone"
+    name: "KMS-Server-Clone"
         description:
             - This is the name of the cloned VM
         required: only when action = clone      
 
-    targetCPU: 2
+    num_cpus: 2
         description:
             - This is the new values of CPU allocated to the VM
         required: false, only usefull when action = update
 
-    targetRAM: 2048
+    memory_mb: 2048
         description:
-            - This is the new values of RAM allocated to the VM
+            - This is the new values (in mb) of RAM allocated to the VM
         required: false, only usefull when action = update
 
-    user: "workstation-api-user"
+    username: "workstation-api-username"
         description:
             - Your workstation API username
         required: true
 
-    pass: "workstation-api-password"
+    password: "workstation-api-password"
         description:
             - Your workstation API password
         required: true
 
-    apiurl: "http://127.0.0.1"
+    api_url: "http://127.0.0.1"
         description:
             - Your workstation API URL
         required: false
         default: "http://127.0.0.1"
 
-    apiport: "8697"
+    api_port: "8697"
         description:
             - Your workstation API PORT
         required: false
@@ -72,29 +72,49 @@ EXAMPLES = r'''
 # Change VM with ID 42's RAM allocation to 2048
 - name: "Edit VM ID 42"
   vmware_workstation_vmmgmt:
-    targetVM: "42"
+    target_vm: "42"
     action: update
-    targetRAM: 2048
-    user: "workstation-api-user"
-    pass: "workstation-api-password"
+    memory_mb: 2048
+    username: "workstation-api-username"
+    password: "workstation-api-password"
 
 # Clone VM with ID 42 as KMS-Server-Clone 
 - name: "Clone VM ID 42"
   vmware_workstation_vmmgmt:
-    targetVM: "42"
+    target_vm: "42"
     action: clone
-    newname: "KMS-Server-Clone"
-    user: "workstation-api-user"
-    pass: "workstation-api-password"
+    name: "KMS-Server-Clone"
+    username: "workstation-api-username"
+    password: "workstation-api-password"
 
 # Delete VM with ID 42
-- name: "Start VM ID 42"
+- name: "Delete VM ID 42"
   vmware_workstation_vmmgmt:
-    targetVM: "42"
+    target_vm: "42"
     action: delete
-    user: "workstation-api-user"
-    pass: "workstation-api-password"
+    username: "workstation-api-username"
+    password: "workstation-api-password"
 '''
 
 RETURN = r'''
+### Change VM with ID 42's RAM allocation to 2048
+### Return VM's CPU/RAM/ID
+{
+    "cpu": {
+        "processors": 1
+    },
+    "id": "42",
+    "memory": 2048
+}
+### Clone VM with ID 42 as KMS-Server-Clone 
+### Return clone's CPU/RAM/ID
+{
+    "cpu": {
+        "processors": 1
+    },
+    "id": "50",
+    "memory": 768
+}
+# Delete VM with ID 42
+return nothing
 '''

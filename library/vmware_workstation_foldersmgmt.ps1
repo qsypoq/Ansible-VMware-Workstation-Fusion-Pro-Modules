@@ -11,31 +11,31 @@ $result = New-Object psobject @{
 
 $params = Parse-Args -arguments $args -supports_check_mode $true
 
-$user =  Get-AnsibleParam -obj $params -name "user" -type "str" -failifempty $true
-$pass = Get-AnsibleParam -obj $params -name "pass" -type "str" -failifempty $true
-$targetVM = Get-AnsibleParam -obj $params -name "targetVM" -type "str" -failifempty $true
+$username =  Get-AnsibleParam -obj $params -name "username" -type "str" -failifempty $true
+$password = Get-AnsibleParam -obj $params -name "password" -type "str" -failifempty $true
+$target_vm = Get-AnsibleParam -obj $params -name "target_vm" -type "str" -failifempty $true
 $action = Get-AnsibleParam -obj $params -name "action" -type "str" -failifempty $true
-$apiurl = Get-AnsibleParam -obj $params -name "apiurl" -type "str" -default "http://127.0.0.1" -failifempty $false 
-$apiport = Get-AnsibleParam -obj $params -name "apiport" -type "int" -default "8697" -failifempty $false
+$api_url = Get-AnsibleParam -obj $params -name "api_url" -type "str" -default "http://127.0.0.1" -failifempty $false 
+$api_port = Get-AnsibleParam -obj $params -name "api_port" -type "int" -default "8697" -failifempty $false
 
 if (($action -eq 'infos' ) -Or ($action -eq 'create')) { 
-    $requesturl = "${apiurl}:${apiport}/api/vms/${targetVM}/sharedfolders"
+    $requesturl = "${api_url}:${api_port}/api/vms/${target_vm}/sharedfolders"
 }
 if ($action -eq 'create' ) { 
-    $targetFolder = Get-AnsibleParam -obj $params -name "targetFolder" -type "str" -failifempty $true
+    $folder_name = Get-AnsibleParam -obj $params -name "folder_name" -type "str" -failifempty $true
 }
 if (($action -eq 'update' ) -Or ($action -eq 'create')) { 
     $access = Get-AnsibleParam -obj $params -name "access" -type "str" -failifempty $true
-    $targetPath = Get-AnsibleParam -obj $params -name "targetPath" -type "str" -failifempty $true
+    $folder_path = Get-AnsibleParam -obj $params -name "folder_path" -type "str" -failifempty $true
 }
 if ($access -eq 'rw' ) { $flags = 4 }
 
 if (($action -eq 'delete') -Or ($action -eq 'update')) { 
-    $targetFolder = Get-AnsibleParam -obj $params -name "targetFolder" -type "str" -failifempty $true
-    $requesturl = "${apiurl}:${apiport}/api/vms/${targetVM}/sharedfolders/${targetFolder}"
+    $folder_name = Get-AnsibleParam -obj $params -name "folder_name" -type "str" -failifempty $true
+    $requesturl = "${api_url}:${api_port}/api/vms/${target_vm}/sharedfolders/${folder_name}"
 }
 
-$pair = "${user}:${pass}"
+$pair = "${username}:${password}"
 $bytes = [System.Text.Encoding]::ASCII.GetBytes($pair)
 $base64 = [System.Convert]::ToBase64String($bytes)
 $basicAuthValue = "Basic $base64"
@@ -48,14 +48,14 @@ $headers = @{
 
 if ($action -eq 'update' ) { 
     $body = @{
-        "host_path" = $targetPath;
+        "host_path" = $folder_path;
         "flags" = $flags
     }      
 }
 if ($action -eq 'create' ) { 
     $body = @{
-        "folder_id" = $targetFolder;
-        "host_path" = $targetPath;
+        "folder_id" = $folder_name;
+        "host_path" = $folder_path;
         "flags" = $flags
     }      
 }

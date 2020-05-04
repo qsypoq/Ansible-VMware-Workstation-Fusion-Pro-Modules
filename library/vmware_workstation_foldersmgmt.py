@@ -17,7 +17,7 @@ description:
     - "Manage VMware Workstation Pro Shared Folders"
 
 options:
-    targetVM:
+    target_vm:
         description:
             - This is the target VM to interact with
         required: true
@@ -27,12 +27,12 @@ options:
             - This is the action we want to do.
         required: true   
 
-    targetFolder: "myFolderName"
+    folder_name: "myFolderName"
         description:
             - Name of the shared folder
         required: Only for create & update & delete
 
-    targetPath: C:\Users\qsypoq\Desktop\odbg110
+    folder_path: C:\Users\qsypoq\Desktop\odbg110
         description:
             - Path of shared folder
         required: Only for create & update, the folder need to be reachable
@@ -42,23 +42,23 @@ options:
         - Choose which kind of access the VM have to the folder
     required: false, default is read-only, you only need to use this when access needed is rw
     
-    user: "workstation-api-user"
+    username "workstation-api-username"
         description:
             - Your workstation API username
         required: true
 
-    pass: "workstation-api-password"
+    password: "workstation-api-password"
         description:
             - Your workstation API password
         required: true
 
-    apiurl: "http://127.0.0.1"
+    api_url: "http://127.0.0.1"
         description:
             - Your workstation API URL
         required: false
         default: "http://127.0.0.1"
 
-    apiport: "8697"
+    api_port: "8697"
         description:
             - Your workstation API PORT
         required: false
@@ -72,43 +72,45 @@ EXAMPLES = r'''
 ### List all shared folders mounted on VM ID 42
 - name: "List shared folders"
   vmware_workstation_foldersmgmt:
-    targetVM: "42"
+    target_vm: "42"
     action: "infos"
-    user: "workstation-api-user"
-    pass: "workstation-api-password"
+    username "workstation-api-username"
+    password: "workstation-api-password"
 
 ### Create shared folder named ODBG110 on VM ID 42
 - name: "Create shared folder"
   vmware_workstation_foldersmgmt:
-    targetVM: "42"
-    targetFolder: "ODBG110"
-    targetPath: C:\Users\qsypoq\Desktop\odbg110
+    target_vm: "42"
+    folder_name: "ODBG110"
+    folder_path: C:\Users\qsypoq\Desktop\odbg110
     access: "rw"
     action: "create"
-    user: "workstation-api-user"
-    pass: "workstation-api-password"
+    username "workstation-api-username"
+    password: "workstation-api-password"
 
 ### Update shared folder named ODBG110 with new path and access rights
 - name: "Update ODBG110"
   vmware_workstation_foldersmgmt:
-    targetVM: "42"
-    targetFolder: "ODBG110"
-    targetPath: C:\Users\qsypoq\Desktop
+    target_vm: "42"
+    folder_name: "ODBG110"
+    folder_path: C:\Users\qsypoq\Desktop
     access: "r"
     action: "update"
+    username "workstation-api-username"
+    password: "workstation-api-password"
 
 ### Delete shared folder named ODBG110 on VM ID 42
 - name: "Delete shared folder named ODBG110 on VM ID 42"
   vmware_workstation_foldersmgmt:
-    targetVM: "42"
-    targetFolder: "ODBG110"
+    target_vm: "42"
+    folder_name: "ODBG110"
     action: "delete"
-    user: "workstation-api-user"
-    pass: "workstation-api-password"
+    username "workstation-api-username"
+    password: "workstation-api-password"
 '''
 
 RETURN = r'''
-- name: "List all shared folders mounted on VM ID 42"
+### List all shared folders mounted on VM ID 42
 {
     "Count": 1, "value": [
         {
@@ -119,7 +121,7 @@ RETURN = r'''
     ]
 }
 
-- name: "Create shared folder named ODBG110 on VM ID 42"
+### Create shared folder named ODBG110 on VM ID 42
 {
     "Count": 1, "value": [
         {
@@ -130,7 +132,7 @@ RETURN = r'''
     ]
 }
 
-- name: "Update shared folder named ODBG110 with new path and access rights"
+### Update shared folder named ODBG110 with new path and access rights
 {
     "Count": 1, "value": [
         {
@@ -141,6 +143,6 @@ RETURN = r'''
     ]
 }
 
-- name: "Delete shared folder named ODBG110 on VM ID 42"
+### Delete shared folder named ODBG110 on VM ID 42
 empty
 '''
