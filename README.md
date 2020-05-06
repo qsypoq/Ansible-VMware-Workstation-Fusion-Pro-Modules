@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://magnier.io/content/images/vrac/workstation-ansible-api-github.jpg">
+<img src="https://magnier.io/content/images/2020/05/vmware_workstation_fusion_api_ansible.png">
 
 <h2 align="center">Ansible modules interacting with VMware Workstation/Fusion Pro's REST API <br/><br/>
 <img src="https://img.shields.io/badge/size-75KiB-brightgreen"> <img src="https://img.shields.io/badge/license-MIT-green"> <a href="https://twitter.com/qsypoq"><img src="https://img.shields.io/badge/twitter-@qsypoq-blue"></img></a> <br/>
@@ -27,11 +27,17 @@ Then run vmrest:
 More informations on VMware REST API's docs: <a href="https://docs.vmware.com/en/VMware-Workstation-Pro/15.0/com.vmware.ws.using.doc/GUID-C3361DF5-A4C1-432E-850C-8F60D83E5E2B.html">Workstation Pro</a> | <a href="https://docs.vmware.com/en/VMware-Fusion/11/com.vmware.fusion.using.doc/GUID-5F89D1FE-A95D-4C3C-894F-0084027CF66F.html">Fusion Pro</a>
 
 ### Install the modules
-Put the content of the corresponding library folder to ```~/.ansible/plugins/modules/``` or in a ```library``` folder next to your playbooks.
+Manual installation ATM (ansible-galaxy integration as collection is WIP):
+
+Put the content of plugins/modules to ```~/.ansible/plugins/modules/``` or in a ```library``` folder next to your playbooks.
 
 ## Information
 ### Info retriving
-For the modules with infos retriving only purposes you must set your ansible command as verbose like ```ansible-playbook -i hosts.yml playbook.yml -vvv``` as native use/exploitation of returned infos is something still worked on.
+For the modules with infos retriving only purposes you must set your ansible command with verbose flag, like:
+
+ ```ansible-playbook -i hosts.yml playbook.yml -vvv``` 
+ 
+ Native use/exploitation of returned infos is WIP.
 
 ### Common variables
 This 4 variables can/must to used with all the modules:
@@ -47,29 +53,43 @@ If you are using defaults vmrest url settings then you don't have to use ```api_
 Here you will found basic examples of the modules. If you need more details like all the parameters possibilities, you will found in the library folder a file name ```$module.py``` available for both windows & unix version.
 
 ## Modules examples
-This example are for windows's module but are the same for unix, you just need to replace ****** with ********.
+This example are for windows's modules (Workstation Pro on Windows) but are the same for unix (Workstation Pro on Linux or Fusion Pro on macOS), you just need to replace ```win``` with ```unix```.
 
-### vmware_workstation_vminfos
+
+### Create your first playbook
+Target of the playbook should be the machine who's hosting the API:
+
+```
+- hosts: vmware-workstation-host
+  tasks:
+
+  - name: "List all VMs"
+    win_vmware_desktop_vminfos:
+      username: "workstation-api-username"
+      password: "workstation-api-password"
+```
+
+### win_vmware_desktop_vminfos
 - Returns a list of VM IDs and paths for all VMs
 ```
 - name: "Get infos"
-  vmware_workstation_vminfos:
+  win_vmware_desktop_vminfos:
     username: "workstation-api-username"
     password: "workstation-api-password"
 ```
 - Returns the VM setting information of a VM
 ```
 - name: "Retrieve CPU & RAM from VM with ID 42"
-  vmware_workstation_vminfos:
+  win_vmware_desktop_vminfos:
     target_vm: "42"
     username: "workstation-api-username"
     password: "workstation-api-password"
 ```
-### vmware_workstation_vmmgmt
+### win_vmware_desktop_vmmgmt
 - Updates a VM CPU/RAM allocation
 ```
 - name: "Change VM with ID 42's RAM allocation to 2048 & 2 vCPU"
-  vmware_workstation_vmmgmt:
+  win_vmware_desktop_vmmgmt:
     target_vm: "42"
     action: update
     num_cpus: 2
@@ -80,7 +100,7 @@ This example are for windows's module but are the same for unix, you just need t
 - Clone a VM
 ```
 - name: "Clone VM with ID 42 as KMS-Server-Clone "
-  vmware_workstation_vmmgmt:
+  win_vmware_desktop_vmmgmt:
     target_vm: "42"
     action: clone
     name: "KMS-Server-Clone"
@@ -90,17 +110,17 @@ This example are for windows's module but are the same for unix, you just need t
 - Deletes a VM
 ```
 - name: "Delete VM ID 42"
-  vmware_workstation_vmmgmt:
+  win_vmware_desktop_vmmgmt:
     target_vm: "42"
     action: delete
     username: "workstation-api-username"
     password: "workstation-api-password"
 ```
-### vmware_workstation_adaptersmgmt
+### win_vmware_desktop_adaptersmgmt
 - Return all network adapters in the VM
 ```
 - name: "Return all network adapters in VM 42"
-  vmware_workstation_adaptersmgmt:
+  win_vmware_desktop_adaptersmgmt:
     target_vm: "42"
     action: "list"
     user: "workstation-api-user"
@@ -109,7 +129,7 @@ This example are for windows's module but are the same for unix, you just need t
 - Updates a network adapter in the VM
 ```
 - name: "Edit NIC N°1 of VM 42 to assign it a custom type targetting vmnet10"
-    vmware_workstation_adaptersmgmt:
+    win_vmware_desktop_adaptersmgmt:
     target_vm: "42"
     action: "update"
     index: 1
@@ -121,7 +141,7 @@ This example are for windows's module but are the same for unix, you just need t
 - Creates a network adapter in the VM
 ```
 - name: "Create NIC N°1 of VM 42 and assign it a custom type targetting vmnet10"
-    vmware_workstation_adaptersmgmt:
+    win_vmware_desktop_adaptersmgmt:
     target_vm: "42"
     action: "create"
     type: custom
@@ -132,7 +152,7 @@ This example are for windows's module but are the same for unix, you just need t
 - Deletes a VM network adapter
 ```
 - name: "Delete NIC N°1 of VM 42 "
-    vmware_workstation_adaptersmgmt:
+    win_vmware_desktop_adaptersmgmt:
     target_vm: "42"
     action: "delete"
     index: 1
@@ -144,18 +164,18 @@ This example are for windows's module but are the same for unix, you just need t
 Doesn't work with VMs having multiple NICs
 ```
 - name: "Return IP address of VM 42"
-  vmware_workstation_adaptersmgmt:
+  win_vmware_desktop_adaptersmgmt:
     target_vm: "42"
     action: "getip"
     user: "workstation-api-user"
     password: "workstation-api-password"
 ```
 
-### vmware_workstation_power
+### win_vmware_desktop_power
 - Returns the power state of the VM
 ```
 - name: "Get power state of the VM with ID 42 "
-  vmware_workstation_power:
+  win_vmware_desktop_power:
     target_vm: "42"
     username: "workstation-api-username"
     password: "workstation-api-password"
@@ -163,19 +183,19 @@ Doesn't work with VMs having multiple NICs
 - Changes the VM power state
 ```
 - name: "Start VM with ID 42"
-  vmware_workstation_power:
+  win_vmware_desktop_power:
     target_vm: "42"
     state: "on"
     username: "workstation-api-username"
     password: "workstation-api-password"
 ```
 
-### vmware_workstation_foldersmgmt
+### win_vmware_desktop_foldersmgmt
 
 - Returns all shared folders mounted in a VM
 ```
 - name: "List all shared folders mounted on VM ID 42"
-  vmware_workstation_foldersmgmt:
+  win_vmware_desktop_foldersmgmt:
     target_vm: "42"
     action: "infos"
     username "workstation-api-username"
@@ -184,7 +204,7 @@ Doesn't work with VMs having multiple NICs
 - Create a shared folder mounted in a VM
 ```
 - name: "Create shared folder named ODBG110 on VM ID 42"
-  vmware_workstation_foldersmgmt:
+  win_vmware_desktop_foldersmgmt:
     target_vm: "42"
     folder_name: "ODBG110"
     folder_path: C:\Users\qsypoq\Desktop\odbg110
@@ -196,7 +216,7 @@ Doesn't work with VMs having multiple NICs
 - Update shared folder
 ```
 - name: "Update shared folder named ODBG110 with new path and access rights"
-  vmware_workstation_foldersmgmt:
+  win_vmware_desktop_foldersmgmt:
     target_vm: "42"
     folder_name: "ODBG110"
     folder_path: C:\Users\qsypoq\Desktop
@@ -208,20 +228,20 @@ Doesn't work with VMs having multiple NICs
 - Deletes a shared folder
 ```
 - name: "Delete shared folder named ODBG110 on VM ID 42"
-  vmware_workstation_foldersmgmt:
+  win_vmware_desktop_foldersmgmt:
     target_vm: "42"
     folder_name: "ODBG110"
     action: "delete"
     username "workstation-api-username"
     password: "workstation-api-password"
 ```
-### vmware_workstation_netmgmt
+### win_vmware_desktop_netmgmt
 **For this part to work you need to run vmrest with privileges.**
 
 - Returns all virtual networks
 ```
 - name: "Get infos of all the configured vmnets"
-  vmware_workstation_netmgmt:
+  win_vmware_desktop_netmgmt:
     action: infos
     username: "workstation-api-username"
     password: "workstation-api-password"
@@ -229,7 +249,7 @@ Doesn't work with VMs having multiple NICs
 - Creates a virtual network
 ```
 - name: "Create a new vmnet as vmnet13, as host only"   
-  vmware_workstation_netmgmt:
+  win_vmware_desktop_netmgmt:
     vmnet: "vmnet13"
     type: "hostonly"
     action: create
@@ -239,7 +259,7 @@ Doesn't work with VMs having multiple NICs
 - Returns all MAC-to-IP settings for DHCP service
 ```
 - name: "Return all Mac-to-IP settings from vmnet8"
-  vmware_workstation_netmgmt:
+  win_vmware_desktop_netmgmt:
     action: infos
     vmnet: "vmnet8"
     setting: "mactoip"
@@ -249,7 +269,7 @@ Doesn't work with VMs having multiple NICs
 - Returns all port forwardings
 ```
 - name: "Return all the forwarded ports settings from vmnet8"
-  vmware_workstation_netmgmt:
+  win_vmware_desktop_netmgmt:
     action: infos
     vmnet: "vmnet13"
     setting "portforward"
@@ -259,7 +279,7 @@ Doesn't work with VMs having multiple NICs
 - Deletes port forwarding
 ```
 - name: "Delete the forwarded 1337 tcp port from vmnet8"   
-  vmware_workstation_netmgmt:
+  win_vmware_desktop_netmgmt:
     vmnet: "vmnet8"
     protocol: "TCP"
     port: "1337"
@@ -270,7 +290,7 @@ Doesn't work with VMs having multiple NICs
 - Updates port forwarding
 ```
 - name: "Update the forwarded 1337 tcp port from vmnet8 to 172.13.13.13:1111 with "itworks!" as description"
-  vmware_workstation_netmgmt:
+  win_vmware_desktop_netmgmt:
     vmnet: "vmnet8"
     protocol: "TCP"
     port: "1337"
@@ -284,7 +304,7 @@ Doesn't work with VMs having multiple NICs
 - Updates the MAC-to-IP binding
 ```
 - name: "Update the MAC 00:12:29:34:4B:56 to be assigned as 192.168.188.13 on vmnet"
-  vmware_workstation_netmgmt:
+  win_vmware_desktop_netmgmt:
     vmnet: "vmnet8"
     mac_address: "00:12:29:34:4B:56"
     ip_address: "192.168.188.13"
