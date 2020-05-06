@@ -31,8 +31,8 @@ if ($type -eq 'custom' ) {
     $vmnet = Get-AnsibleParam -obj $params -name "vmnet" -type "str" -failifempty $true
 }
 if (($action -eq 'update' ) -Or ($action -eq 'delete')) { 
-    $targetIndex = Get-AnsibleParam -obj $params -name "targetIndex" -type "int" -failifempty $true 
-    $requesturl = "${api_url}:${api_port}/api/vms/${target_vm}/nic/${targetIndex}"
+    $index = Get-AnsibleParam -obj $params -name "index" -type "int" -failifempty $true 
+    $requesturl = "${api_url}:${api_port}/api/vms/${target_vm}/nic/${index}"
 }
 
 $pair = "${username}:${password}"

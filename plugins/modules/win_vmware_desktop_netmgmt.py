@@ -7,7 +7,7 @@ ANSIBLE_METADATA = {
 }
 
 DOCUMENTATION = r'''
-module: vmware_workstation_netmgmt
+module: win_vmware_desktop_netmgmt
 
 short_description: Implement the VMNet Management part of the API
 
@@ -22,7 +22,7 @@ options:
             - This is the target NETVM to interact with
         required: false
 
-    action: infos || delete || create || update_pf || update MTI
+    action: infos || delete || create || update_pf || update_mti
         description:
             - This is the action we want to do.
         required: true  
@@ -107,14 +107,14 @@ EXAMPLES = r'''
 
 ### Get infos of all the configured vmnets
 - name: "Get all vmnet infos"
-  vmware_workstation_netmgmt:
+  win_vmware_desktop_netmgmt:
     action: infos
     username: "workstation-api-username"
     password: "workstation-api-password"
 
 ### Return all Mac-to-IP settings from vmnet8
 - name: "Return MTI of vmnet8"
-  vmware_workstation_netmgmt:
+  win_vmware_desktop_netmgmt:
     action: infos
     vmnet: "vmnet8"
     setting: "mactoip"
@@ -123,7 +123,7 @@ EXAMPLES = r'''
 
 ### Return all the forwarded ports settings from vmnet8
 - name: "Return vmnet13 portforward"
-  vmware_workstation_netmgmt:
+  win_vmware_desktop_netmgmt:
     action: infos
     vmnet: "vmnet13"
     setting "portforward"
@@ -132,7 +132,7 @@ EXAMPLES = r'''
 
 ### Create a new vmnet as vmnet13, as host only
 - name: "Create vmnet13"   
-  vmware_workstation_netmgmt:
+  win_vmware_desktop_netmgmt:
     vmnet: "vmnet13"
     type: "hostonly"
     action: create
@@ -141,7 +141,7 @@ EXAMPLES = r'''
 
 ### Delete the forwarded 1337 tcp port from vmnet8
 - name: "Delete portforwarding"   
-  vmware_workstation_netmgmt:
+  win_vmware_desktop_netmgmt:
     vmnet: "vmnet8"
     protocol: "TCP"
     port: "1337"
@@ -151,7 +151,7 @@ EXAMPLES = r'''
 
 ### Update the forwarded 1337 tcp port from vmnet8 to 172.13.13.13:1111 with "itworks!" as description
 - name: "update forwarded port"
-  vmware_workstation_netmgmt:
+  win_vmware_desktop_netmgmt:
     vmnet: "vmnet8"
     protocol: "TCP"
     port: "1337"
@@ -164,11 +164,11 @@ EXAMPLES = r'''
 
 ### Update the MAC 00:12:29:34:4B:56 to be assigned as 192.168.188.13 on vmnet
 - name: "Update Mac to IP"
-  vmware_workstation_netmgmt:
+  win_vmware_desktop_netmgmt:
     vmnet: "vmnet8"
     mac_address: "00:12:29:34:4B:56"
     ip_address: "192.168.188.13"
-    action: updateMTI
+    action: update_mti
     username: "workstation-api-username"
     password: "workstation-api-password"
 '''

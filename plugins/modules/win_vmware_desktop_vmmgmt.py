@@ -7,7 +7,7 @@ ANSIBLE_METADATA = {
 }
 
 DOCUMENTATION = r'''
-module: vmware_workstation_vmmgmt
+module: win_vmware_desktop_vmmgmt
 
 short_description: Implement the VM Management part of the API
 
@@ -69,18 +69,19 @@ author:
 '''
 
 EXAMPLES = r'''
-# Change VM with ID 42's RAM allocation to 2048
+# Change VM with ID 42's RAM allocation to 2048 & 2 vCPU
 - name: "Edit VM ID 42"
-  vmware_workstation_vmmgmt:
+  win_vmware_desktop_vmmgmt:
     target_vm: "42"
     action: update
+    num_cpus: 2
     memory_mb: 2048
     username: "workstation-api-username"
     password: "workstation-api-password"
 
 # Clone VM with ID 42 as KMS-Server-Clone 
 - name: "Clone VM ID 42"
-  vmware_workstation_vmmgmt:
+  win_vmware_desktop_vmmgmt:
     target_vm: "42"
     action: clone
     name: "KMS-Server-Clone"
@@ -89,7 +90,7 @@ EXAMPLES = r'''
 
 # Delete VM with ID 42
 - name: "Delete VM ID 42"
-  vmware_workstation_vmmgmt:
+  win_vmware_desktop_vmmgmt:
     target_vm: "42"
     action: delete
     username: "workstation-api-username"

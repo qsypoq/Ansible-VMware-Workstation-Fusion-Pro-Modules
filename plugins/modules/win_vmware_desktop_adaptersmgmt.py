@@ -7,7 +7,7 @@ ANSIBLE_METADATA = {
 }
 
 DOCUMENTATION = r'''
-module: vmware_workstation_adaptersmgmt
+module: win_vmware_desktop_adaptersmgmt
 
 short_description: Implement the Network Adapters Management part of the API
 
@@ -27,7 +27,7 @@ options:
             - This is the action we want to do.
         required: true   
 
-    targetIndex: 1
+    index: 1
         description:
             - Index's number refering to your network adapter
         required: Only for delete & update
@@ -72,7 +72,7 @@ EXAMPLES = r'''
 ### Return IP address of VM 42
 ### Doesn't work with VMs having multiple NICs
 - name: "Return IP address"
-  vmware_workstation_adaptersmgmt:
+  win_vmware_desktop_adaptersmgmt:
     target_vm: "42"
     action: "getip"
     user: "workstation-api-user"
@@ -80,7 +80,7 @@ EXAMPLES = r'''
 
 ### Return all network adapters in VM 42
 - name: "Return network adapters"
-  vmware_workstation_adaptersmgmt:
+  win_vmware_desktop_adaptersmgmt:
     target_vm: "42"
     action: "list"
     user: "workstation-api-user"
@@ -88,10 +88,10 @@ EXAMPLES = r'''
 
 ### Edit NIC N°1 of VM 42 to assign it a custom type targetting vmnet10
 - name: "update NIC N°1 of VM42"
-    vmware_workstation_adaptersmgmt:
+    win_vmware_desktop_adaptersmgmt:
     target_vm: "42"
     action: "update"
-    targetIndex: 1
+    index: 1
     type: custom
     vmnet: vmnet10
     user: "workstation-api-user"
@@ -99,10 +99,9 @@ EXAMPLES = r'''
 
 ### Create NIC N°1 of VM 42 and assign it a custom type targetting vmnet10
 - name: "Create NIC N°1 of VM 42"
-    vmware_workstation_adaptersmgmt:
+    win_vmware_desktop_adaptersmgmt:
     target_vm: "42"
     action: "create"
-    targetIndex: 1
     type: custom
     vmnet: vmnet10
     user: "workstation-api-user"
@@ -110,10 +109,10 @@ EXAMPLES = r'''
 
 ### Delete NIC N°1 of VM 42 
 - name: "Delete NIC"
-    vmware_workstation_adaptersmgmt:
+    win_vmware_desktop_adaptersmgmt:
     target_vm: "42"
     action: "delete"
-    targetIndex: 1
+    index: 1
     user: "workstation-api-user"
     password: "workstation-api-password"
 '''

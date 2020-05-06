@@ -7,7 +7,7 @@ ANSIBLE_METADATA = {
 }
 
 DOCUMENTATION = r'''
-module: vmware_workstation_foldersmgmt
+module: win_vmware_desktop_foldersmgmt
 
 short_description: Implement the Shared Folders Management part of the API
 
@@ -71,7 +71,7 @@ author:
 EXAMPLES = r'''
 ### List all shared folders mounted on VM ID 42
 - name: "List shared folders"
-  vmware_workstation_foldersmgmt:
+  win_vmware_desktop_foldersmgmt:
     target_vm: "42"
     action: "infos"
     username "workstation-api-username"
@@ -79,7 +79,7 @@ EXAMPLES = r'''
 
 ### Create shared folder named ODBG110 on VM ID 42
 - name: "Create shared folder"
-  vmware_workstation_foldersmgmt:
+  win_vmware_desktop_foldersmgmt:
     target_vm: "42"
     folder_name: "ODBG110"
     folder_path: C:\Users\qsypoq\Desktop\odbg110
@@ -90,7 +90,7 @@ EXAMPLES = r'''
 
 ### Update shared folder named ODBG110 with new path and access rights
 - name: "Update ODBG110"
-  vmware_workstation_foldersmgmt:
+  win_vmware_desktop_foldersmgmt:
     target_vm: "42"
     folder_name: "ODBG110"
     folder_path: C:\Users\qsypoq\Desktop
@@ -101,7 +101,7 @@ EXAMPLES = r'''
 
 ### Delete shared folder named ODBG110 on VM ID 42
 - name: "Delete shared folder named ODBG110 on VM ID 42"
-  vmware_workstation_foldersmgmt:
+  win_vmware_desktop_foldersmgmt:
     target_vm: "42"
     folder_name: "ODBG110"
     action: "delete"

@@ -7,25 +7,22 @@ ANSIBLE_METADATA = {
 }
 
 DOCUMENTATION = r'''
-module: vmware_workstation_power
+module: win_vmware_desktop_vminfos
 
-short_description: Change VMware Workstation Pro VM PowerState
+short_description: Get VMware Workstation Pro VM infos
 
 version_added: "2.4"
 
 description:
-    - "Change VMware Workstation Pro VM PowerState"
+    - "Get VMware Workstation Pro VM infos"
 
 options:
     target_vm:
         description:
-            - This is the target VM to interact with
-        required: true
-
-    state: on || off || shutdown || suspend || pause || unpause
-        description:
-            - This is the power state we want, if not set, module will return actual VM power state
-        required: false      
+            - This is the target VM to interact with:
+                When not set: return all VMs id & path
+                When set: return CPU & RAM of the target VM
+        required: false
 
     username: "workstation-api-username"
         description:
@@ -54,28 +51,34 @@ author:
 '''
 
 EXAMPLES = r'''
-### Boot the VM with ID 42 
-- name: "Start VM"
-  vmware_workstation_power:
-    target_vm: "42"
-    state: "on"
+# Get infos about all the VMs
+- name: "Get infos"
+  win_vmware_desktop_vminfos:
     username: "workstation-api-username"
     password: "workstation-api-password"
-    api_url: "http://127.0.0.1"
-    api_port: "8697"
 
-### Get power state of the VM with ID 42 
-- name: "Get power state"
-  vmware_workstation_power:
+# Retrieve CPU & RAM from VM with ID 42
+- name: "Get infos about VM ID 42"
+  win_vmware_desktop_vminfos:
     target_vm: "42"
     username: "workstation-api-username"
     password: "workstation-api-password"
 '''
 
 RETURN = r'''
-### Get power state of the VM with ID 42 
-"power_state": "poweredOff"
+# Get infos about all the VMs
+[{
+  "id": "0J319913PHLM1304J1P6EPLADAM",
+  "path": "G:\\VMs\\ESXi\\ESXi.vmx"},
+{
+  "id": "19915KM24UQ0J0OADAMH69H16T125LOL",
+  "path": "G:\\VMs\\pfsense\\pfsense.vmx"
+}]
 
-### Boot the VM with ID 42 
-"power_state": "poweredOn"
+# Retrieve CPU & RAM from VM with ID 42
+{
+  "cpu": {"processors": 1},
+  "id": "42",
+  "memory": 2048
+}
 '''

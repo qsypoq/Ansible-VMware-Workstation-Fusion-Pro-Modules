@@ -7,22 +7,25 @@ ANSIBLE_METADATA = {
 }
 
 DOCUMENTATION = r'''
-module: vmware_workstation_vminfos
+module: win_vmware_desktop_power
 
-short_description: Get VMware Workstation Pro VM infos
+short_description: Change VMware Workstation Pro VM PowerState
 
 version_added: "2.4"
 
 description:
-    - "Get VMware Workstation Pro VM infos"
+    - "Change VMware Workstation Pro VM PowerState"
 
 options:
     target_vm:
         description:
-            - This is the target VM to interact with:
-                When not set: return all VMs id & path
-                When set: return CPU & RAM of the target VM
-        required: false
+            - This is the target VM to interact with
+        required: true
+
+    state: on || off || shutdown || suspend || pause || unpause
+        description:
+            - This is the power state we want, if not set, module will return actual VM power state
+        required: false      
 
     username: "workstation-api-username"
         description:
@@ -51,34 +54,28 @@ author:
 '''
 
 EXAMPLES = r'''
-# Get infos about all the VMs
-- name: "Get infos"
-  vmware_workstation_vminfos:
+### Boot the VM with ID 42 
+- name: "Start VM"
+  win_vmware_desktop_power:
+    target_vm: "42"
+    state: "on"
     username: "workstation-api-username"
     password: "workstation-api-password"
+    api_url: "http://127.0.0.1"
+    api_port: "8697"
 
-# Retrieve CPU & RAM from VM with ID 42
-- name: "Get infos about VM ID 42"
-  vmware_workstation_vminfos:
+### Get power state of the VM with ID 42 
+- name: "Get power state"
+  win_vmware_desktop_power:
     target_vm: "42"
     username: "workstation-api-username"
     password: "workstation-api-password"
 '''
 
 RETURN = r'''
-# Get infos about all the VMs
-[{
-  "id": "0J319913PHLM1304J1P6EPLADAM",
-  "path": "G:\\VMs\\ESXi\\ESXi.vmx"},
-{
-  "id": "19915KM24UQ0J0OADAMH69H16T125LOL",
-  "path": "G:\\VMs\\pfsense\\pfsense.vmx"
-}]
+### Get power state of the VM with ID 42 
+"power_state": "poweredOff"
 
-# Retrieve CPU & RAM from VM with ID 42
-{
-  "cpu": {"processors": 1},
-  "id": "42",
-  "memory": 2048
-}
+### Boot the VM with ID 42 
+"power_state": "poweredOn"
 '''
