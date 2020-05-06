@@ -29,7 +29,7 @@ More informations on VMware REST API's docs: <a href="https://docs.vmware.com/en
 ### Install the modules
 Manual installation ATM (ansible-galaxy integration as collection is WIP):
 
-Put the content of plugins/modules to ```~/.ansible/plugins/modules/``` or in a ```library``` folder next to your playbooks.
+Put the content of ```plugins/modules``` to ```~/.ansible/plugins/modules/``` or in a ```library``` folder next to your playbooks.
 
 ## Information
 ### Info retriving
