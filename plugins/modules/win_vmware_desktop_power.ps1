@@ -10,7 +10,7 @@ $result = New-Object psobject @{
 }
 
 $params = Parse-Args -arguments $args -supports_check_mode $true
-  
+
 $username =  Get-AnsibleParam -obj $params -name "username" -type "str" -failifempty $true
 $password = Get-AnsibleParam -obj $params -name "password" -type "str" -failifempty $true
 $target_vm = Get-AnsibleParam -obj $params -name "target_vm" -type "str" -failifempty $true

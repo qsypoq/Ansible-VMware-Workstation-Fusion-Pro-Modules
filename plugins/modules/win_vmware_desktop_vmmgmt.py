@@ -42,12 +42,12 @@ options:
             - This is the new values (in mb) of RAM allocated to the VM
         required: false, only usefull when action = update
 
-    username: "workstation-api-username"
+    username: "api-username"
         description:
             - Your workstation API username
         required: true
 
-    password: "workstation-api-password"
+    password: "api-password"
         description:
             - Your workstation API password
         required: true
@@ -76,8 +76,8 @@ EXAMPLES = r'''
     action: update
     num_cpus: 2
     memory_mb: 2048
-    username: "workstation-api-username"
-    password: "workstation-api-password"
+    username: "api-username"
+    password: "api-password"
 
 # Clone VM with ID 42 as KMS-Server-Clone 
 - name: "Clone VM ID 42"
@@ -85,16 +85,16 @@ EXAMPLES = r'''
     target_vm: "42"
     action: clone
     name: "KMS-Server-Clone"
-    username: "workstation-api-username"
-    password: "workstation-api-password"
+    username: "api-username"
+    password: "api-password"
 
 # Delete VM with ID 42
 - name: "Delete VM ID 42"
   win_vmware_desktop_vmmgmt:
     target_vm: "42"
     action: delete
-    username: "workstation-api-username"
-    password: "workstation-api-password"
+    username: "api-username"
+    password: "api-password"
 '''
 
 RETURN = r'''

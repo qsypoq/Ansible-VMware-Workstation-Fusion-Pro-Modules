@@ -1,5 +1,10 @@
 #!/usr/bin/python
 
+from base64 import b64encode
+import json
+from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils.urls import fetch_url
+
 ANSIBLE_METADATA = {
     'metadata_version': '1.1',
     'status': ['preview'],
@@ -42,12 +47,12 @@ options:
         - Choose which kind of access the VM have to the folder
     required: false, default is read-only, you only need to use this when access needed is rw
     
-    username "workstation-api-username"
+    username "api-username"
         description:
             - Your workstation API username
         required: true
 
-    password: "workstation-api-password"
+    password: "api-password"
         description:
             - Your workstation API password
         required: true
@@ -74,8 +79,8 @@ EXAMPLES = r'''
   unix_vmware_desktop_foldersmgmt:
     target_vm: "42"
     action: "infos"
-    username "workstation-api-username"
-    password: "workstation-api-password"
+    username: "api-username"
+    password: "api-password"
 
 ### Create shared folder named ODBG110 on VM ID 42
 - name: "Create shared folder"
@@ -85,8 +90,8 @@ EXAMPLES = r'''
     folder_path: C:\Users\qsypoq\Desktop\odbg110
     access: "rw"
     action: "create"
-    username "workstation-api-username"
-    password: "workstation-api-password"
+    username "api-username"
+    password: "api-password"
 
 ### Update shared folder named ODBG110 with new path and access rights
 - name: "Update ODBG110"
@@ -96,8 +101,8 @@ EXAMPLES = r'''
     folder_path: C:\Users\qsypoq\Desktop
     access: "r"
     action: "update"
-    username "workstation-api-username"
-    password: "workstation-api-password"
+    username "api-username"
+    password: "api-password"
 
 ### Delete shared folder named ODBG110 on VM ID 42
 - name: "Delete shared folder named ODBG110 on VM ID 42"
@@ -105,8 +110,8 @@ EXAMPLES = r'''
     target_vm: "42"
     folder_name: "ODBG110"
     action: "delete"
-    username "workstation-api-username"
-    password: "workstation-api-password"
+    username "api-username"
+    password: "api-password"
 '''
 
 RETURN = r'''
@@ -146,10 +151,6 @@ RETURN = r'''
 ### Delete shared folder named ODBG110 on VM ID 42
 empty
 '''
-from base64 import b64encode
-import json
-from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.urls import fetch_url
 
 def run_module():
     module_args = dict(
@@ -211,18 +212,18 @@ def run_module():
     if action == "delete":
         method = "DELETE"
         body = {"id": target_vm}
-        request_url = request_server + ':' + request_port + '/api/vms/' + target_vm + '/sharedfolders/' + folder_name 
-    
+        request_url = request_server + ':' + request_port + '/api/vms/' + target_vm + '/sharedfolders/' + folder_name
+
     bodyjson = json.dumps(body)
 
-    r, info = fetch_url(module, request_url, data=bodyjson, headers=headers, method=method)
+    req, info = fetch_url(module, request_url, data=bodyjson, headers=headers, method=method)
 
     if action == "delete":
         result['msg'] = info
 
     if action != "delete":
         result['msg'] = info
-    
+
     module.exit_json(**result)
 
 def main():

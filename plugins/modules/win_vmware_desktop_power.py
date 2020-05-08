@@ -27,12 +27,12 @@ options:
             - This is the power state we want, if not set, module will return actual VM power state
         required: false      
 
-    username: "workstation-api-username"
+    username: "api-username"
         description:
             - Your workstation API username
         required: true
 
-    password: "workstation-api-password"
+    password: "api-password"
         description:
             - Your workstation API password
         required: true
@@ -59,8 +59,8 @@ EXAMPLES = r'''
   win_vmware_desktop_power:
     target_vm: "42"
     state: "on"
-    username: "workstation-api-username"
-    password: "workstation-api-password"
+    username: "api-username"
+    password: "api-password"
     api_url: "http://127.0.0.1"
     api_port: "8697"
 
@@ -68,8 +68,8 @@ EXAMPLES = r'''
 - name: "Get power state"
   win_vmware_desktop_power:
     target_vm: "42"
-    username: "workstation-api-username"
-    password: "workstation-api-password"
+    username: "api-username"
+    password: "api-password"
 '''
 
 RETURN = r'''

@@ -32,12 +32,12 @@ options:
             - This is the power state we want, if not set, module will return actual VM power state
         required: false      
 
-    username: "workstation-api-username"
+    username: "api-username"
         description:
             - Your workstation API username
         required: true
 
-    password: "workstation-api-password"
+    password: "api-password"
         description:
             - Your workstation API password
         required: true
@@ -64,8 +64,8 @@ EXAMPLES = r'''
   unix_vmware_desktop_power:
     target_vm: "42"
     state: "on"
-    username: "workstation-api-username"
-    password: "workstation-api-password"
+    username: "api-username"
+    password: "api-password"
     api_url: "http://127.0.0.1"
     api_port: "8697"
 
@@ -73,8 +73,8 @@ EXAMPLES = r'''
 - name: "Get power state"
   unix_vmware_desktop_power:
     target_vm: "42"
-    username: "workstation-api-username"
-    password: "workstation-api-password"
+    username: "api-username"
+    password: "api-password"
 '''
 
 RETURN = r'''
@@ -119,12 +119,12 @@ def run_module():
 
     if state != "":
         method = "Put"
-        r, info = fetch_url(module, request_url, data=state, headers=headers, method=method)
+        req, info = fetch_url(module, request_url, data=state, headers=headers, method=method)
     else:
         method = "Get"
-        r, info = fetch_url(module, request_url, headers=headers, method=method)
+        req, info = fetch_url(module, request_url, headers=headers, method=method)
 
-    result['msg'] = json.loads(r.read())
+    result['msg'] = json.loads(req.read())
     module.exit_json(**result)
 
 def main():

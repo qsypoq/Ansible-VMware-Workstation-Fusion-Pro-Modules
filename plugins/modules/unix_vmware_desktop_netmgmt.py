@@ -1,5 +1,10 @@
 #!/usr/bin/python
 
+from base64 import b64encode
+import json
+from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils.urls import fetch_url
+
 ANSIBLE_METADATA = {
     'metadata_version': '1.1',
     'status': ['preview'],
@@ -77,12 +82,12 @@ options:
             - Your targeted mac address
         required: false, if you don't have a target IP it will delete the MTI
 
-    username: "workstation-api-username"
+    username: "api-username"
         description:
             - Your workstation API username
         required: true
 
-    password: "workstation-api-password"
+    password: "api-password"
         description:
             - Your workstation API password
         required: true
@@ -109,8 +114,8 @@ EXAMPLES = r'''
 - name: "Get all vmnet infos"
   unix_vmware_desktop_netmgmt:
     action: infos
-    username: "workstation-api-username"
-    password: "workstation-api-password"
+    username: "api-username"
+    password: "api-password"
 
 ### Return all Mac-to-IP settings from vmnet8
 - name: "Return MTI of vmnet8"
@@ -118,8 +123,8 @@ EXAMPLES = r'''
     action: infos
     vmnet: "vmnet8"
     setting: "mactoip"
-    username: "workstation-api-username"
-    password: "workstation-api-password"
+    username: "api-username"
+    password: "api-password"
 
 ### Return all the forwarded ports settings from vmnet13
 - name: "Return vmnet13 portforward"
@@ -127,8 +132,8 @@ EXAMPLES = r'''
     action: infos
     vmnet: "vmnet13"
     setting "portforward"
-    username: "workstation-api-username"
-    password: "workstation-api-password"
+    username: "api-username"
+    password: "api-password"
 
 ### Create a new vmnet as vmnet13, as host only
 - name: "Create vmnet13"   
@@ -136,8 +141,8 @@ EXAMPLES = r'''
     vmnet: "vmnet13"
     type: "hostonly"
     action: create
-    username: "workstation-api-username"
-    password: "workstation-api-password"
+    username: "api-username"
+    password: "api-password"
 
 ### Delete the forwarded 1337 tcp port from vmnet8
 - name: "Delete portforwarding"   
@@ -146,8 +151,8 @@ EXAMPLES = r'''
     protocol: "TCP"
     port: "1337"
     action: delete
-    username: "workstation-api-username"
-    password: "workstation-api-password"
+    username: "api-username"
+    password: "api-password"
 
 ### Create/Update the forwarded 1337 tcp port from vmnet8 to 172.13.13.13:1111 with "itworks!" as description
 - name: "forward port"
@@ -159,8 +164,8 @@ EXAMPLES = r'''
     guest_port: "1111"
     guest_description: "itworks!"
     action: update_pf
-    username: "workstation-api-username"
-    password: "workstation-api-password"
+    username: "api-username"
+    password: "api-password"
 
 ### Update the MAC 00:12:29:34:4B:56 to be assigned as 192.168.188.13 on vmnet
 - name: "Update Mac to IP"
@@ -169,8 +174,8 @@ EXAMPLES = r'''
     mac_address: "00:12:29:34:4B:56"
     ip_address: "192.168.188.13"
     action: update_mti
-    username: "workstation-api-username"
-    password: "workstation-api-password"
+    username: "api-username"
+    password: "api-password"
 '''
 
 RETURN = r'''
@@ -209,10 +214,6 @@ RETURN = r'''
         ]
     }
 '''
-from base64 import b64encode
-import json
-from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.urls import fetch_url
 
 def run_module():
     module_args = dict(
@@ -275,9 +276,9 @@ def run_module():
 
     if action == "update_mti":
         method = "Put"
-        encodedMAC = mac_address.replace(":","%3A")
+        encoded_mac = mac_address.replace(":", "%3A")
         body = {"IP": ip_address}
-        request_url = request_server + ':' + request_port + '/api/vmnet/' + vmnet + '/mactoip/' + encodedMAC
+        request_url = request_server + ':' + request_port + '/api/vmnet/' + vmnet + '/mactoip/' + encoded_mac
 
     if action == "delete":
         method = "delete"
@@ -291,17 +292,17 @@ def run_module():
             request_url = request_server + ':' + request_port + '/api/vmnet'
         method = "get"
         body = {}
-        
+
     bodyjson = json.dumps(body)
 
-    r, info = fetch_url(module, request_url, data=bodyjson, headers=headers, method=method)
+    req, info = fetch_url(module, request_url, data=bodyjson, headers=headers, method=method)
 
     if action == "delete":
         result['msg'] = info
 
     if action != "delete":
-        result['msg'] = json.loads(r.read())
-    
+        result['msg'] = json.loads(req.read())
+
     module.exit_json(**result)
 
 def main():

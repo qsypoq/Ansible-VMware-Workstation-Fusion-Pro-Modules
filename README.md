@@ -42,8 +42,8 @@ For the modules with infos retriving only purposes you must set your ansible com
 ### Common variables
 This 4 variables can/must to used with all the modules:
 ```
-    username: "workstation-api-username"
-    password: "workstation-api-password"
+    username: "api-username"
+    password: "api-password"
     api_url: "http://127.0.0.1"
     api_port: "8697"
 ```
@@ -65,8 +65,8 @@ Target of the playbook should be the machine who's hosting the API:
 
   - name: "List all VMs"
     win_vmware_desktop_vminfos:
-      username: "workstation-api-username"
-      password: "workstation-api-password"
+      username: "api-username"
+      password: "api-password"
 ```
 
 ### win_vmware_desktop_vminfos
@@ -74,16 +74,16 @@ Target of the playbook should be the machine who's hosting the API:
 ```
 - name: "Get infos"
   win_vmware_desktop_vminfos:
-    username: "workstation-api-username"
-    password: "workstation-api-password"
+    username: "api-username"
+    password: "api-password"
 ```
 - Returns the VM setting information of a VM
 ```
 - name: "Retrieve CPU & RAM from VM with ID 42"
   win_vmware_desktop_vminfos:
     target_vm: "42"
-    username: "workstation-api-username"
-    password: "workstation-api-password"
+    username: "api-username"
+    password: "api-password"
 ```
 ### win_vmware_desktop_vmmgmt
 - Updates a VM CPU/RAM allocation
@@ -94,8 +94,8 @@ Target of the playbook should be the machine who's hosting the API:
     action: update
     num_cpus: 2
     memory_mb: 2048
-    username: "workstation-api-username"
-    password: "workstation-api-password"
+    username: "api-username"
+    password: "api-password"
 ```
 - Clone a VM
 ```
@@ -104,8 +104,8 @@ Target of the playbook should be the machine who's hosting the API:
     target_vm: "42"
     action: clone
     name: "KMS-Server-Clone"
-    username: "workstation-api-username"
-    password: "workstation-api-password"
+    username: "api-username"
+    password: "api-password"
 ```
 - Deletes a VM
 ```
@@ -113,8 +113,8 @@ Target of the playbook should be the machine who's hosting the API:
   win_vmware_desktop_vmmgmt:
     target_vm: "42"
     action: delete
-    username: "workstation-api-username"
-    password: "workstation-api-password"
+    username: "api-username"
+    password: "api-password"
 ```
 ### win_vmware_desktop_adaptersmgmt
 - Return all network adapters in the VM
@@ -124,7 +124,7 @@ Target of the playbook should be the machine who's hosting the API:
     target_vm: "42"
     action: "list"
     user: "workstation-api-user"
-    password: "workstation-api-password"
+    password: "api-password"
 ```
 - Updates a network adapter in the VM
 ```
@@ -136,7 +136,7 @@ Target of the playbook should be the machine who's hosting the API:
     type: custom
     vmnet: vmnet10
     user: "workstation-api-user"
-    password: "workstation-api-password"
+    password: "api-password"
 ```
 - Creates a network adapter in the VM
 ```
@@ -147,7 +147,7 @@ Target of the playbook should be the machine who's hosting the API:
     type: custom
     vmnet: vmnet10
     user: "workstation-api-user"
-    password: "workstation-api-password"
+    password: "api-password"
 ```
 - Deletes a VM network adapter
 ```
@@ -157,7 +157,7 @@ Target of the playbook should be the machine who's hosting the API:
     action: "delete"
     index: 1
     user: "workstation-api-user"
-    password: "workstation-api-password"
+    password: "api-password"
 ```
 - Returns the IP address of a VM
 
@@ -168,7 +168,7 @@ Doesn't work with VMs having multiple NICs
     target_vm: "42"
     action: "getip"
     user: "workstation-api-user"
-    password: "workstation-api-password"
+    password: "api-password"
 ```
 
 ### win_vmware_desktop_power
@@ -177,8 +177,8 @@ Doesn't work with VMs having multiple NICs
 - name: "Get power state of the VM with ID 42 "
   win_vmware_desktop_power:
     target_vm: "42"
-    username: "workstation-api-username"
-    password: "workstation-api-password"
+    username: "api-username"
+    password: "api-password"
 ```
 - Changes the VM power state
 ```
@@ -186,8 +186,8 @@ Doesn't work with VMs having multiple NICs
   win_vmware_desktop_power:
     target_vm: "42"
     state: "on"
-    username: "workstation-api-username"
-    password: "workstation-api-password"
+    username: "api-username"
+    password: "api-password"
 ```
 
 ### win_vmware_desktop_foldersmgmt
@@ -198,8 +198,8 @@ Doesn't work with VMs having multiple NICs
   win_vmware_desktop_foldersmgmt:
     target_vm: "42"
     action: "infos"
-    username "workstation-api-username"
-    password: "workstation-api-password"
+    username "api-username"
+    password: "api-password"
 ```
 - Create a shared folder mounted in a VM
 ```
@@ -210,8 +210,8 @@ Doesn't work with VMs having multiple NICs
     folder_path: C:\Users\qsypoq\Desktop\odbg110
     access: "rw"
     action: "create"
-    username "workstation-api-username"
-    password: "workstation-api-password"
+    username "api-username"
+    password: "api-password"
 ```
 - Update shared folder
 ```
@@ -222,8 +222,8 @@ Doesn't work with VMs having multiple NICs
     folder_path: C:\Users\qsypoq\Desktop
     access: "r"
     action: "update"
-    username "workstation-api-username"
-    password: "workstation-api-password"
+    username "api-username"
+    password: "api-password"
 ```
 - Deletes a shared folder
 ```
@@ -232,8 +232,8 @@ Doesn't work with VMs having multiple NICs
     target_vm: "42"
     folder_name: "ODBG110"
     action: "delete"
-    username "workstation-api-username"
-    password: "workstation-api-password"
+    username "api-username"
+    password: "api-password"
 ```
 ### win_vmware_desktop_netmgmt
 **For this part to work you need to run vmrest with privileges.**
@@ -243,8 +243,8 @@ Doesn't work with VMs having multiple NICs
 - name: "Get infos of all the configured vmnets"
   win_vmware_desktop_netmgmt:
     action: infos
-    username: "workstation-api-username"
-    password: "workstation-api-password"
+    username: "api-username"
+    password: "api-password"
 ```
 - Creates a virtual network
 ```
@@ -253,8 +253,8 @@ Doesn't work with VMs having multiple NICs
     vmnet: "vmnet13"
     type: "hostonly"
     action: create
-    username: "workstation-api-username"
-    password: "workstation-api-password"
+    username: "api-username"
+    password: "api-password"
 ```
 - Returns all MAC-to-IP settings for DHCP service
 ```
@@ -263,8 +263,8 @@ Doesn't work with VMs having multiple NICs
     action: infos
     vmnet: "vmnet8"
     setting: "mactoip"
-    username: "workstation-api-username"
-    password: "workstation-api-password"
+    username: "api-username"
+    password: "api-password"
 ```
 - Returns all port forwardings
 ```
@@ -273,8 +273,8 @@ Doesn't work with VMs having multiple NICs
     action: infos
     vmnet: "vmnet13"
     setting "portforward"
-    username: "workstation-api-username"
-    password: "workstation-api-password"
+    username: "api-username"
+    password: "api-password"
 ```
 - Deletes port forwarding
 ```
@@ -284,8 +284,8 @@ Doesn't work with VMs having multiple NICs
     protocol: "TCP"
     port: "1337"
     action: delete
-    username: "workstation-api-username"
-    password: "workstation-api-password"
+    username: "api-username"
+    password: "api-password"
 ```
 - Updates port forwarding
 ```
@@ -298,8 +298,8 @@ Doesn't work with VMs having multiple NICs
     guest_port: "1111"
     guest_description: "itworks!"
     action: update_pf
-    username: "workstation-api-username"
-    password: "workstation-api-password"
+    username: "api-username"
+    password: "api-password"
 ```
 - Updates the MAC-to-IP binding
 ```
@@ -309,8 +309,8 @@ Doesn't work with VMs having multiple NICs
     mac_address: "00:12:29:34:4B:56"
     ip_address: "192.168.188.13"
     action: update_mti
-    username: "workstation-api-username"
-    password: "workstation-api-password"
+    username: "api-username"
+    password: "api-password"
 ```
 ## :construction: Todo-List / Roadmap
 

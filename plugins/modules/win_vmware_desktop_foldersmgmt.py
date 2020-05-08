@@ -42,12 +42,12 @@ options:
         - Choose which kind of access the VM have to the folder
     required: false, default is read-only, you only need to use this when access needed is rw
     
-    username "workstation-api-username"
+    username "api-username"
         description:
             - Your workstation API username
         required: true
 
-    password: "workstation-api-password"
+    password: "api-password"
         description:
             - Your workstation API password
         required: true
@@ -74,8 +74,8 @@ EXAMPLES = r'''
   win_vmware_desktop_foldersmgmt:
     target_vm: "42"
     action: "infos"
-    username "workstation-api-username"
-    password: "workstation-api-password"
+    username "api-username"
+    password: "api-password"
 
 ### Create shared folder named ODBG110 on VM ID 42
 - name: "Create shared folder"
@@ -85,8 +85,8 @@ EXAMPLES = r'''
     folder_path: C:\Users\qsypoq\Desktop\odbg110
     access: "rw"
     action: "create"
-    username "workstation-api-username"
-    password: "workstation-api-password"
+    username "api-username"
+    password: "api-password"
 
 ### Update shared folder named ODBG110 with new path and access rights
 - name: "Update ODBG110"
@@ -96,8 +96,8 @@ EXAMPLES = r'''
     folder_path: C:\Users\qsypoq\Desktop
     access: "r"
     action: "update"
-    username "workstation-api-username"
-    password: "workstation-api-password"
+    username "api-username"
+    password: "api-password"
 
 ### Delete shared folder named ODBG110 on VM ID 42
 - name: "Delete shared folder named ODBG110 on VM ID 42"
@@ -105,8 +105,8 @@ EXAMPLES = r'''
     target_vm: "42"
     folder_name: "ODBG110"
     action: "delete"
-    username "workstation-api-username"
-    password: "workstation-api-password"
+    username "api-username"
+    password: "api-password"
 '''
 
 RETURN = r'''

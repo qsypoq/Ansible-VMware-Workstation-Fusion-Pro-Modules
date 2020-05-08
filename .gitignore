@@ -1,2 +1,4 @@
 test.yml
-library
+/library
+/plugins/.pylintrc
+/plugins/pylint.txt

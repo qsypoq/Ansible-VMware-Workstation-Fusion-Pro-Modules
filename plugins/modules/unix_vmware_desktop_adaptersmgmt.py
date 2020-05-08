@@ -1,5 +1,10 @@
 #!/usr/bin/python
 
+from base64 import b64encode
+import json
+from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils.urls import fetch_url
+
 ANSIBLE_METADATA = {
     'metadata_version': '1.1',
     'status': ['preview'],
@@ -47,7 +52,7 @@ options:
             - Your workstation API username
         required: true
 
-    password: "workstation-api-password"
+    password: "api-password"
         description:
             - Your workstation API password
         required: true
@@ -76,7 +81,7 @@ EXAMPLES = r'''
     target_vm: "42"
     action: "getip"
     user: "workstation-api-user"
-    password: "workstation-api-password"
+    password: "api-password"
 
 ### Return all network adapters in VM 42
 - name: "Return network adapters"
@@ -84,7 +89,7 @@ EXAMPLES = r'''
     target_vm: "42"
     action: "list"
     user: "workstation-api-user"
-    password: "workstation-api-password"
+    password: "api-password"
 
 ### Edit NIC N°1 of VM 42 to assign it a custom type targetting vmnet10
 - name: "update NIC N°1 of VM42"
@@ -95,7 +100,7 @@ EXAMPLES = r'''
     type: custom
     vmnet: vmnet10
     user: "workstation-api-user"
-    password: "workstation-api-password"
+    password: "api-password"
 
 ### Create NIC N°1 of VM 42 and assign it a custom type targetting vmnet10
 - name: "Create NIC N°1 of VM 42"
@@ -105,7 +110,7 @@ EXAMPLES = r'''
     type: custom
     vmnet: vmnet10
     user: "workstation-api-user"
-    password: "workstation-api-password"
+    password: "api-password"
 
 ### Delete NIC N°1 of VM 42 
 - name: "Delete NIC"
@@ -114,7 +119,7 @@ EXAMPLES = r'''
     action: "delete"
     index: "1"
     user: "workstation-api-user"
-    password: "workstation-api-password"
+    password: "api-password"
 '''
 
 RETURN = r'''
@@ -164,10 +169,6 @@ RETURN = r'''
 ### Delete NIC N°1 of VM 42
 return nothing
 '''
-from base64 import b64encode
-import json
-from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.urls import fetch_url
 
 def run_module():
     module_args = dict(
@@ -230,17 +231,17 @@ def run_module():
         method = "Post"
         body = {"type": typep, "vmnet": vmnet}
         request_url = request_server + ':' + request_port + '/api/vms/' + target_vm + '/nic'
-    
+
     bodyjson = json.dumps(body)
 
-    r, info = fetch_url(module, request_url, data=bodyjson, headers=headers, method=method)
+    req, info = fetch_url(module, request_url, data=bodyjson, headers=headers, method=method)
 
     if action == "delete":
         result['msg'] = info
 
     if action != "delete":
-        result['msg'] = json.loads(r.read())
-    
+        result['msg'] = json.loads(req.read())
+
     module.exit_json(**result)
 
 def main():

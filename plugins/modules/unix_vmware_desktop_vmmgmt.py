@@ -1,5 +1,10 @@
 #!/usr/bin/python
 
+from base64 import b64encode
+import json
+from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils.urls import fetch_url
+
 ANSIBLE_METADATA = {
     'metadata_version': '1.1',
     'status': ['preview'],
@@ -42,12 +47,12 @@ options:
             - This is the new values (in mb) of RAM allocated to the VM
         required: false, only usefull when action = update
 
-    username: "workstation-api-username"
+    username: "api-username"
         description:
             - Your workstation API username
         required: true
 
-    password: "workstation-api-password"
+    password: "api-password"
         description:
             - Your workstation API password
         required: true
@@ -75,8 +80,8 @@ EXAMPLES = r'''
     target_vm: "42"
     action: update
     memory_mb: 2048
-    username: "workstation-api-username"
-    password: "workstation-api-password"
+    username: "api-username"
+    password: "api-password"
 
 # Clone VM with ID 42 as KMS-Server-Clone 
 - name: "Clone VM ID 42"
@@ -84,16 +89,16 @@ EXAMPLES = r'''
     target_vm: "42"
     action: clone
     name: "KMS-Server-Clone"
-    username: "workstation-api-username"
-    password: "workstation-api-password"
+    username: "api-username"
+    password: "api-password"
 
 # Delete VM with ID 42
 - name: "Delete VM ID 42"
   unix_vmware_desktop_vmmgmt:
     target_vm: "42"
     action: delete
-    username: "workstation-api-username"
-    password: "workstation-api-password"
+    username: "api-username"
+    password: "api-password"
 '''
 
 RETURN = r'''
@@ -118,10 +123,6 @@ RETURN = r'''
 # Delete VM with ID 42
 return nothing
 '''
-from base64 import b64encode
-import json
-from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.urls import fetch_url
 
 def run_module():
     module_args = dict(
@@ -173,18 +174,18 @@ def run_module():
     if action == "update":
         method = "Put"
         body = {"processors": num_cpus, "memory": memory_mb}
-        request_url = request_server + ':' + request_port + '/api/vms/' + target_vm 
-    
+        request_url = request_server + ':' + request_port + '/api/vms/' + target_vm
+
     bodyjson = json.dumps(body)
 
-    r, info = fetch_url(module, request_url, data=bodyjson, headers=headers, method=method)
+    req, info = fetch_url(module, request_url, data=bodyjson, headers=headers, method=method)
 
     if action == "delete":
         result['msg'] = info
 
     if action != "delete":
-        result['msg'] = json.loads(r.read())
-    
+        result['msg'] = json.loads(req.read())
+
     module.exit_json(**result)
 
 def main():

@@ -47,7 +47,7 @@ options:
             - Your workstation API username
         required: true
 
-    password: "workstation-api-password"
+    password: "api-password"
         description:
             - Your workstation API password
         required: true
@@ -76,7 +76,7 @@ EXAMPLES = r'''
     target_vm: "42"
     action: "getip"
     user: "workstation-api-user"
-    password: "workstation-api-password"
+    password: "api-password"
 
 ### Return all network adapters in VM 42
 - name: "Return network adapters"
@@ -84,7 +84,7 @@ EXAMPLES = r'''
     target_vm: "42"
     action: "list"
     user: "workstation-api-user"
-    password: "workstation-api-password"
+    password: "api-password"
 
 ### Edit NIC N°1 of VM 42 to assign it a custom type targetting vmnet10
 - name: "update NIC N°1 of VM42"
@@ -95,7 +95,7 @@ EXAMPLES = r'''
     type: custom
     vmnet: vmnet10
     user: "workstation-api-user"
-    password: "workstation-api-password"
+    password: "api-password"
 
 ### Create NIC N°1 of VM 42 and assign it a custom type targetting vmnet10
 - name: "Create NIC N°1 of VM 42"
@@ -105,7 +105,7 @@ EXAMPLES = r'''
     type: custom
     vmnet: vmnet10
     user: "workstation-api-user"
-    password: "workstation-api-password"
+    password: "api-password"
 
 ### Delete NIC N°1 of VM 42 
 - name: "Delete NIC"
@@ -114,7 +114,7 @@ EXAMPLES = r'''
     action: "delete"
     index: 1
     user: "workstation-api-user"
-    password: "workstation-api-password"
+    password: "api-password"
 '''
 
 RETURN = r'''
