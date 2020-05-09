@@ -112,8 +112,7 @@ RETURN = r'''
     "id": "42",
     "memory": 2048
 }
-### Clone VM with ID 42 as KMS-Server-Clone 
-### ! Return as failed because time out but it worked !
+### Clone VM with ID 42 as KMS-Server-Clone
 {
     "cpu": {
         "processors": 1
@@ -202,7 +201,7 @@ def run_module():
 
     bodyjson = json.dumps(body)
 
-    req, info = fetch_url(module, request_url, data=bodyjson, headers=headers, method=method)
+    req, info = fetch_url(module, request_url, data=bodyjson, headers=headers, method=method, timeout=60)
 
     if action == "delete":
         result['msg'] = info
