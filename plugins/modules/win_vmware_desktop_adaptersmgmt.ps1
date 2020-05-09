@@ -18,6 +18,42 @@ $action = Get-AnsibleParam -obj $params -name "action" -type "str" -failifempty 
 $api_url = Get-AnsibleParam -obj $params -name "api_url" -type "str" -default "http://127.0.0.1" -failifempty $false 
 $api_port = Get-AnsibleParam -obj $params -name "api_port" -type "int" -default "8697" -failifempty $false
 
+$pair = "${username}:${password}"
+$bytes = [System.Text.Encoding]::ASCII.GetBytes($pair)
+$base64 = [System.Convert]::ToBase64String($bytes)
+$basicAuthValue = "Basic $base64"
+
+$headers = @{
+    'Authorization' =  $basicAuthValue;
+    'Content-Type' =  'application/vnd.vmware.vmw.rest-v1+json';
+    'Accept' = 'application/vnd.vmware.vmw.rest-v1+json';
+}
+
+$target_vm_name = Get-AnsibleParam -obj $params -name "target_vm_name" -type "str" -failifempty $false
+if (-not ([string]::IsNullOrEmpty($target_vm_name))) { 
+    $vmlist = @()
+    $requestnamesurl = "${api_url}:${api_port}/api/vms"
+    $requestvmlist = Invoke-RestMethod -Uri $requestnamesurl -Headers $headers -method 'Get'
+    foreach ($vm in $requestvmlist) {
+        $currentvmx = Select-String -Path $vm.path -Pattern ^displayName
+        $currentname="$currentvmx".split('"')[1]
+        $finalname=$currentname.ToLower() 
+        $currentvmprop = @{
+            id=$vm.id
+            path=$vm.path
+            name=$finalname
+        }
+        $currentvm = New-Object PSObject –Property $currentvmprop
+        $vmlist = $vmlist + $currentvm
+    }
+    $vm_name_search = $target_vm_name.ToLower() 
+    foreach ($vm in $vmlist) {
+        if ($vm.name -eq $vm_name_search) { 
+            $target_vm = $vm.id
+        }
+    }
+}
+
 if (($action -eq 'list' ) -Or ($action -eq 'create')) { 
     $requesturl = "${api_url}:${api_port}/api/vms/${target_vm}/nic"
 }
@@ -33,17 +69,6 @@ if ($type -eq 'custom' ) {
 if (($action -eq 'update' ) -Or ($action -eq 'delete')) { 
     $index = Get-AnsibleParam -obj $params -name "index" -type "int" -failifempty $true 
     $requesturl = "${api_url}:${api_port}/api/vms/${target_vm}/nic/${index}"
-}
-
-$pair = "${username}:${password}"
-$bytes = [System.Text.Encoding]::ASCII.GetBytes($pair)
-$base64 = [System.Convert]::ToBase64String($bytes)
-$basicAuthValue = "Basic $base64"
-
-$headers = @{
-    'Authorization' =  $basicAuthValue;
-    'Content-Type' =  'application/vnd.vmware.vmw.rest-v1+json';
-    'Accept' = 'application/vnd.vmware.vmw.rest-v1+json';
 }
 
 if (($action -eq 'update' ) -Or ($action -eq 'create')) { 

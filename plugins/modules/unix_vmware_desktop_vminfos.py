@@ -2,6 +2,7 @@
 
 from base64 import b64encode
 import json
+import re
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.urls import fetch_url
 
@@ -93,6 +94,7 @@ def run_module():
         username=dict(type='str', required=True),
         password=dict(type='str', required=True),
         target_vm=dict(type='str', required=False, default=''),
+        target_vm_name=dict(type='str', required=False, default=''),
         api_url=dict(type='str', default='http://127.0.0.1'),
         api_port=dict(type='str', default='8697'),
     )
@@ -119,6 +121,27 @@ def run_module():
     }
 
     target_vm = module.params['target_vm']
+    target_vm_name = module.params['target_vm_name']
+    vmlist = []
+    if target_vm_name != "":
+        requestnamesurl = request_server + ':' + request_port + '/api/vms'
+        reqname, infoname = fetch_url(module, requestnamesurl, headers=headers, method="Get")
+        responsename = json.loads(reqname.read())
+    
+        for vm in responsename:
+            currentvmx = list(vm.values())[0]
+            with open(currentvmx, 'r') as vmx:
+                for line in vmx:
+                    if re.search(r'^displayName', line):
+                        currentname = line.split('"')[1]
+            finalname = currentname.lower() 
+            vm.update({'name': finalname})
+            vmlist.append(vm)
+  
+        vm_name_search = target_vm_name.lower() 
+        for vm in vmlist:
+            if list(vm.values())[2] == vm_name_search:
+                target_vm = list(vm.values())[1]
 
     if target_vm != "":
         request_url = request_server + ':' + request_port + '/api/vms/' + target_vm

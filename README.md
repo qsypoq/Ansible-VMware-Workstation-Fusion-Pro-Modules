@@ -49,6 +49,8 @@ This 4 variables can/must to used with all the modules:
 ```
 If you are using defaults vmrest url settings then you don't have to use ```api_url``` and ```api_port```, as their defaults values are set to vmrest's defaults.
 
+Each time you can use ```target_vm``` you can also use ```target_vm_name``` instead, which require the display name of your VM. (The one you see on your GUI).
+
 ### Documentation
 Here you will found basic examples of the modules. If you need more details like all the parameters possibilities, you will found in the library folder a file name ```$module.py``` available for both windows & unix version.
 
@@ -303,7 +305,7 @@ Doesn't work with VMs having multiple NICs
 ```
 - Updates the MAC-to-IP binding
 ```
-- name: "Update the MAC 00:12:29:34:4B:56 to be assigned as 192.168.188.13 on vmnet"
+- name: "Update the MAC 00:12:29:34:4B:56 to be assigned as 192.168.188.13 on vmnet8"
   win_vmware_desktop_netmgmt:
     vmnet: "vmnet8"
     mac_address: "00:12:29:34:4B:56"
@@ -318,9 +320,6 @@ Doesn't work with VMs having multiple NICs
 - Make information returned by requests (like VM Id or state) easily exploitable via playbook.
 
 - Create self explaining error info when something goes wrong instead of "Check your inputs" 
-
-### Make API more human-usable
-- Some request need non "human" values, like VM Id. Renaming a VM (from GUI) is only effective on the GUI, folder name, files names etc, don't change. So I'm searching a way to do it.
 
 ### Check user input/rationnal behaviour
 - Example: Would be great if we could prevent a user to disconnect the network adapter of the VM ansible is run from. 

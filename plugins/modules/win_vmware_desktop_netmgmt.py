@@ -162,7 +162,7 @@ EXAMPLES = r'''
     username: "api-username"
     password: "api-password"
 
-### Update the MAC 00:12:29:34:4B:56 to be assigned as 192.168.188.13 on vmnet
+### Update the MAC 00:12:29:34:4B:56 to be assigned as 192.168.188.13 on vmnet8
 - name: "Update Mac to IP"
   win_vmware_desktop_netmgmt:
     vmnet: "vmnet8"
