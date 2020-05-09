@@ -63,7 +63,8 @@ if (-not ([string]::IsNullOrEmpty($state))) {
         $result.changed = $true;
     }
     catch {
-            Fail-Json $result "Request failed, please check your configuration"
+            $error_object = $_.ErrorDetails.Message | ConvertFrom-Json
+            Fail-Json $result $error_object.message
     }
 } else {
     try {
@@ -72,7 +73,8 @@ if (-not ([string]::IsNullOrEmpty($state))) {
         $result.changed = $false;
     }
     catch {
-            Fail-Json $result "Request failed, please check your configuration"
+            $error_object = $_.ErrorDetails.Message | ConvertFrom-Json
+            Fail-Json $result $error_object.message
     }
 }
 

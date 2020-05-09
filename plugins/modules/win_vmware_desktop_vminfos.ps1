@@ -64,7 +64,8 @@ try {
     $result.changed = $false;
 }
 catch {
-        Fail-Json $result "Request failed, please check your configuration"
+        $error_object = $_.ErrorDetails.Message | ConvertFrom-Json
+        Fail-Json $result $error_object.message
 }
 
 Exit-Json $result;

@@ -87,7 +87,8 @@ if (($action -eq 'list' ) -Or ($action -eq 'getip')) {
         $result.changed = $false;
     }
     catch {
-            Fail-Json $result "Request failed, please check your configuration"
+            $error_object = $_.ErrorDetails.Message | ConvertFrom-Json
+            Fail-Json $result $error_object.message
     }
 }
 
@@ -98,7 +99,8 @@ if ($action -eq 'create' ) {
         $result.changed = $true;
     }
     catch {
-            Fail-Json $result "Request failed, please check your configuration"
+            $error_object = $_.ErrorDetails.Message | ConvertFrom-Json
+            Fail-Json $result $error_object.message
     }
 }
 
@@ -109,7 +111,8 @@ if ($action -eq 'update' ) {
         $result.changed = $true;
     }
     catch {
-            Fail-Json $result "Request failed, please check your configuration"
+            $error_object = $_.ErrorDetails.Message | ConvertFrom-Json
+            Fail-Json $result $error_object.message
     }
 }
 
@@ -120,7 +123,8 @@ if ($action -eq 'delete' ) {
         $result.changed = $true;
     }
     catch {
-            Fail-Json $result "Request failed, please check your configuration"
+            $error_object = $_.ErrorDetails.Message | ConvertFrom-Json
+            Fail-Json $result $error_object.message
     }
 }
 

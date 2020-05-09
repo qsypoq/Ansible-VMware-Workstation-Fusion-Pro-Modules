@@ -93,7 +93,8 @@ if ($action -eq 'infos' ) {
         $result.changed = $false;
     }
     catch {
-            Fail-Json $result "Request failed, please check your configuration"
+            $error_object = $_.ErrorDetails.Message | ConvertFrom-Json
+            Fail-Json $result $error_object.message
     }
 }
 if ($action -eq 'create' ) { 
@@ -103,7 +104,8 @@ if ($action -eq 'create' ) {
         $result.changed = $true;
     }
     catch {
-            Fail-Json $result "Request failed, please check your configuration"
+            $error_object = $_.ErrorDetails.Message | ConvertFrom-Json
+            Fail-Json $result $error_object.message
     }
 }
 if (($action -eq 'update_mti') -Or ($action -eq 'update_pf')) { 
@@ -113,7 +115,8 @@ if (($action -eq 'update_mti') -Or ($action -eq 'update_pf')) {
         $result.changed = $true;
     }
     catch {
-            Fail-Json $result "Request failed, please check your configuration"
+            $error_object = $_.ErrorDetails.Message | ConvertFrom-Json
+            Fail-Json $result $error_object.message
     }
 }
 if ($action -eq 'delete' ) { 
@@ -123,7 +126,8 @@ if ($action -eq 'delete' ) {
         $result.changed = $true;
     }
     catch {
-            Fail-Json $result "Request failed, please check your configuration"
+            $error_object = $_.ErrorDetails.Message | ConvertFrom-Json
+            Fail-Json $result $error_object.message
     }
 }
 

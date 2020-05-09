@@ -52,14 +52,14 @@ If you are using defaults vmrest url settings then you don't have to use ```api_
 Each time you can use ```target_vm``` you can also use ```target_vm_name``` instead, which require the display name of your VM. (The one you see on your GUI).
 
 ### Documentation
-Here you will found basic examples of the modules. If you need more details like all the parameters possibilities, you will found in the library folder a file name ```$module.py``` available for both windows & unix version.
+Here you will found basic examples. If you need more details you can find a file named ```$module.py``` available for both windows & unix version in the ```modules``` folder.
 
 ## Modules examples
 This example are for windows's modules (Workstation Pro on Windows) but are the same for unix (Workstation Pro on Linux or Fusion Pro on macOS), you just need to replace ```win``` with ```unix```.
 
 
 ### Create your first playbook
-Target of the playbook should be the machine who's hosting the API:
+Playbook's host should be the machine hosting the API:
 
 ```
 - hosts: vmware-workstation-host
