@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-from base64 import b64encode
+import base64
 import json
 import re
 from ansible.module_utils.basic import AnsibleModule
@@ -110,7 +110,9 @@ def run_module():
     api_username = module.params['username']
     api_password = module.params['password']
     creds = api_username + ':' + api_password
-    request_creds = b64encode(creds)
+    #request_creds = b64encode(creds)
+    encodedBytes = base64.b64encode(creds.encode("utf-8"))
+    request_creds = str(encodedBytes, "utf-8")
     request_server = module.params['api_url']
     request_port = module.params['api_port']
     headers = {'Accept': 'application/vnd.vmware.vmw.rest-v1+json', 'Content-Type': 'application/vnd.vmware.vmw.rest-v1+json', 'Authorization': 'Basic ' + request_creds}
