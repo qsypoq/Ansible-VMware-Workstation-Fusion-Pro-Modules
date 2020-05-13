@@ -70,6 +70,11 @@ options:
         required: false
         default: "8697"
 
+    validate_certs: "no || yes"
+        description:
+            - Validate Certificate it HTTPS connection
+        required: false
+
 author:
     - Adam Magnier (@qsypoq)  
 '''
@@ -165,6 +170,7 @@ def run_module():
         access=dict(type='str', required=False),
         api_url=dict(type='str', default='http://127.0.0.1'),
         api_port=dict(type='str', default='8697'),
+        validate_certs=dict(type='bool', default='no'),
     )
 
     result = dict(
