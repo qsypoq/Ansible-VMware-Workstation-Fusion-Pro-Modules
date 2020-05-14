@@ -15,7 +15,7 @@ $username =  Get-AnsibleParam -obj $params -name "username" -type "str" -failife
 $password = Get-AnsibleParam -obj $params -name "password" -type "str" -failifempty $true
 $api_url = Get-AnsibleParam -obj $params -name "api_url" -type "str" -default "http://127.0.0.1" -failifempty $false 
 $api_port = Get-AnsibleParam -obj $params -name "api_port" -type "int" -default "8697" -failifempty $false
-
+$validate_certs = Get-AnsibleParam -obj $params -name "validate_certs" -type "bool" -default $false -failifempty $false
 $action = Get-AnsibleParam -obj $params -name "action" -type "str" -failifempty $true
 $vmnet = Get-AnsibleParam -obj $params -name "vmnet" -type "str" -failifempty $false
 
@@ -85,6 +85,41 @@ if ($action -eq 'update_mti' ) {
     }      
 }
 $requestbody = ($body | ConvertTo-Json)
+
+if ($validate_certs -eq $false ) { 
+    [System.Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+if (-not ([System.Management.Automation.PSTypeName]'ServerCertificateValidationCallback').Type)
+{
+$certCallback = @"
+    using System;
+    using System.Net;
+    using System.Net.Security;
+    using System.Security.Cryptography.X509Certificates;
+    public class ServerCertificateValidationCallback
+    {
+        public static void Ignore()
+        {
+            if(ServicePointManager.ServerCertificateValidationCallback ==null)
+            {
+                ServicePointManager.ServerCertificateValidationCallback += 
+                    delegate
+                    (
+                        Object obj, 
+                        X509Certificate certificate, 
+                        X509Chain chain, 
+                        SslPolicyErrors errors
+                    )
+                    {
+                        return true;
+                    };
+            }
+        }
+    }
+"@
+    Add-Type $certCallback
+ }
+    [ServerCertificateValidationCallback]::Ignore()
+}
 
 if ($action -eq 'infos' ) { 
     try {

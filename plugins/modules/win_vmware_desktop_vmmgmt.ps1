@@ -15,6 +15,7 @@ $username =  Get-AnsibleParam -obj $params -name "username" -type "str" -failife
 $password = Get-AnsibleParam -obj $params -name "password" -type "str" -failifempty $true
 $target_vm = Get-AnsibleParam -obj $params -name "target_vm" -type "str" -failifempty $false
 $action = Get-AnsibleParam -obj $params -name "action" -type "str" -failifempty $true
+$validate_certs = Get-AnsibleParam -obj $params -name "validate_certs" -type "bool" -default $false -failifempty $false
 
 if ($action -eq 'update' ) { 
     $num_cpus = Get-AnsibleParam -obj $params -name "num_cpus" -type "int" -failifempty $false
@@ -36,6 +37,41 @@ $headers = @{
     'Authorization' =  $basicAuthValue;
     'Content-Type' =  'application/vnd.vmware.vmw.rest-v1+json';
     'Accept' = 'application/vnd.vmware.vmw.rest-v1+json';
+}
+
+if ($validate_certs -eq $false ) { 
+    [System.Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+if (-not ([System.Management.Automation.PSTypeName]'ServerCertificateValidationCallback').Type)
+{
+$certCallback = @"
+    using System;
+    using System.Net;
+    using System.Net.Security;
+    using System.Security.Cryptography.X509Certificates;
+    public class ServerCertificateValidationCallback
+    {
+        public static void Ignore()
+        {
+            if(ServicePointManager.ServerCertificateValidationCallback ==null)
+            {
+                ServicePointManager.ServerCertificateValidationCallback += 
+                    delegate
+                    (
+                        Object obj, 
+                        X509Certificate certificate, 
+                        X509Chain chain, 
+                        SslPolicyErrors errors
+                    )
+                    {
+                        return true;
+                    };
+            }
+        }
+    }
+"@
+    Add-Type $certCallback
+ }
+    [ServerCertificateValidationCallback]::Ignore()
 }
 
 $target_vm_name = Get-AnsibleParam -obj $params -name "target_vm_name" -type "str" -failifempty $false

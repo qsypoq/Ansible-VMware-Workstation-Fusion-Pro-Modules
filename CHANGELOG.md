@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+
+### 14 May 2020
+Allow disabling cert validation for HTTPS connections using ```validate_certs```.
 ### 09 May 2020
 You can now use the ```target_vm_name``` parameter instead of ```target_vm``` if you want.
 
