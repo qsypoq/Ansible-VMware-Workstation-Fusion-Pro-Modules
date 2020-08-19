@@ -253,7 +253,6 @@ def run_module():
     api_username = module.params['username']
     api_password = module.params['password']
     creds = api_username + ':' + api_password
-    #request_creds = b64encode(creds)
     encodedBytes = base64.b64encode(creds.encode("utf-8"))
     request_creds = str(encodedBytes, "utf-8")
     request_server = module.params['api_url']

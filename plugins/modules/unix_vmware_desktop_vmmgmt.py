@@ -14,67 +14,53 @@ ANSIBLE_METADATA = {
 
 DOCUMENTATION = r'''
 module: unix_vmware_desktop_vmmgmt
-
 short_description: Implement the VM Management part of the API
-
 version_added: "2.4"
-
 description:
     - "Manage VMware Workstation Pro VM"
-
 options:
     target_vm:
         description:
             - This is the target VM to interact with
         required: true
-
     action: clone || delete || update
         description:
             - This is the action we want to do. update CPU/RAM, clone or delete the VM
         required: true  
-
     name: "KMS-Server-Clone"
         description:
             - This is the name of the cloned VM
         required: only when action = clone      
-
     num_cpus: 2
         description:
             - This is the new values of CPU allocated to the VM
         required: false, only usefull when action = update
-
     memory_mb: 2048
         description:
             - This is the new values (in mb) of RAM allocated to the VM
         required: false, only usefull when action = update
-
     username: "api-username"
         description:
             - Your workstation API username
         required: true
-
     password: "api-password"
         description:
             - Your workstation API password
         required: true
-
     api_url: "http://127.0.0.1"
         description:
             - Your workstation API URL
         required: false
         default: "http://127.0.0.1"
-
     api_port: "8697"
         description:
             - Your workstation API PORT
         required: false
         default: "8697"
-
     validate_certs: "no || yes"
         description:
             - Validate Certificate it HTTPS connection
         required: false
-
 author:
     - Adam Magnier (@qsypoq)
 '''
@@ -88,7 +74,6 @@ EXAMPLES = r'''
     memory_mb: 2048
     username: "api-username"
     password: "api-password"
-
 # Clone VM with ID 42 as KMS-Server-Clone 
 - name: "Clone VM ID 42"
   unix_vmware_desktop_vmmgmt:
@@ -97,7 +82,6 @@ EXAMPLES = r'''
     name: "KMS-Server-Clone"
     username: "api-username"
     password: "api-password"
-
 # Delete VM with ID 42
 - name: "Delete VM ID 42"
   unix_vmware_desktop_vmmgmt:
@@ -157,7 +141,6 @@ def run_module():
     api_username = module.params['username']
     api_password = module.params['password']
     creds = api_username + ':' + api_password
-    #request_creds = b64encode(creds)
     encodedBytes = base64.b64encode(creds.encode("utf-8"))
     request_creds = str(encodedBytes, "utf-8")
     request_server = module.params['api_url']
@@ -178,7 +161,7 @@ def run_module():
         responsename = json.loads(reqname.read())
     
         for vm in responsename:
-            currentvmx = list(vm.values())[0]
+            currentvmx = vm['path']
             with open(currentvmx, 'r') as vmx:
                 for line in vmx:
                     if re.search(r'^displayName', line):
@@ -189,8 +172,8 @@ def run_module():
   
         vm_name_search = target_vm_name.lower() 
         for vm in vmlist:
-            if list(vm.values())[2] == vm_name_search:
-                target_vm = list(vm.values())[1]
+            if vm['name'] == vm_name_search:
+                target_vm = vm['id']
 
     if action == "clone":
         method = "Post"

@@ -204,7 +204,6 @@ def run_module():
     api_username = module.params['username']
     api_password = module.params['password']
     creds = api_username + ':' + api_password
-    #request_creds = b64encode(creds)
     encodedBytes = base64.b64encode(creds.encode("utf-8"))
     request_creds = str(encodedBytes, "utf-8")
     request_server = module.params['api_url']
@@ -223,9 +222,9 @@ def run_module():
         requestnamesurl = request_server + ':' + request_port + '/api/vms'
         reqname, infoname = fetch_url(module, requestnamesurl, headers=headers, method="Get")
         responsename = json.loads(reqname.read())
-    
+
         for vm in responsename:
-            currentvmx = list(vm.values())[0]
+            currentvmx = vm['path']
             with open(currentvmx, 'r') as vmx:
                 for line in vmx:
                     if re.search(r'^displayName', line):
@@ -233,11 +232,11 @@ def run_module():
             finalname = currentname.lower() 
             vm.update({'name': finalname})
             vmlist.append(vm)
-  
+
         vm_name_search = target_vm_name.lower() 
         for vm in vmlist:
-            if list(vm.values())[2] == vm_name_search:
-                target_vm = list(vm.values())[1]
+            if vm['name'] == vm_name_search:
+                target_vm = vm['id']
 
     if action == "list":
         method = "get"
