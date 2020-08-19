@@ -8,7 +8,7 @@
 
 <p align="center"><b>Introduction: <a href="https://magnier.io/developing-vmware-workstation-pro-ansible-module">How I ended up developing a VMware Workstation/Fusion Pro Ansible module</a></b></p>
 
-<p align="center"><strike>First goal of the project is to implement all the REST API requests, for the time being, following VMware's logic. </strike><br/> Next goal is to rework some natives API functions interactions to make it's use simpler.<br/><br/>
+<p align="center"><strike>First goal of the project is to implement all the REST API requests, for the time being, following VMware's logic. </strike><br/> Next goal is to rework some natives API functions interactions to make its use simpler.<br/><br/>
 <b>This project is still in early stage developpement.</b></p>
 </div>
 <hr/>
@@ -46,8 +46,11 @@ This 4 variables can/must to used with all the modules:
     password: "api-password"
     api_url: "http://127.0.0.1"
     api_port: "8697"
+    validate_certs: no
 ```
 If you are using defaults vmrest url settings then you don't have to use ```api_url``` and ```api_port```, as their defaults values are set to vmrest's defaults.
+
+If you are using HTTPS you might want to use ```validate_certs```, default is set to ```no```.
 
 Each time you can use ```target_vm``` you can also use ```target_vm_name``` instead, which require the display name of your VM. (The one you see on your GUI).
 
