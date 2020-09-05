@@ -3,6 +3,7 @@
 import base64
 import json
 import re
+import sys
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.urls import fetch_url
 
@@ -78,6 +79,9 @@ options:
 author:
     - Adam Magnier (@qsypoq)  
 '''
+
+PY2 = sys.version_info[0] == 2
+PY3 = sys.version_info[0] == 3
 
 EXAMPLES = r'''
 ### Return IP address of VM 42
@@ -204,8 +208,12 @@ def run_module():
     api_username = module.params['username']
     api_password = module.params['password']
     creds = api_username + ':' + api_password
-    encodedBytes = base64.b64encode(creds.encode("utf-8"))
-    request_creds = str(encodedBytes).encode("utf-8")
+    if PY3:
+        encodedBytes = base64.b64encode(creds.encode("utf-8"))
+        request_creds = str(encodedBytes, "utf-8")
+    else:
+        encodedBytes = base64.b64encode(creds)
+        request_creds = str(encodedBytes).encode("utf-8")
     request_server = module.params['api_url']
     request_port = module.params['api_port']
     headers = {'Accept': 'application/vnd.vmware.vmw.rest-v1+json', 'Content-Type': 'application/vnd.vmware.vmw.rest-v1+json', 'Authorization': 'Basic ' + request_creds}
