@@ -265,7 +265,11 @@ def run_module():
 
     bodyjson = json.dumps(body)
 
-    req, info = fetch_url(module, request_url, data=bodyjson, headers=headers, method=method)
+    req, info = fetch_url(module, request_url, data=bodyjson, headers=headers,
+                          method=method)
+
+    if req is None:
+        module.fail_json(msg=info['msg'])
 
     if action == "delete":
         result['msg'] = info
