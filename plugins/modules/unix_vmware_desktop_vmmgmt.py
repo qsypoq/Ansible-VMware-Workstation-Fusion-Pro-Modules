@@ -62,6 +62,12 @@ options:
         description:
             - Validate Certificate it HTTPS connection
         required: false
+    timeout: 
+        description:
+            - Specifies a timeout in seconds for communicating with vmrest
+        required: false
+        default: 30
+
 author:
     - Adam Magnier (@qsypoq)
 '''
@@ -130,6 +136,7 @@ def run_module():
         api_url=dict(type='str', default='http://127.0.0.1'),
         api_port=dict(type='str', default='8697'),
         validate_certs=dict(type='bool', default='no'),
+        timeout=dict(type='int', required=False, default=30)
     )
 
     result = dict(
@@ -153,7 +160,10 @@ def run_module():
         request_creds = str(encodedBytes).encode("utf-8")
     request_server = module.params['api_url']
     request_port = module.params['api_port']
-    headers = {'Accept': 'application/vnd.vmware.vmw.rest-v1+json', 'Content-Type': 'application/vnd.vmware.vmw.rest-v1+json', 'Authorization': 'Basic ' + request_creds}
+    headers = {'Accept': 'application/vnd.vmware.vmw.rest-v1+json',
+               'Content-Type': 'application/vnd.vmware.vmw.rest-v1+json',
+               'Authorization': 'Basic ' + request_creds}
+    timeout = module.params['timeout']
 
     target_vm = module.params['target_vm']
     action = module.params['action']
@@ -200,7 +210,13 @@ def run_module():
 
     bodyjson = json.dumps(body)
 
-    req, info = fetch_url(module, request_url, data=bodyjson, headers=headers, method=method, timeout=60)
+    req, info = fetch_url(module, request_url, data=bodyjson, headers=headers,
+                          method=method, timeout=timeout)
+
+    if req is None:
+        module.fail_json(msg=info['msg'])
+
+    result["changed"] = True
 
     if action == "delete":
         result['msg'] = info

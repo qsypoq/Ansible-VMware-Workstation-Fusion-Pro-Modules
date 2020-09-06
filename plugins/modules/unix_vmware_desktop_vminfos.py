@@ -167,6 +167,9 @@ def run_module():
     method = "Get"
     req, info = fetch_url(module, request_url, headers=headers, method=method)
 
+    if req is None:
+        module.fail_json(msg=info['msg'])
+
     result['msg'] = json.loads(req.read())
     module.exit_json(**result)
 
