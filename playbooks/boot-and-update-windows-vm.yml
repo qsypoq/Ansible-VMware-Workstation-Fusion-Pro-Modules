@@ -6,6 +6,8 @@
 
 - hosts: windows-host
   gather_facts: no
+  collections:
+    - qsypoq.vmware_desktop
   tasks:
 
     - name: "Start the VM"

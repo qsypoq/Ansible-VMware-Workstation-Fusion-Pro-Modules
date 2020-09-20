@@ -8,8 +8,6 @@
 
 <p align="center"><b>Introduction: <a href="https://magnier.io/developing-vmware-workstation-pro-ansible-module">How I ended up developing a VMware Workstation/Fusion Pro Ansible module</a></b></p>
 
-<p align="center"><strike>First goal of the project is to implement all the REST API requests, for the time being, following VMware's logic. </strike><br/> Next goal is to rework some natives API functions interactions to make its use simpler.<br/><br/>
-<b>This project is still in early stage developpement.</b></p>
 </div>
 <hr/>
 
@@ -27,15 +25,19 @@ Then run vmrest:
 More informations on VMware REST API's docs: <a href="https://docs.vmware.com/en/VMware-Workstation-Pro/15.0/com.vmware.ws.using.doc/GUID-C3361DF5-A4C1-432E-850C-8F60D83E5E2B.html">Workstation Pro</a> | <a href="https://docs.vmware.com/en/VMware-Fusion/11/com.vmware.fusion.using.doc/GUID-5F89D1FE-A95D-4C3C-894F-0084027CF66F.html">Fusion Pro</a>
 
 ### Install the modules
-Manual installation ATM (ansible-galaxy integration as collection is WIP):
 
-Put the content of ```plugins/modules``` to ```~/.ansible/plugins/modules/``` or in a ```library``` folder next to your playbooks.
+#### Install from ansible-galaxy:
+`ansible-galaxy collection install qsypoq.vmware_desktop`
 
-## Information
+#### Manual installation:
+
+Put the content of `plugins/modules` to `~/.ansible/plugins/modules/` or in a `library` folder next to your playbooks.
+
+## Informations
 ### Info retriving
 For the modules with infos retriving only purposes you must set your ansible command with verbose flag, like:
 
- ```ansible-playbook -i hosts.yml playbook.yml -vvv``` 
+ `ansible-playbook -i hosts.yml playbook.yml -vvv`
  
  Native use/exploitation of returned infos is WIP.
 
@@ -48,24 +50,29 @@ This 4 variables can/must to used with all the modules:
     api_port: "8697"
     validate_certs: no
 ```
-If you are using defaults vmrest url settings then you don't have to use ```api_url``` and ```api_port```, as their defaults values are set to vmrest's defaults.
+If you are using defaults vmrest url settings then you don't have to use `api_url` and `api_port`, as their defaults values are set to vmrest's defaults.
 
-If you are using HTTPS you might want to use ```validate_certs```, default is set to ```no```.
+If you are using HTTPS you might want to use `validate_certs`, default is set to `no`.
 
-Each time you can use ```target_vm``` you can also use ```target_vm_name``` instead, which require the display name of your VM. (The one you see on your GUI).
+Each time you can use `target_vm` you can also use `target_vm_name` instead, which require the display name of your VM. (The one you see on your GUI).
 
 ### Documentation
-Here you will found basic examples. If you need more details you can find a file named ```$module.py``` available for both windows & unix version in the ```modules``` folder.
+Here you will found basic examples. If you need more details you can find a file named `$module.py` available for both windows & unix version in the `modules` folder.
 
 ## Modules examples
-This example are for windows's modules (Workstation Pro on Windows) but are the same for unix (Workstation Pro on Linux or Fusion Pro on macOS), you just need to replace ```win``` with ```unix```.
+This example are for windows's modules (Workstation Pro on Windows) but are the same for unix (Workstation Pro on Linux or Fusion Pro on macOS), you just need to replace `win` with `unix`.
 
 
 ### Create your first playbook
+Specify the collection `qsypoq.vmware_desktop`
+
 Playbook's host should be the machine hosting the API:
 
 ```
 - hosts: vmware-workstation-host
+  gather_facts: no
+  collections:
+    - qsypoq.vmware_desktop
   tasks:
 
   - name: "List all VMs"
@@ -328,4 +335,4 @@ Doesn't work with VMs having multiple NICs
 - Example: Would be great if we could prevent a user to disconnect the network adapter of the VM ansible is run from. 
 
 ### Code refractoring
-- If statements can be replaced/optimised/concatenated.
+- If statements may be replaced/optimised.
