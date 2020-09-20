@@ -149,11 +149,11 @@ def run_module():
                 for line in vmx:
                     if re.search(r'^displayName', line):
                         currentname = line.split('"')[1]
-            finalname = currentname.lower() 
+            finalname = currentname.lower()
             vm.update({'name': finalname})
             vmlist.append(vm)
 
-        vm_name_search = target_vm_name.lower() 
+        vm_name_search = target_vm_name.lower()
         for vm in vmlist:
             if vm['name'] == vm_name_search:
                 target_vm = vm['id']

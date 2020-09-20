@@ -25,12 +25,12 @@ options:
     action: clone || delete || update
         description:
             - This is the action we want to do. update CPU/RAM, clone or delete the VM
-        required: true  
+        required: true
 
     name: "KMS-Server-Clone"
         description:
             - This is the name of the cloned VM
-        required: only when action = clone      
+        required: only when action = clone
 
     num_cpus: 2
         description:
@@ -79,7 +79,7 @@ EXAMPLES = r'''
     username: "api-username"
     password: "api-password"
 
-# Clone VM with ID 42 as KMS-Server-Clone 
+# Clone VM with ID 42 as KMS-Server-Clone
 - name: "Clone VM ID 42"
   win_vmware_desktop_vmmgmt:
     target_vm: "42"
@@ -107,7 +107,7 @@ RETURN = r'''
     "id": "42",
     "memory": 2048
 }
-### Clone VM with ID 42 as KMS-Server-Clone 
+### Clone VM with ID 42 as KMS-Server-Clone
 ### Return clone's CPU/RAM/ID
 {
     "cpu": {

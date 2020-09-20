@@ -32,7 +32,7 @@ options:
     action: list || getip || update || create || delete
         description:
             - This is the action we want to do.
-        required: true   
+        required: true
 
     targetIndex: 1
         description:
@@ -48,7 +48,7 @@ options:
         description:
                 - This is the target VMNET to interact with
         required: only when type = custom
-    
+
     user: "workstation-api-user"
         description:
             - Your workstation API username
@@ -77,7 +77,7 @@ options:
         required: false
 
 author:
-    - Adam Magnier (@qsypoq)  
+    - Adam Magnier (@qsypoq)
 '''
 
 PY2 = sys.version_info[0] == 2
@@ -122,7 +122,7 @@ EXAMPLES = r'''
     user: "workstation-api-user"
     password: "api-password"
 
-### Delete NIC N°1 of VM 42 
+### Delete NIC N°1 of VM 42
 - name: "Delete NIC"
     unix_vmware_desktop_adaptersmgmt:
     target_vm: "42"
@@ -166,7 +166,7 @@ RETURN = r'''
 }
 
 ### Create NIC N°1 of VM 42 to assign it a custom type targetting vmnet10
-### Returned macAddress is empty: 
+### Returned macAddress is empty:
 ### - If your VM is off then it will be generated at the next boot
 ### - If it's on then you can get it now by runing a "action: list"
 {
@@ -237,11 +237,11 @@ def run_module():
                 for line in vmx:
                     if re.search(r'^displayName', line):
                         currentname = line.split('"')[1]
-            finalname = currentname.lower() 
+            finalname = currentname.lower()
             vm.update({'name': finalname})
             vmlist.append(vm)
 
-        vm_name_search = target_vm_name.lower() 
+        vm_name_search = target_vm_name.lower()
         for vm in vmlist:
             if vm['name'] == vm_name_search:
                 target_vm = vm['id']

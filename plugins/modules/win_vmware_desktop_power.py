@@ -25,7 +25,7 @@ options:
     state: on || off || shutdown || suspend || pause || unpause
         description:
             - This is the power state we want, if not set, module will return actual VM power state
-        required: false      
+        required: false
 
     username: "api-username"
         description:
@@ -54,7 +54,7 @@ author:
 '''
 
 EXAMPLES = r'''
-### Boot the VM with ID 42 
+### Boot the VM with ID 42
 - name: "Start VM"
   win_vmware_desktop_power:
     target_vm: "42"
@@ -64,7 +64,7 @@ EXAMPLES = r'''
     api_url: "http://127.0.0.1"
     api_port: "8697"
 
-### Get power state of the VM with ID 42 
+### Get power state of the VM with ID 42
 - name: "Get power state"
   win_vmware_desktop_power:
     target_vm: "42"
@@ -73,9 +73,9 @@ EXAMPLES = r'''
 '''
 
 RETURN = r'''
-### Get power state of the VM with ID 42 
+### Get power state of the VM with ID 42
 "power_state": "poweredOff"
 
-### Boot the VM with ID 42 
+### Boot the VM with ID 42
 "power_state": "poweredOn"
 '''

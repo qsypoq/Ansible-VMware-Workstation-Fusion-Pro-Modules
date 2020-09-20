@@ -32,7 +32,7 @@ options:
     state: on || off || shutdown || suspend || pause || unpause
         description:
             - This is the power state we want, if not set, module will return actual VM power state
-        required: false      
+        required: false
 
     username: "api-username"
         description:
@@ -60,7 +60,7 @@ options:
         description:
             - Validate Certificate it HTTPS connection
         required: false
-        
+
     timeout: 30
         description:
             - Specifies a timeout in seconds for communicating with vmrest
@@ -72,7 +72,7 @@ author:
 '''
 
 EXAMPLES = r'''
-### Boot the VM with ID 42 
+### Boot the VM with ID 42
 - name: "Start VM"
   unix_vmware_desktop_power:
     target_vm: "42"
@@ -82,7 +82,7 @@ EXAMPLES = r'''
     api_url: "http://127.0.0.1"
     api_port: "8697"
 
-### Get power state of the VM with ID 42 
+### Get power state of the VM with ID 42
 - name: "Get power state"
   unix_vmware_desktop_power:
     target_vm: "42"
@@ -91,10 +91,10 @@ EXAMPLES = r'''
 '''
 
 RETURN = r'''
-### Get power state of the VM with ID 42 
+### Get power state of the VM with ID 42
 "power_state": "poweredOff"
 
-### Boot the VM with ID 42 
+### Boot the VM with ID 42
 "power_state": "poweredOn"
 '''
 
@@ -141,25 +141,24 @@ def run_module():
     target_vm = module.params['target_vm']
     state = module.params['state']
 
-
     target_vm_name = module.params['target_vm_name']
     vmlist = []
     if target_vm_name != "":
         requestnamesurl = request_server + ':' + request_port + '/api/vms'
         reqname, infoname = fetch_url(module, requestnamesurl, headers=headers, method="Get")
         responsename = json.loads(reqname.read())
-    
+
         for vm in responsename:
             currentvmx = vm['path']
             with open(currentvmx, 'r') as vmx:
                 for line in vmx:
                     if re.search(r'^displayName', line):
                         currentname = line.split('"')[1]
-            finalname = currentname.lower() 
+            finalname = currentname.lower()
             vm.update({'name': finalname})
             vmlist.append(vm)
 
-        vm_name_search = target_vm_name.lower() 
+        vm_name_search = target_vm_name.lower()
         for vm in vmlist:
             if vm['name'] == vm_name_search:
                 target_vm = vm['id']

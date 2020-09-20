@@ -27,11 +27,11 @@ options:
     action: clone || delete || update
         description:
             - This is the action we want to do. update CPU/RAM, clone or delete the VM
-        required: true  
+        required: true
     name: "KMS-Server-Clone"
         description:
             - This is the name of the cloned VM
-        required: only when action = clone      
+        required: only when action = clone
     num_cpus: 2
         description:
             - This is the new values of CPU allocated to the VM
@@ -62,7 +62,7 @@ options:
         description:
             - Validate Certificate it HTTPS connection
         required: false
-    timeout: 
+    timeout:
         description:
             - Specifies a timeout in seconds for communicating with vmrest
         required: false
@@ -81,7 +81,7 @@ EXAMPLES = r'''
     memory_mb: 2048
     username: "api-username"
     password: "api-password"
-# Clone VM with ID 42 as KMS-Server-Clone 
+# Clone VM with ID 42 as KMS-Server-Clone
 - name: "Clone VM ID 42"
   unix_vmware_desktop_vmmgmt:
     target_vm: "42"
@@ -177,18 +177,18 @@ def run_module():
         requestnamesurl = request_server + ':' + request_port + '/api/vms'
         reqname, infoname = fetch_url(module, requestnamesurl, headers=headers, method="Get")
         responsename = json.loads(reqname.read())
-    
+
         for vm in responsename:
             currentvmx = vm['path']
             with open(currentvmx, 'r') as vmx:
                 for line in vmx:
                     if re.search(r'^displayName', line):
                         currentname = line.split('"')[1]
-            finalname = currentname.lower() 
+            finalname = currentname.lower()
             vm.update({'name': finalname})
             vmlist.append(vm)
-  
-        vm_name_search = target_vm_name.lower() 
+
+        vm_name_search = target_vm_name.lower()
         for vm in vmlist:
             if vm['name'] == vm_name_search:
                 target_vm = vm['id']

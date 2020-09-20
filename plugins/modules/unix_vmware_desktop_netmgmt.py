@@ -31,7 +31,7 @@ options:
     action: infos || delete || create || update_pf || update MTI
         description:
             - This is the action we want to do.
-        required: true  
+        required: true
 
     setting: portforward || mactoip
         description:
@@ -142,7 +142,7 @@ EXAMPLES = r'''
     password: "api-password"
 
 ### Create a new vmnet as vmnet13, as host only
-- name: "Create vmnet13"   
+- name: "Create vmnet13"
   unix_vmware_desktop_netmgmt:
     vmnet: "vmnet13"
     type: "hostonly"
@@ -151,7 +151,7 @@ EXAMPLES = r'''
     password: "api-password"
 
 ### Delete the forwarded 1337 tcp port from vmnet8
-- name: "Delete portforwarding"   
+- name: "Delete portforwarding"
   unix_vmware_desktop_netmgmt:
     vmnet: "vmnet8"
     protocol: "TCP"

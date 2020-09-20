@@ -32,7 +32,7 @@ options:
     action: infos || create || delete || update
         description:
             - This is the action we want to do.
-        required: true   
+        required: true
 
     folder_name: "myFolderName"
         description:
@@ -48,7 +48,7 @@ options:
     description:
         - Choose which kind of access the VM have to the folder
     required: false, default is read-only, you only need to use this when access needed is rw
-    
+
     username "api-username"
         description:
             - Your workstation API username
@@ -77,7 +77,7 @@ options:
         required: false
 
 author:
-    - Adam Magnier (@qsypoq)  
+    - Adam Magnier (@qsypoq)
 '''
 
 EXAMPLES = r'''
@@ -219,11 +219,11 @@ def run_module():
                 for line in vmx:
                     if re.search(r'^displayName', line):
                         currentname = line.split('"')[1]
-            finalname = currentname.lower() 
+            finalname = currentname.lower()
             vm.update({'name': finalname})
             vmlist.append(vm)
 
-        vm_name_search = target_vm_name.lower() 
+        vm_name_search = target_vm_name.lower()
         for vm in vmlist:
             if vm['name'] == vm_name_search:
                 target_vm = vm['id']

@@ -25,7 +25,7 @@ options:
     action: list || getip || update || create || delete
         description:
             - This is the action we want to do.
-        required: true   
+        required: true
 
     index: 1
         description:
@@ -41,7 +41,7 @@ options:
         description:
                 - This is the target VMNET to interact with
         required: only when type = custom
-    
+
     user: "workstation-api-user"
         description:
             - Your workstation API username
@@ -65,7 +65,7 @@ options:
         default: "8697"
 
 author:
-    - Adam Magnier (@qsypoq)  
+    - Adam Magnier (@qsypoq)
 '''
 
 EXAMPLES = r'''
@@ -107,7 +107,7 @@ EXAMPLES = r'''
     user: "workstation-api-user"
     password: "api-password"
 
-### Delete NIC N°1 of VM 42 
+### Delete NIC N°1 of VM 42
 - name: "Delete NIC"
     win_vmware_desktop_adaptersmgmt:
     target_vm: "42"
@@ -151,7 +151,7 @@ RETURN = r'''
 }
 
 ### Create NIC N°1 of VM 42 to assign it a custom type targetting vmnet10
-### Returned macAddress is empty: 
+### Returned macAddress is empty:
 ### - If your VM is off then it will be generated at the next boot
 ### - If it's on then you can get it now by runing a "action: list"
 {

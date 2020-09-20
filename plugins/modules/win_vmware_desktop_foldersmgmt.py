@@ -25,7 +25,7 @@ options:
     action: infos || create || delete || update
         description:
             - This is the action we want to do.
-        required: true   
+        required: true
 
     folder_name: "myFolderName"
         description:
@@ -41,7 +41,7 @@ options:
     description:
         - Choose which kind of access the VM have to the folder
     required: false, default is read-only, you only need to use this when access needed is rw
-    
+
     username "api-username"
         description:
             - Your workstation API username
@@ -65,7 +65,7 @@ options:
         default: "8697"
 
 author:
-    - Adam Magnier (@qsypoq)  
+    - Adam Magnier (@qsypoq)
 '''
 
 EXAMPLES = r'''
