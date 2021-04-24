@@ -15,13 +15,33 @@ $username =  Get-AnsibleParam -obj $params -name "username" -type "str" -failife
 $password = Get-AnsibleParam -obj $params -name "password" -type "str" -failifempty $true
 $target_vm = Get-AnsibleParam -obj $params -name "target_vm" -type "str" -failifempty $false
 $action = Get-AnsibleParam -obj $params -name "action" -type "str" -failifempty $true
+$vmx_path = Get-AnsibleParam -obj $params -name "vmx_path" -type "str" -failifempty $false
 $validate_certs = Get-AnsibleParam -obj $params -name "validate_certs" -type "bool" -default $false -failifempty $false
+$param = Get-AnsibleParam -obj $params -name "param" -type "str" -default "no" -failifempty $false
+$value = Get-AnsibleParam -obj $params -name "value" -type "str" -default "no" -failifempty $false
 
 if ($action -eq 'update' ) { 
-    $num_cpus = Get-AnsibleParam -obj $params -name "num_cpus" -type "int" -failifempty $false
-    $memory_mb = Get-AnsibleParam -obj $params -name "memory_mb" -type "int" -failifempty $false
+    if ((-not ($param -eq "no")) -And (-not ($value -eq "no"))) {
+        $requesturl = "${api_url}:${api_port}/api/vms/${target_vm}/configparams"
+        $body = @{
+            "name" = $param;
+            "value" = $value
+        }
+    }
+    else {
+        $requesturl = "${api_url}:${api_port}/api/vms/${target_vm}"
+        $num_cpus = Get-AnsibleParam -obj $params -name "num_cpus" -type "int" -failifempty $false
+        $memory_mb = Get-AnsibleParam -obj $params -name "memory_mb" -type "int" -failifempty $false
+        $body = @{
+            "processors" = $num_cpus;
+            "memory" = $memory_mb
+        }      
+    }
 }
 if ($action -eq 'clone' ) { 
+    $name = Get-AnsibleParam -obj $params -name "name" -type "str" -failifempty $true
+}
+if ($action -eq 'register' ) { 
     $name = Get-AnsibleParam -obj $params -name "name" -type "str" -failifempty $true
 }
 
@@ -102,8 +122,18 @@ if (-not ([string]::IsNullOrEmpty($target_vm_name))) {
 if ($action -eq 'clone' ) { 
     $requesturl = "${api_url}:${api_port}/api/vms"
 }
-if (($action -eq 'delete' ) -Or ($action -eq 'update')) { 
+if ($action -eq 'register' ) { 
+    $requesturl = "${api_url}:${api_port}/api/vms/registration"
+}
+if ($action -eq 'delete') { 
     $requesturl = "${api_url}:${api_port}/api/vms/${target_vm}"
+}
+
+if ($action -eq 'register' ) { 
+    $body = @{
+        "name" = $name;
+        "path" = $vmx_path
+    }
 }
 
 if ($action -eq 'clone' ) { 
@@ -117,16 +147,10 @@ if ($action -eq 'delete' ) {
         "id" = $target_vm
     }
 }
-if ($action -eq 'update' ) { 
-    $body = @{
-        "processors" = $num_cpus;
-        "memory" = $memory_mb
-    }      
-}
 
 $requestbody = ($body | ConvertTo-Json)
 
-if ($action -eq 'clone' ) { 
+if (($action -eq 'clone' ) -Or ($action -eq 'register')) { 
     try {
         $clonerequest = Invoke-RestMethod -Uri $requesturl -Headers $headers -method 'Post' -Body $requestbody
         $result.infos = $clonerequest

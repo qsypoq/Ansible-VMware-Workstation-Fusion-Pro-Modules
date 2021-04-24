@@ -63,6 +63,22 @@ EXAMPLES = r'''
     target_vm: "42"
     username: "api-username"
     password: "api-password"
+
+# Retrieve restrictions from VM with name "Windows 10"
+- name: "Get restrictions"
+  win_vmware_desktop_vminfos:
+    target_vm_name: "Windows 10"
+    restrictions: True
+    username: "api-username"
+    password: "api-password"
+
+# Retrieve extendedConfigFile from VM with ID 42
+- name: "Get infos about VM ID 42"
+  win_vmware_desktop_vminfos:
+    target_vm: "42"
+    param: "extendedConfigFile"
+    username: "api-username"
+    password: "api-password"
 '''
 
 RETURN = r'''
@@ -80,5 +96,97 @@ RETURN = r'''
   "cpu": {"processors": 1},
   "id": "42",
   "memory": 2048
+}
+# Retrieve restrictions from VM with name "pfsense"
+{
+    "changed": false,
+    "infos": {
+        "applianceView": {
+            "author": "",
+            "port": "",
+            "showAtPowerOn": "",
+            "version": ""
+        },
+        "cddvdList": {
+            "devices": [],
+            "num": 0
+        },
+        "cpu": {
+            "processors": 1
+        },
+        "firewareType": 0,
+        "floppyList": {
+            "devices": [],
+            "num": 0
+        },
+        "groupID": "",
+        "guestIsolation": {
+            "copyDisabled": false,
+            "dndDisabled": false,
+            "hgfsDisabled": true,
+            "pasteDisabled": false
+        },
+        "id": "R33IRMF281FGQ584LH7FSVA58L4LN76N",
+        "integrityConstraint": "",
+        "memory": 1024,
+        "nicList": {
+            "nics": [
+                {
+                    "index": 1,
+                    "macAddress": "00:0C:29:5B:FD:35",
+                    "type": "custom",
+                    "vmnet": "vmnet2"
+                },
+                {
+                    "index": 2,
+                    "macAddress": "00:0C:29:5B:FD:3F",
+                    "type": "custom",
+                    "vmnet": "vmnet10"
+                },
+                {
+                    "index": 4,
+                    "macAddress": "00:0C:29:5B:FD:53",
+                    "type": "custom",
+                    "vmnet": "vmnet4"
+                }
+            ],
+            "num": 3
+        },
+        "orgDisplayName": "",
+        "parallelPortList": {
+            "devices": [],
+            "num": 0
+        },
+        "remoteVNC": {
+            "VNCEnabled": false,
+            "VNCPort": 5900
+        },
+        "serialPortList": {
+            "devices": [],
+            "num": 0
+        },
+        "usbList": {
+            "num": 2,
+            "usbDevices": [
+                {
+                    "BackingType": 8,
+                    "backingInfo": "",
+                    "connected": false,
+                    "index": 0
+                },
+                {
+                    "BackingType": 2,
+                    "backingInfo": "",
+                    "connected": false,
+                    "index": 1
+                }
+            ]
+        }
+    }
+}
+# Retrieve extendedConfigFile from VM with ID 42
+{
+  "name": "extendedConfigFile",
+  "value": "pfsense.vmxf"
 }
 '''

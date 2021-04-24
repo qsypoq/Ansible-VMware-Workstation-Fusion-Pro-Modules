@@ -97,6 +97,24 @@ Playbook's host should be the machine hosting the API:
     username: "api-username"
     password: "api-password"
 ```
+- Retrieve the VM restrictions
+```
+- name: "Get restrictions"
+  win_vmware_desktop_vminfos:
+    target_vm_name: "Windows 10"
+    restrictions: True
+    username: "api-username"
+    password: "api-password"
+```
+- Retrieve specific VMX param
+```
+- name: "Get extendedConfigFile from VM ID 42"
+  win_vmware_desktop_vminfos:
+    target_vm: "42"
+    param: "extendedConfigFile"
+    username: "api-username"
+    password: "api-password"
+```
 ### win_vmware_desktop_vmmgmt
 - Updates a VM CPU/RAM allocation
 ```
@@ -128,6 +146,28 @@ Playbook's host should be the machine hosting the API:
     username: "api-username"
     password: "api-password"
 ```
+- Register a VM
+```
+- name: "Register VM with name ansible_test2"
+  win_vmware_desktop_vmmgmt:
+    name: "ansible_test2"
+    action: register
+    vmx_path: 'C:\Users\Qsypoq\Documents\Virtual Machines\ansible_test2\svc_pfSense.vmx'
+    username: "api-username"
+    password: "api-password"
+```
+- Update specific VMX param (NOT WORKING ATM)
+```
+- name: "Update displayName param"
+    win_vmware_desktop_vmmgmt:
+    target_vm_name: "pfsense"
+    action: update
+    param: displayName
+    value: pfsense_OLD
+    username: "api-username"
+    password: "api-password"
+```
+
 ### win_vmware_desktop_adaptersmgmt
 - Return all network adapters in the VM
 ```

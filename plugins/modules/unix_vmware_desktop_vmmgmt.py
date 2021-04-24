@@ -73,27 +73,49 @@ author:
 '''
 
 EXAMPLES = r'''
-# Change VM with ID 42's RAM allocation to 2048
+# Change VM with ID 42's RAM allocation to 2048 & 2 vCPU
 - name: "Edit VM ID 42"
-  unix_vmware_desktop_vmmgmt:
+  win_vmware_desktop_vmmgmt:
     target_vm: "42"
     action: update
+    num_cpus: 2
     memory_mb: 2048
     username: "api-username"
     password: "api-password"
+
 # Clone VM with ID 42 as KMS-Server-Clone
 - name: "Clone VM ID 42"
-  unix_vmware_desktop_vmmgmt:
+  win_vmware_desktop_vmmgmt:
     target_vm: "42"
     action: clone
     name: "KMS-Server-Clone"
     username: "api-username"
     password: "api-password"
+
 # Delete VM with ID 42
 - name: "Delete VM ID 42"
-  unix_vmware_desktop_vmmgmt:
+  win_vmware_desktop_vmmgmt:
     target_vm: "42"
     action: delete
+    username: "api-username"
+    password: "api-password"
+
+# Register VM with name ansible_test2
+- name: "Delete VM ID 42"
+  win_vmware_desktop_vmmgmt:
+    name: "ansible_test2"
+    action: register
+    vmx_path: 'C:\Users\Qsypoq\Documents\Virtual Machines\ansible_test2\svc_pfSense.vmx'
+    username: "api-username"
+    password: "api-password"
+
+# Rename VM with name pfsense to pfsense_OLD
+- name: "Rename pfsense"
+    win_vmware_desktop_vmmgmt:
+    target_vm_name: "pfsense"
+    action: update
+    param: displayName
+    value: pfsense_OLD
     username: "api-username"
     password: "api-password"
 '''
@@ -109,6 +131,7 @@ RETURN = r'''
     "memory": 2048
 }
 ### Clone VM with ID 42 as KMS-Server-Clone
+### Return clone's CPU/RAM/ID
 {
     "cpu": {
         "processors": 1
@@ -118,6 +141,14 @@ RETURN = r'''
 }
 # Delete VM with ID 42
 return nothing
+# Register VM with name ansible_test2
+{
+    "changed": true,
+    "infos": {
+        "id": "HOHA1MHB89VB6CCCGOR16CNDVFNOIQ9R",
+        "path": "C:\\Users\\Qsypoq\\Documents\\Virtual Machines\\ansible_test2\\svc_pfSense.vmx"
+    }
+}
 '''
 
 PY2 = sys.version_info[0] == 2
@@ -136,7 +167,10 @@ def run_module():
         api_url=dict(type='str', default='http://127.0.0.1'),
         api_port=dict(type='str', default='8697'),
         validate_certs=dict(type='bool', default='no'),
-        timeout=dict(type='int', required=False, default=30)
+        timeout=dict(type='int', required=False, default=30),
+        vmx_path=dict(type='str', required=False),
+        param=dict(type='str', default='no'),
+        value=dict(type='str', default='no')
     )
 
     result = dict(
@@ -170,6 +204,9 @@ def run_module():
     num_cpus = module.params['num_cpus']
     memory_mb = module.params['memory_mb']
     name = module.params['name']
+    vmx_path = module.params['vmx_path']
+    param = module.params['param']
+    value = module.params['value']
 
     target_vm_name = module.params['target_vm_name']
     vmlist = []
@@ -205,8 +242,17 @@ def run_module():
 
     if action == "update":
         method = "Put"
-        body = {"processors": num_cpus, "memory": memory_mb}
-        request_url = request_server + ':' + request_port + '/api/vms/' + target_vm
+        if param != 'no' and value != 'no' :
+            body = {"name": name, "value": value}
+            request_url = request_server + ':' + request_port + '/api/vms/' + target_vm + '/configparams'
+        else:
+            body = {"processors": num_cpus, "memory": memory_mb}
+            request_url = request_server + ':' + request_port + '/api/vms/' + target_vm
+
+    if action == "register":
+        method = "Post"
+        body = {"name": name,  "path": vmx_path}
+        request_url = request_server + ':' + request_port + '/api/vms/registration'
 
     bodyjson = json.dumps(body)
 

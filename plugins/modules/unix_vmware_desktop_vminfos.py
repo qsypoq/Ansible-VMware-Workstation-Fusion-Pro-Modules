@@ -75,6 +75,38 @@ EXAMPLES = r'''
     target_vm: "42"
     username: "api-username"
     password: "api-password"
+
+# Retrieve restrictions from VM with name "Windows 10"
+- name: "Get restrictions"
+  unix_vmware_desktop_vminfos:
+    target_vm_name: "Windows 10"
+    restrictions: True
+    username: "api-username"
+    password: "api-password"
+
+# Retrieve extendedConfigFile from VM with ID 42
+- name: "Get infos about VM ID 42"
+  unix_vmware_desktop_vminfos:
+    target_vm: "42"
+    param: "extendedConfigFile"
+    username: "api-username"
+    password: "api-password"
+
+# Retrieve restrictions from VM with name "Windows 10"
+- name: "Get restrictions"
+  unix_vmware_desktop_vminfos:
+    target_vm_name: "Windows 10"
+    restrictions: True
+    username: "api-username"
+    password: "api-password"
+
+# Retrieve extendedConfigFile from VM with ID 42
+- name: "Get infos about VM ID 42"
+  unix_vmware_desktop_vminfos:
+    target_vm: "42"
+    param: "extendedConfigFile"
+    username: "api-username"
+    password: "api-password"
 '''
 
 RETURN = r'''
@@ -93,6 +125,98 @@ RETURN = r'''
   "id": "42",
   "memory": 2048
 }
+# Retrieve restrictions from VM with name "pfsense"
+{
+    "changed": false,
+    "infos": {
+        "applianceView": {
+            "author": "",
+            "port": "",
+            "showAtPowerOn": "",
+            "version": ""
+        },
+        "cddvdList": {
+            "devices": [],
+            "num": 0
+        },
+        "cpu": {
+            "processors": 1
+        },
+        "firewareType": 0,
+        "floppyList": {
+            "devices": [],
+            "num": 0
+        },
+        "groupID": "",
+        "guestIsolation": {
+            "copyDisabled": false,
+            "dndDisabled": false,
+            "hgfsDisabled": true,
+            "pasteDisabled": false
+        },
+        "id": "R33IRMF281FGQ584LH7FSVA58L4LN76N",
+        "integrityConstraint": "",
+        "memory": 1024,
+        "nicList": {
+            "nics": [
+                {
+                    "index": 1,
+                    "macAddress": "00:0C:29:5B:FD:35",
+                    "type": "custom",
+                    "vmnet": "vmnet2"
+                },
+                {
+                    "index": 2,
+                    "macAddress": "00:0C:29:5B:FD:3F",
+                    "type": "custom",
+                    "vmnet": "vmnet10"
+                },
+                {
+                    "index": 4,
+                    "macAddress": "00:0C:29:5B:FD:53",
+                    "type": "custom",
+                    "vmnet": "vmnet4"
+                }
+            ],
+            "num": 3
+        },
+        "orgDisplayName": "",
+        "parallelPortList": {
+            "devices": [],
+            "num": 0
+        },
+        "remoteVNC": {
+            "VNCEnabled": false,
+            "VNCPort": 5900
+        },
+        "serialPortList": {
+            "devices": [],
+            "num": 0
+        },
+        "usbList": {
+            "num": 2,
+            "usbDevices": [
+                {
+                    "BackingType": 8,
+                    "backingInfo": "",
+                    "connected": false,
+                    "index": 0
+                },
+                {
+                    "BackingType": 2,
+                    "backingInfo": "",
+                    "connected": false,
+                    "index": 1
+                }
+            ]
+        }
+    }
+}
+# Retrieve extendedConfigFile from VM with ID 42
+{
+  "name": "extendedConfigFile",
+  "value": "pfsense.vmxf"
+}
 '''
 
 PY2 = sys.version_info[0] == 2
@@ -107,6 +231,8 @@ def run_module():
         api_url=dict(type='str', default='http://127.0.0.1'),
         api_port=dict(type='str', default='8697'),
         validate_certs=dict(type='bool', default='no'),
+        restrictions=dict(type='bool', required=False, default='no'),
+        param=dict(type='str', required=False, default='no'),
     )
 
     result = dict(
@@ -137,6 +263,8 @@ def run_module():
 
     target_vm = module.params['target_vm']
     target_vm_name = module.params['target_vm_name']
+    restrictions = module.params['restrictions']
+    param = module.params['param']
     vmlist = []
     if target_vm_name != "":
         requestnamesurl = request_server + ':' + request_port + '/api/vms'
@@ -159,8 +287,12 @@ def run_module():
                 target_vm = vm['id']
 
     if target_vm != "":
-        request_url = request_server + ':' + request_port + '/api/vms/' + target_vm
-
+        if restrictions is True:
+            request_url = request_server + ':' + request_port + '/api/vms/' + target_vm + '/restrictions'
+        elif param != "no":
+            request_url = request_server + ':' + request_port + '/api/vms/' + target_vm + '/params/' + param
+        else:
+            request_url = request_server + ':' + request_port + '/api/vms/' + target_vm
     else:
         request_url = request_server + ':' + request_port + '/api/vms'
 

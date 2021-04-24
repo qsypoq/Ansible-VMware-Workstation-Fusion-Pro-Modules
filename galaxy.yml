@@ -2,7 +2,7 @@ namespace: "qsypoq"
 
 name: "vmware_desktop"
 
-version: "0.0.1"
+version: "0.0.2"
 
 readme: "README.md"
 
@@ -16,9 +16,7 @@ license_file: "LICENSE"
 tags:
 - vmware
 - workstation
-- workstation_pro
 - fusion
-- fusion_pro
 - api
 - windows
 - linux

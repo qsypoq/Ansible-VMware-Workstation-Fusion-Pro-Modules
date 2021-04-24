@@ -2,16 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## 0.0.2
+### 24 April 2020
+New API endpoints implemented
+
 ## 0.0.1
-### 20 sept 2020
+### 20 Sept 2020
 Converted as collection, 0.0.1 release :tada:
 
 A huge thanks to the contributors who have helped for this release, Markus (@vMarkusK) & Marc (@Daghis) :trophy:
-### 06 sept 2020
+### 06 Sept 2020
 When `fetch_url()` fails (`req is None`), use Ansible's `fail_json()` to return the information to the caller.
-### 05 sept 2020
+### 05 Sept 2020
 Fix credential encoding, working for python2 & python3
-### 19 aug 2020
+### 19 Aug 2020
 Fix `target_vm_name` python3 compatibility
 ### 14 May 2020
 Allow disabling cert validation for HTTPS connections using ```validate_certs```.

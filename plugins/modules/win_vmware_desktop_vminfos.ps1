@@ -15,6 +15,8 @@ $target_vm = Get-AnsibleParam -obj $params -name "target_vm" -type "str" -failif
 $api_url = Get-AnsibleParam -obj $params -name "api_url" -type "str" -default "http://127.0.0.1" -failifempty $false 
 $api_port = Get-AnsibleParam -obj $params -name "api_port" -type "int" -default "8697" -failifempty $false
 $validate_certs = Get-AnsibleParam -obj $params -name "validate_certs" -type "bool" -default $false -failifempty $false
+$restrictions = Get-AnsibleParam -obj $params -name "restrictions" -type "bool" -default $false -failifempty $false
+$param = Get-AnsibleParam -obj $params -name "param" -type "str" -default "no" -failifempty $false
 
 $pair = "${username}:${password}"
 $bytes = [System.Text.Encoding]::ASCII.GetBytes($pair)
@@ -88,7 +90,15 @@ if (-not ([string]::IsNullOrEmpty($target_vm_name))) {
 }
 
 if (-not ([string]::IsNullOrEmpty($target_vm))) { 
-    $requesturl = "${api_url}:${api_port}/api/vms/${target_vm}"
+    if ($restrictions -eq $true) {
+        $requesturl = "${api_url}:${api_port}/api/vms/${target_vm}/restrictions"
+    }
+    elseif (-not ($param -eq "no")) {
+        $requesturl = "${api_url}:${api_port}/api/vms/${target_vm}/params/${param}"
+    }
+    else {
+        $requesturl = "${api_url}:${api_port}/api/vms/${target_vm}"
+    }
 }
 else {
     $requesturl = "${api_url}:${api_port}/api/vms"

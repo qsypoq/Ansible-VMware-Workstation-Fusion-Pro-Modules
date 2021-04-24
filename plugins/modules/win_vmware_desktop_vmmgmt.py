@@ -95,6 +95,25 @@ EXAMPLES = r'''
     action: delete
     username: "api-username"
     password: "api-password"
+
+# Register VM with name ansible_test2
+- name: "Register ansible_test2"
+  win_vmware_desktop_vmmgmt:
+    name: "ansible_test2"
+    action: register
+    vmx_path: 'C:\Users\Qsypoq\Documents\Virtual Machines\ansible_test2\svc_pfSense.vmx'
+    username: "api-username"
+    password: "api-password"
+
+# Rename VM with name pfsense to pfsense_OLD
+- name: "Rename pfsense"
+    win_vmware_desktop_vmmgmt:
+    target_vm_name: "pfsense"
+    action: update
+    param: displayName
+    value: pfsense_OLD
+    username: "api-username"
+    password: "api-password"
 '''
 
 RETURN = r'''
@@ -118,4 +137,12 @@ RETURN = r'''
 }
 # Delete VM with ID 42
 return nothing
+# Register VM with name ansible_test2
+{
+    "changed": true,
+    "infos": {
+        "id": "HOHA1MHB89VB6CCCGOR16CNDVFNOIQ9R",
+        "path": "C:\\Users\\Qsypoq\\Documents\\Virtual Machines\\ansible_test2\\svc_pfSense.vmx"
+    }
+}
 '''
