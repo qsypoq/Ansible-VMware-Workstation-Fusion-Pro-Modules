@@ -2,8 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## 0.1.0
+### 20 May 2021
+Dynamic inventory POC
+
 ## 0.0.2
-### 24 April 2020
+### 24 April 2021
 New API endpoints implemented
 
 ## 0.0.1

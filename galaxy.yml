@@ -2,7 +2,7 @@ namespace: "qsypoq"
 
 name: "vmware_desktop"
 
-version: "0.0.2"
+version: "0.1.0"
 
 readme: "README.md"
 
