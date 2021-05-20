@@ -59,6 +59,27 @@ Each time you can use `target_vm` you can also use `target_vm_name` instead, whi
 ### Documentation
 Here you will found basic examples. If you need more details you can find a file named `$module.py` available for both windows & unix version in the `modules` folder.
 
+## Dynamic inventory plugin
+First POC:
+Your VM needs to be named after VM's FQDN (myvm.mylocaldomain for example)
+- Create a file named `vmware_desktop.yml` with this content:
+```
+plugin: 'qsypoq.vmware_desktop.inventory'
+url: 'your_api_ip'
+port: 'you_api_port'
+user: 'your_api_user'
+password: 'your_api_password'
+```
+
+You can now pass it as an argument like `ansible-playbook test.yml -i vmware_desktop.yml`
+
+<div align="center">
+
+<img src="https://i.imgur.com/d2JRYII.jpg">
+</div>
+
+For this first POC VM have only one hostvar: their VM ID, so you can use it in your playbook to target them with `target_vm`
+
 ## Modules examples
 This example are for windows's modules (Workstation Pro on Windows) but are the same for unix (Workstation Pro on Linux or Fusion Pro on macOS), you just need to replace `win` with `unix`.
 
