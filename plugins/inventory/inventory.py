@@ -25,7 +25,7 @@ except ImportError:
 class InventoryModule(BaseInventoryPlugin):
 
     NAME = 'inventory'
-       
+
     def verify_file(self, path):
         valid = False
         if super(InventoryModule, self).verify_file(path):
@@ -82,7 +82,7 @@ class InventoryModule(BaseInventoryPlugin):
         return re.sub(regex, "-", word.replace(" - ", "-"))
 
     def _populate(self):
-       
+
         for vm in self.get_vm_list():
             vm_id = vm['id']
             vm_name = self.to_safe(self.get_vm_name(vm_id))

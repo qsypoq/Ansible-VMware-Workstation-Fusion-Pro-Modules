@@ -163,7 +163,7 @@ def run_module():
             if vm['name'] == vm_name_search:
                 target_vm = vm['id']
 
-    request_url = request_server + ':' + request_port + '/api/vms/' + target_vm +"/power"
+    request_url = request_server + ':' + request_port + '/api/vms/' + target_vm + "/power"
 
     if state != "":
         method = "Put"

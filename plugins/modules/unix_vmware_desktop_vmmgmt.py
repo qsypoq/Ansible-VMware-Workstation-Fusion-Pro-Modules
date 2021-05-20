@@ -242,7 +242,7 @@ def run_module():
 
     if action == "update":
         method = "Put"
-        if param != 'no' and value != 'no' :
+        if param != 'no' and value != 'no':
             body = {"name": name, "value": value}
             request_url = request_server + ':' + request_port + '/api/vms/' + target_vm + '/configparams'
         else:
