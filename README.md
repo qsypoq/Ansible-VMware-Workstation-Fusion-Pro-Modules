@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://magnier.io/content/images/2020/05/vmware_workstation_fusion_api_ansible.png">
+<img src="https://magnier.io/developing-vmware-workstation-pro-ansible-module/medias/vmware_workstation_fusion_api_ansible.png">
 
 <h2 align="center">Ansible modules interacting with VMware Workstation/Fusion Pro's REST API <br/><br/>
 <img src="https://img.shields.io/badge/size-75KiB-brightgreen"> <img src="https://img.shields.io/badge/license-MIT-green"> <a href="https://twitter.com/qsypoq"><img src="https://img.shields.io/badge/twitter-@qsypoq-blue"></img></a> <br/>
